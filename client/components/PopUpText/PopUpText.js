@@ -11,7 +11,7 @@
 
 
 import React, { Component } from 'react';
-import './PopUp.css';
+import '../Home/PopUp.css';
 
 import {
   PopupboxManager,
@@ -49,7 +49,7 @@ export class PopUpText extends Component {
       config: {
         titleBar: {
           enable: true,
-          text: `We'll be in touch via email or mobile number 
+          text: `Wcce'll be in touch via email or mobile number 
                 if you're our lucky winner!!!`,
           header:  `Thanks for taking part!!`
 
