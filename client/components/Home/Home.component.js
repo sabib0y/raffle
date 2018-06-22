@@ -52,16 +52,6 @@ export default class Home extends React.Component {
       </div>
     );
 
-
-    // let leadsRef = database.ref('users');
-    // leadsRef.on('value', function(snapshot) {
-    //   snapshot.forEach(function(childSnapshot) {
-    //     let childData = childSnapshot.val();
-    //   });
-    // });
-
-
-
     PopupboxManager.open({
       content,
       config: {
@@ -78,15 +68,6 @@ export default class Home extends React.Component {
   }
 
   render() {
-
-    // fetch('https://console.firebase.google.com/project/dailychoppin/database/data/users')
-    //   .then(response => {
-    //     console.log('response', response)
-    //   })
-    //   .catch(error => {
-    //     console.log('error', error)
-    //   });
-    //
 
     let ref = fire.database().ref("users");
 
