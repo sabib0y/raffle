@@ -1,13 +1,16 @@
 import React from 'react';
-import { getRaffle } from "../../redux/actions";
-import {connect} from "react-redux";
-import fire from '../../fire';
-import { PopUpText } from '../PopUpText/PopUpText';
 import './PopUp.css';
 import moment from 'moment';
+import uniqid from 'uniqid';
+// import twilio from 'twilio';
+import writeNewPost from '../../helpers/firebasePostHelper';
+import getPosts from '../../helpers/getDataFirebase';
+import { randomizedData } from '../../helpers/getDataFirebase';
+import WinningID from '../WinningId/WinningId';
+import './Home.css';
+import isEmpty from 'lodash';
 
 import { PopupboxManager, PopupboxContainer } from 'react-popupbox';
-
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -18,31 +21,52 @@ export default class Home extends React.Component {
       email: null,
       number: '',
       date: {},
-      id: null
+      id: null,
+      receivedData: {},
+      randomWinningId: '',
+      displayResults: '',
+      showResults: false,
+      uniqueId: null
     }
+  }
+
+  displayResults() {
+    this.setState({displayResults: 'test', showResults: true})
+    setTimeout(() => {
+      console.log('timeOut')
+      this.displayResults();
+    }, 1000);
   }
 
   handleSubmit(event) {
     event.preventDefault();
     let change = {};
-
     change[event.target.name] = event.target.value;
     this.setState(change);
   }
 
   handleSubmitForm(event) {
     event.preventDefault();
+    let newDate = moment();
+    newDate = newDate.format();
 
     this.state.id = Math.floor(Math.random() * Math.floor(100000));
-    this.state.date = new Date();
+    this.state.date = newDate;
 
-    let sessionsRef = fire.database().ref("users");
-    sessionsRef.push(
-      this.state
+    const unidueId = uniqid();
+    this.state.uniqueId = unidueId;
+
+    writeNewPost(
+      this.state.firstName,
+      this.state.lastName,
+      this.state.email,
+      this.state.number,
+      this.state.date,
+      this.state.uniqueId
     );
 
-    // fire.database().ref('users').push(this.state,  fire.database.ServerValue.TIMESTAMP);
     this.openPopupbox();
+    document.getElementById("user-form").reset();
   }
 
   openPopupbox() {
@@ -51,13 +75,12 @@ export default class Home extends React.Component {
         {/*<button onClick={() => this.updatePopupbox()}>Update!</button>*/}
       </div>
     );
-
     PopupboxManager.open({
       content,
       config: {
         titleBar: {
           enable: true,
-          text: `Your unique entry ID is ${this.state.id}.
+          text: `Your unique entry ID is ${this.state.uniqueId}.
            We'll be in touch if you're our lucky winner!!!`
 
         },
@@ -67,24 +90,19 @@ export default class Home extends React.Component {
     })
   }
 
+  testFunc() {
+    this.setState({showResults: !this.state.showResults});
+  }
+
   render() {
-
-    let ref = fire.database().ref("users");
-
-    ref.on("value", function(snapshot) {
-      let childData = snapshot.val();
-      let itemsUsers = snapshot.numChildren();
-      console.log(itemsUsers, childData)
-
-    });
-
     return (
       <div>
         <PopupboxContainer />
+        {this.state.showResults === false &&
         <div className="container">
           <div className="row">
             <div className="col-lg-6">
-              <form action="" noValidate="novalidate" onSubmit={e => this.handleSubmitForm(e)}>
+              <form action="" id="user-form" noValidate="novalidate" onSubmit={e => this.handleSubmitForm(e)}>
                 <fieldset>
                   <div className="form-group">
                     <label>Name</label>
@@ -131,6 +149,19 @@ export default class Home extends React.Component {
               </form>
             </div>
           </div>
+        </div>
+        }
+        {this.state.showResults === true &&
+          <WinningID/>
+        }
+
+        <div>
+          <button
+            className="btn btn-primary"
+            onClick={() => this.testFunc()
+            }>
+            Test Random Generator
+          </button>
         </div>
       </div>
     )

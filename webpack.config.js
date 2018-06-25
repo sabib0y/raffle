@@ -8,7 +8,15 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   filename: 'index.html',
   inject: 'body'
 })
+
 module.exports = {
+  mode: 'development',
+  node: {
+    console: false,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  },
   entry: __dirname + '/client/index.js',
   output: {
     path: __dirname + '/dist',
