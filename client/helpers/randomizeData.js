@@ -9,7 +9,6 @@ export default function randomizeData() {
       let randomIndex = Math.floor(Math.random() * receivedData.length);
       let randomElement = receivedData[randomIndex];
       randomizedData.push(randomElement);
-      console.log('Multiple Entries Found', randomizedData, randomElement)
     } else {
       console.error('No Entries Found', randomizedData)
     }

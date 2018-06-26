@@ -14,6 +14,7 @@ export default class WinningId extends React.PureComponent {
   componentDidMount(){
       let collectedData = [];
       let randomizedData = [];
+
       fire.database().ref('users').once('value').then((snapshot) => {
         if (Object.entries !== null || Object.entries !== undefined) {
           let receivedData = Object.entries(snapshot.val());
@@ -27,7 +28,6 @@ export default class WinningId extends React.PureComponent {
           randomizedData.push(randomElement);
 
           this.setState(randomizedData[0]);
-          // console.log('Multiple Entries Found', this.state.randomizedData)
         } else {
           console.error('No Entries Found', randomizedData)
         }

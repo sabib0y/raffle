@@ -8,9 +8,9 @@ import getPosts from '../../helpers/getDataFirebase';
 import { randomizedData } from '../../helpers/getDataFirebase';
 import WinningID from '../WinningId/WinningId';
 import './Home.css';
-import isEmpty from 'lodash';
 
 import { PopupboxManager, PopupboxContainer } from 'react-popupbox';
+import fire from "../../fire";
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -19,14 +19,16 @@ export default class Home extends React.Component {
       firstName: null,
       lastName: null,
       email: null,
-      number: '',
+      number: null,
       date: {},
       id: null,
+      disabled: true,
       receivedData: {},
       randomWinningId: '',
       displayResults: '',
       showResults: false,
-      uniqueId: null
+      uniqueId: null,
+      dataCollected: false
     }
   }
 
@@ -39,10 +41,22 @@ export default class Home extends React.Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault();
+    // event.preventDefault();
     let change = {};
     change[event.target.name] = event.target.value;
     this.setState(change);
+    console.log('disabled', this.state.disabled);
+
+    if(event.target.name === 'number') {
+      if(event.target.value) {
+        this.setState({ disabled: false })
+      }
+      else {
+        this.setState({ disabled: true})
+      }
+    }
+
+    console.log('disabled', this.state.disabled)
   }
 
   handleSubmitForm(event) {
@@ -56,17 +70,59 @@ export default class Home extends React.Component {
     const unidueId = uniqid();
     this.state.uniqueId = unidueId;
 
-    writeNewPost(
-      this.state.firstName,
-      this.state.lastName,
-      this.state.email,
-      this.state.number,
-      this.state.date,
-      this.state.uniqueId
-    );
+    let collectedData = [];
+    let collectedNumbers = [];
+    let arrangedData = [];
 
-    this.openPopupbox();
-    document.getElementById("user-form").reset();
+    fire.database().ref('users').once('value').then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log('Database has users');
+        if (Object.entries !== null || Object.entries !== undefined) {
+          let receivedData = Object.entries(snapshot.val());
+          receivedData.map(item => {
+            collectedData.push(item[1]);
+          });
+          collectedData.map(user => {
+            collectedNumbers.push(user.user.mobileNumber);
+          });
+
+          if (collectedNumbers.indexOf(this.state.number) > -1) {
+            console.log('Found duplicates', this.state.number);
+            this.setState({disabled: true});
+            document.getElementById("user-form").reset();
+            this.openPopupbox();
+          } else {
+            writeNewPost(
+              this.state.firstName,
+              this.state.lastName,
+              this.state.email,
+              this.state.number,
+              this.state.date,
+              this.state.uniqueId
+            );
+
+            this.setState({disabled: true});
+            document.getElementById("user-form").reset();
+            this.openPopupbox();
+          }
+        }
+      }
+      else {
+        console.log('New User, empty database');
+        writeNewPost(
+          this.state.firstName,
+          this.state.lastName,
+          this.state.email,
+          this.state.number,
+          this.state.date,
+          this.state.uniqueId
+        );
+
+        this.setState({disabled: true});
+        document.getElementById("user-form").reset();
+        this.openPopupbox();
+      }
+    });
   }
 
   openPopupbox() {
@@ -142,7 +198,10 @@ export default class Home extends React.Component {
                     />
                   </div>
 
-                  <button className="btn btn-primary" type="submit">
+                  <button
+                    disabled={this.state.disabled}
+                    className="btn btn-primary"
+                    type="submit">
                     Sign Up
                   </button>
                 </fieldset>

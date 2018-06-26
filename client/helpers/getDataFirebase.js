@@ -14,7 +14,6 @@ export default function getPosts(item) {
       let randomIndex = Math.floor(Math.random() * collectedData.length);
       let randomElement = collectedData[randomIndex];
       randomizedData.push(randomElement);
-      console.log('Multiple Entries Found', randomizedData, randomElement)
     } else {
       console.error('No Entries Found', randomizedData)
     }
