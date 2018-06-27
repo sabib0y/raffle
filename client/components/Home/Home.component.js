@@ -3,23 +3,24 @@ import './PopUp.css';
 import moment from 'moment';
 import uniqid from 'uniqid';
 // import twilio from 'twilio';
-import writeNewPost from '../../helpers/firebasePostHelper';
-import getPosts from '../../helpers/getDataFirebase';
+import { connect } from "react-redux";
+import { getUsers, getNumbers } from "../../redux/actions";
 import { randomizedData } from '../../helpers/getDataFirebase';
-import WinningID from '../WinningId/WinningId';
-import './Home.css';
+import WinningID from '../WinningId/WinningId.component';
+import './Home.scss';
+import WinningCodeValidation from '../WinningCodeValidation/WinningCodeValidation';
 
 import { PopupboxManager, PopupboxContainer } from 'react-popupbox';
 import fire from "../../fire";
 
-export default class Home extends React.Component {
+export class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       firstName: null,
       lastName: null,
-      email: null,
-      number: null,
+      emailAddress: null,
+      mobileNumber: null,
       date: {},
       id: null,
       disabled: true,
@@ -28,7 +29,9 @@ export default class Home extends React.Component {
       displayResults: '',
       showResults: false,
       uniqueId: null,
-      dataCollected: false
+      dataCollected: false,
+      revealRedeem: false,
+      duplicateNumber: null
     }
   }
 
@@ -45,9 +48,8 @@ export default class Home extends React.Component {
     let change = {};
     change[event.target.name] = event.target.value;
     this.setState(change);
-    console.log('disabled', this.state.disabled);
 
-    if(event.target.name === 'number') {
+    if(event.target.name === 'mobileNumber') {
       if(event.target.value) {
         this.setState({ disabled: false })
       }
@@ -75,6 +77,12 @@ export default class Home extends React.Component {
     let arrangedData = [];
 
     fire.database().ref('users').once('value').then((snapshot) => {
+
+      const { firstName, lastName, emailAddress, mobileNumber, date, uniqueId } = this.state;
+      const dataToSend = {
+        firstName, lastName, emailAddress, mobileNumber, date, uniqueId
+      };
+
       if (snapshot.exists()) {
         console.log('Database has users');
         if (Object.entries !== null || Object.entries !== undefined) {
@@ -86,21 +94,16 @@ export default class Home extends React.Component {
             collectedNumbers.push(user.user.mobileNumber);
           });
 
-          if (collectedNumbers.indexOf(this.state.number) > -1) {
-            console.log('Found duplicates', this.state.number);
+          if (collectedNumbers.indexOf(this.state.mobileNumber) > -1) {
+            console.log('Found duplicate numbers', this.state.mobileNumber);
+            this.props.getNumbers({ firstName, lastName, emailAddress, mobileNumber, date, uniqueId });
             this.setState({disabled: true});
             document.getElementById("user-form").reset();
             this.openPopupbox();
           } else {
-            writeNewPost(
-              this.state.firstName,
-              this.state.lastName,
-              this.state.email,
-              this.state.number,
-              this.state.date,
-              this.state.uniqueId
-            );
+            console.log('New number detected', this.state.mobileNumber);
 
+            this.props.getUsers(dataToSend);
             this.setState({disabled: true});
             document.getElementById("user-form").reset();
             this.openPopupbox();
@@ -109,14 +112,7 @@ export default class Home extends React.Component {
       }
       else {
         console.log('New User, empty database');
-        writeNewPost(
-          this.state.firstName,
-          this.state.lastName,
-          this.state.email,
-          this.state.number,
-          this.state.date,
-          this.state.uniqueId
-        );
+        this.props.getUsers(dataToSend);
 
         this.setState({disabled: true});
         document.getElementById("user-form").reset();
@@ -148,6 +144,10 @@ export default class Home extends React.Component {
 
   testFunc() {
     this.setState({showResults: !this.state.showResults});
+  }
+
+  redeemCode() {
+    this.setState({revealRedeem: true});
   }
 
   render() {
@@ -183,7 +183,7 @@ export default class Home extends React.Component {
                     <input
                       className="form-control"
                       placeholder="Please enter Email"
-                      name='email'
+                      name='emailAddress'
                       onChange={event => this.handleSubmit(event)}
                     />
                   </div>
@@ -192,7 +192,7 @@ export default class Home extends React.Component {
                     <input
                       className="form-control"
                       placeholder="Please Enter Mobile"
-                      name='number'
+                      name='mobileNumber'
                       type='telephone'
                       onChange={event => this.handleSubmit(event)}
                     />
@@ -202,21 +202,39 @@ export default class Home extends React.Component {
                     disabled={this.state.disabled}
                     className="btn btn-primary"
                     type="submit">
-                    Sign Up
+                    Submit
                   </button>
                 </fieldset>
               </form>
             </div>
           </div>
         </div>
-        }
+         }
         {this.state.showResults === true &&
-          <WinningID/>
+          <div>
+            <WinningID
+              id={this.props.id}
+              uniqueId={this.props.uniqueId}
+            />
+            <div>
+              Have a winning code?
+              <a
+                href="#"
+                onClick={() => this.redeemCode()}
+              >click to redeem code
+              </a>
+            </div>
+            {this.state.revealRedeem &&
+              <WinningCodeValidation
+                uniqueId={this.props.uniqueId}
+              />
+            }
+          </div>
         }
 
         <div>
           <button
-            className="btn btn-primary"
+            className="btn btn-primary tempButton"
             onClick={() => this.testFunc()
             }>
             Test Random Generator
@@ -226,15 +244,16 @@ export default class Home extends React.Component {
     )
   }
 }
-//
-// const mapStateToProps = (state) => {
-//   return {
-//     items: state.reducer.items
-//   };
-// };
-//
-// const mapDispatchToProps = {
-//   getRaffle,
-// };
-//
-// export default connect(mapStateToProps, mapDispatchToProps)(Home);
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.reducer
+  };
+};
+
+const mapDispatchToProps = {
+  getUsers,
+  getNumbers
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

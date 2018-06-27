@@ -1,15 +1,16 @@
 import fire from '../fire';
 import moment from "moment/moment";
 
-export default function postAllWinners(firstName, lastName, emailAddress, mobileNumber, uniqueId) {
+export default function postAllWinners(firstName, lastName, emailAddress, mobileNumber, date, uniqueId, winningCodeConfirmation) {
 
   let postData = {
     firstName,
     lastName,
     emailAddress,
     mobileNumber,
-    date: moment().format(),
-    uniqueId
+    date,
+    uniqueId,
+    winningCodeConfirmation
   };
 
   // Get a key for a new Post.
