@@ -31,7 +31,10 @@ export class Home extends React.Component {
       uniqueId: null,
       dataCollected: false,
       revealRedeem: false,
-      duplicateNumber: null
+      duplicateNumber: null,
+      selectedNetwork: 'Select Mobile Network',
+      errorMessageNumber: '',
+      errorNumber: false
     }
   }
 
@@ -50,16 +53,23 @@ export class Home extends React.Component {
     });
 
     window.onclick = function(event){
-      if (!event.target.classList.contains('dropdown-button')){
-        activeDropdown.element.style.visibility = 'hidden';
+      if(event !== undefined) {
+        if (!event.target.classList.contains('dropdown-button')){
+          activeDropdown.element.style.visibility = 'hidden';
+        }
       }
     }
+  }
+
+  handleChange(network) {
+    this.setState({
+      selectedNetwork: network
+    })
   }
 
   displayResults() {
     this.setState({displayResults: 'test', showResults: true})
     setTimeout(() => {
-      console.log('timeOut')
       this.displayResults();
     }, 1000);
   }
@@ -71,6 +81,23 @@ export class Home extends React.Component {
     this.setState(change);
 
     if(event.target.name === 'mobileNumber') {
+      let reg = new RegExp('^[0-9]+$');
+      if(isNaN(event.target.value)) {
+        this.setState({
+          errorMessageNumber: `Mobile number should only be numbers.`,
+          errorNumber: true
+        })
+      }
+      if (!isNaN(event.target.value)) {
+        console.log('is a number')
+        this.setState({
+          errorMessageNumber: `Mobile number should only be numbers.`,
+          errorNumber: false
+        })
+      }
+
+      console.log('reg', reg)
+
       if(event.target.value) {
         this.setState({ disabled: false })
       }
@@ -78,8 +105,6 @@ export class Home extends React.Component {
         this.setState({ disabled: true})
       }
     }
-
-    console.log('disabled', this.state.disabled)
   }
 
   handleSubmitForm(event) {
@@ -105,7 +130,6 @@ export class Home extends React.Component {
       };
 
       if (snapshot.exists()) {
-        console.log('Database has users');
         if (Object.entries !== null || Object.entries !== undefined) {
           let receivedData = Object.entries(snapshot.val());
           receivedData.map(item => {
@@ -116,14 +140,11 @@ export class Home extends React.Component {
           });
 
           if (collectedNumbers.indexOf(this.state.mobileNumber) > -1) {
-            console.log('Found duplicate numbers', this.state.mobileNumber);
             this.props.getNumbers({ firstName, lastName, emailAddress, mobileNumber, date, uniqueId });
             this.setState({disabled: true});
             document.getElementById("user-form").reset();
             this.openPopupbox();
           } else {
-            console.log('New number detected', this.state.mobileNumber);
-
             this.props.getUsers(dataToSend);
             this.setState({disabled: true});
             document.getElementById("user-form").reset();
@@ -132,7 +153,6 @@ export class Home extends React.Component {
         }
       }
       else {
-        console.log('New User, empty database');
         this.props.getUsers(dataToSend);
 
         this.setState({disabled: true});
@@ -201,24 +221,15 @@ export class Home extends React.Component {
                       onChange={event => this.handleSubmit(event)}
                     />
                   </div>
-                  <div className="form-group">
-                    <label>Email ** OPTIONAL **</label>
-                    <input
-                      className="form-control"
-                      placeholder="Please enter Email"
-                      name='emailAddress'
-                      onChange={event => this.handleSubmit(event)}
-                    />
-                  </div>
 
                   <div className='dropdown' id='icecream-dropdown'>
-                    <div className='dropdown-button'>Select Mobile Network</div>
+                    <div className='dropdown-button'>{this.state.selectedNetwork}</div>
                     <span className='triangle'>&#9660;</span>
                     <ul className='dropdown-selection'>
-                      <li>MTN</li>
-                      <li>AirTel</li>
-                      <li>9 Mobile</li>
-                      <li>Glo</li>
+                      <li onClick={() => this.handleChange('MTN Network')}>MTN</li>
+                      <li onClick={() => this.handleChange('Airtel Network')}>AirTel</li>
+                      <li onClick={() => this.handleChange('9 Mobile Network')}>9 Mobile</li>
+                      <li onClick={() => this.handleChange('GLOW Network')}>Glo</li>
                     </ul>
                   </div>
                   <div className="form-group">
@@ -230,8 +241,17 @@ export class Home extends React.Component {
                       type='telephone'
                       onChange={event => this.handleSubmit(event)}
                     />
+                    <span className="errorNumber">{this.state.errorMessageNumber}</span>
                   </div>
-
+                  <div className="form-group">
+                    <label>Email ** OPTIONAL **</label>
+                    <input
+                      className="form-control"
+                      placeholder="Please enter Email"
+                      name='emailAddress'
+                      onChange={event => this.handleSubmit(event)}
+                    />
+                  </div>
                   <button
                     disabled={this.state.disabled}
                     className="btn btn-primary"
