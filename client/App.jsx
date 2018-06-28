@@ -8,7 +8,7 @@ class App extends Component {
 
     return (
       // base content sists here
-      <div className="container-fluid">
+      <div className="container article">
       <div className="draw_content_container">
         <h1>Welcome to Dailychoppins!</h1>
         <Home/>

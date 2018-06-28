@@ -4,6 +4,10 @@
   }
 }
 
+.draw_content_container {
+ padding: 40px 55px 0 55px;
+}
+
 .errorNumber {
  background-color: red;
 }
@@ -11,11 +15,26 @@
  margin: 15px 0 0 0;
 }
 
+.form-row-edit {
+ margin-left: 0;
+ margin-right: 0;
+ display: flex;
+}
+
+.network-wrapper {
+ flex-grow: 1;
+}
+
+.number-wrapper {
+ flex-grow: 1;
+}
+
 .dropdown {
  display: inline-block;
  position: relative;
- font-size: 16px;
+ font-size: 12px;
  font-family: "Arial";
+ top: 15px;
 }
 .dropdown-button {
  background: #3498db;
@@ -23,7 +42,7 @@
  color: #fff;
  letter-spacing: 0.025rem;
  box-sizing: border-box;
- padding: 10px 30px 10px 20px;
+ padding: 5px 30px 5px 20px;
  position: relative;
  cursor: pointer;
  transition: background .3s ease;
@@ -36,7 +55,7 @@
  font-size: 50%;
  position: absolute;
  right: 10px;
- top: -2px;
+ top: -4px;
  bottom: 0;
  margin-top: auto;
  margin-bottom: auto;

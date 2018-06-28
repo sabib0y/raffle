@@ -1,7 +1,5 @@
 import React from 'react';
 import fire from '../../fire';
-import postWinnerHelper from '../../helpers/postWinnerHelper';
-import postAllWinners from '../../helpers/postAllWinners';
 import { getWinningId } from "../../redux/actions";
 import {connect} from "react-redux";
 
@@ -40,33 +38,10 @@ export class WinningId extends React.PureComponent {
   }
 
   render() {
-    console.log('this.propsWI', this.props.user.mobileNumber);
     let uniqueCodeSplit;
     if(this.state.uniqueId !== null) {
-      //
-      // this.props.getWinningId();
-
-      // postWinnerHelper(
-      //   this.state.firstName,
-      //   this.state.lastName,
-      //   this.state.emailAddress,
-      //   this.state.mobileNumber,
-      //   this.state.date,
-      //   this.state.uniqueId,
-      // );
-
-      // postAllWinners(
-      //   this.state.firstName,
-      //   this.state.lastName,
-      //   this.state.emailAddress,
-      //   this.state.mobileNumber,
-      //   this.state.date,
-      //   this.state.uniqueId,
-      // );
       uniqueCodeSplit = this.state.uniqueId.replace(/(\w{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');
-     // this.setState({}) = uniqueCodeSplit;
     }
-
     return (
       <div>
         {this.state.uniqueId !== null &&

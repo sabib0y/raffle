@@ -48,7 +48,7 @@ export class WinningCodeValidation extends React.Component {
     } else {
       this.setState({ winningCodeConfirmation: true });
 
-      this.props.getWinningCodeConfirmation({winningCodeConfirmation: true, mobileNumber: this.props.user.mobileNumber});
+      this.props.getWinningCodeConfirmation({winningCodeConfirmation: true, selectedNetwork: this.props.user.selectedNetwork, mobileNumber: this.props.user.mobileNumber});
       this.openPopupbox();
     }
   }

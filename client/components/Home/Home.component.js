@@ -124,9 +124,9 @@ export class Home extends React.Component {
 
     fire.database().ref('users').once('value').then((snapshot) => {
 
-      const { firstName, lastName, emailAddress, mobileNumber, date, uniqueId } = this.state;
+      const { firstName, lastName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId } = this.state;
       const dataToSend = {
-        firstName, lastName, emailAddress, mobileNumber, date, uniqueId
+        firstName, lastName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId
       };
 
       if (snapshot.exists()) {
@@ -196,10 +196,10 @@ export class Home extends React.Component {
       <div>
         <PopupboxContainer />
         {this.state.showResults === false &&
-        <div className="container-fluid">
+        <div>
           <div className="row">
             <div className="col-lg-6">
-            <div className="negative_margin">
+            <div>
               <p id="intro_tease">Enter your details in here daily to stand a chance to win  500 naira  top up! Winners will be announced at 7pm Nigerian time.</p>
               <form action="" id="user-form" noValidate="novalidate" onSubmit={e => this.handleSubmitForm(e)}>
                 <fieldset>
@@ -222,25 +222,29 @@ export class Home extends React.Component {
                     />
                   </div>
 
-                  <div className='dropdown' id='icecream-dropdown'>
-                    <div className='dropdown-button'>{this.state.selectedNetwork}</div>
-                    <span className='triangle'>&#9660;</span>
-                    <ul className='dropdown-selection'>
-                      <li onClick={() => this.handleChange('MTN Network')}>MTN</li>
-                      <li onClick={() => this.handleChange('Airtel Network')}>AirTel</li>
-                      <li onClick={() => this.handleChange('9 Mobile Network')}>9 Mobile</li>
-                      <li onClick={() => this.handleChange('GLOW Network')}>Glo</li>
-                    </ul>
-                  </div>
-                  <div className="form-group">
-                    <label>Number</label>
-                    <input
-                      className="form-control"
-                      placeholder="Please Enter Mobile"
-                      name='mobileNumber'
-                      type='telephone'
-                      onChange={event => this.handleSubmit(event)}
-                    />
+                  <div className="form-group form-row form-row-edit">
+                    <div className="network-wrapper">
+                      <div className='dropdown' id='icecream-dropdown'>
+                        <div className='dropdown-button'>{this.state.selectedNetwork}</div>
+                        <span className='triangle'>&#9660;</span>
+                        <ul className='dropdown-selection'>
+                          <li onClick={() => this.handleChange('MTN Network')}>MTN</li>
+                          <li onClick={() => this.handleChange('Airtel Network')}>AirTel</li>
+                          <li onClick={() => this.handleChange('9 Mobile Network')}>9 Mobile</li>
+                          <li onClick={() => this.handleChange('GLOW Network')}>Glo</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="number-wrapper">
+                      <label>Number</label>
+                      <input
+                        className="form-control form-control"
+                        placeholder="Please Enter Mobile"
+                        name='mobileNumber'
+                        type='telephone'
+                        onChange={event => this.handleSubmit(event)}
+                      />
+                    </div>
                     <span className="errorNumber">{this.state.errorMessageNumber}</span>
                   </div>
                   <div className="form-group">

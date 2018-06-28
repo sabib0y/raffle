@@ -8,7 +8,6 @@ import writeNewPost from '../helpers/firebasePostHelper';
 import postWinnerHelper from '../helpers/postWinnerHelper';
 import postAllWinners from '../helpers/postAllWinners';
 import fire from '../fire';
-import getWinningCodeConfirmation from '../helpers/postAllWinners';
 
 const initialState = {
   user: {
@@ -28,7 +27,8 @@ const initialState = {
     revealRedeem: false,
     duplicateNumber: null,
     winningCode: null,
-    winningCodeConfirmation: false
+    winningCodeConfirmation: false,
+    selectedNetwork: null
   }
 };
 
@@ -39,6 +39,7 @@ const reducer = (state = initialState, action) => {
         firstName: action.newUser.firstName,
         lastName: action.newUser.lastName,
         emailAddress: action.newUser.emailAddress,
+        selectedNetwork: action.newUser.selectedNetwork,
         mobileNumber: action.newUser.mobileNumber,
         date: action.newUser.date,
         uniqueId: action.newUser.uniqueId,
@@ -49,6 +50,7 @@ const reducer = (state = initialState, action) => {
         dataToSend.firstName,
         dataToSend.lastName,
         dataToSend.emailAddress,
+        dataToSend.selectedNetwork,
         dataToSend.mobileNumber,
         dataToSend.date,
         dataToSend.uniqueId,
@@ -60,6 +62,7 @@ const reducer = (state = initialState, action) => {
         firstName: action.newUser.firstName,
         lastName: action.newUser.lastName,
         emailAddress: action.newUser.emailAddress,
+        selectedNetwork: action.newUser.selectedNetwork,
         mobileNumber: action.newUser.mobileNumber,
         date: action.newUser.date,
         uniqueId: action.newUser.uniqueId,
@@ -76,6 +79,7 @@ const reducer = (state = initialState, action) => {
         firstName: action.winningId.firstName,
         lastName: action.winningId.lastName,
         emailAddress: action.winningId.emailAddress,
+        selectedNetwork: action.winningId.selectedNetwork,
         mobileNumber: action.winningId.mobileNumber,
         date: action.winningId.date,
         uniqueId: action.winningId.uniqueId,
@@ -86,6 +90,7 @@ const reducer = (state = initialState, action) => {
         dataToSend.firstName,
         dataToSend.lastName,
         dataToSend.emailAddress,
+        dataToSend.selectedNetwork,
         dataToSend.mobileNumber,
         dataToSend.date,
         dataToSend.uniqueId,
@@ -95,6 +100,7 @@ const reducer = (state = initialState, action) => {
         dataToSend.firstName,
         dataToSend.lastName,
         dataToSend.emailAddress,
+        dataToSend.selectedNetwork,
         dataToSend.mobileNumber,
         dataToSend.date,
         dataToSend.uniqueId,
@@ -105,6 +111,7 @@ const reducer = (state = initialState, action) => {
         firstName: action.winningId.firstName,
         lastName: action.winningId.lastName,
         emailAddress: action.winningId.emailAddress,
+        selectedNetwork: action.winningId.selectedNetwork,
         mobileNumber: action.winningId.mobileNumber,
         date: action.winningId.date,
         uniqueId: action.winningId.uniqueId,
@@ -121,12 +128,14 @@ const reducer = (state = initialState, action) => {
     case SET_CODE_CONFIRMATION : {
       const postData = {
         winnerConfirmed: action.winningCodeConfirmation.winningCodeConfirmation,
+        selectedNetwork: action.winningCodeConfirmation.selectedNetwork,
         confirmedWinningNumber: action.winningCodeConfirmation.mobileNumber
       };
 
       fire.database().ref('confirmedWinner/').set({postData});
       return Object.assign({}, state.user, {
         winningCodeConfirmation: action.winningCodeConfirmation.winningCodeConfirmation,
+        selectedNetwork: action.winningCodeConfirmation.selectedNetwork,
         mobileNumber: action.winningCodeConfirmation.mobileNumber
       })
     }
