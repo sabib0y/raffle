@@ -43,11 +43,12 @@ export class WinningCodeValidation extends React.Component {
   handleSubmitCode(e) {
     e.preventDefault();
 
-    if(this.state.code !== this.props.user.uniqueId) {
-      console.log('test test', this.props.user.uniqueId, this.state.code)
+    if(this.state.code !== this.props.user.mobileNumber) {
+      console.log('Sorry Try Again')
     } else {
       this.setState({ winningCodeConfirmation: true });
-      this.props.getWinningCodeConfirmation({winningCodeConfirmation: true});
+
+      this.props.getWinningCodeConfirmation({winningCodeConfirmation: true, mobileNumber: this.props.user.mobileNumber});
       this.openPopupbox();
     }
   }

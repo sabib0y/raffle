@@ -35,6 +35,27 @@ export class Home extends React.Component {
     }
   }
 
+  componentDidMount() {
+    let activeDropdown = {};
+    document.getElementById('icecream-dropdown').addEventListener('click',function(){
+      for (var i = 0;i<this.children.length;i++){
+        if (this.children[i].classList.contains('dropdown-selection')){
+        // this.children[i].classList.contains('dropdown-selection')
+          //saving the data into our object, so we can recall it easily
+          activeDropdown.id = this.id;
+          activeDropdown.element = this.children[i];
+          this.children[i].style.visibility = 'visible';
+        }
+      }
+    });
+
+    window.onclick = function(event){
+      if (!event.target.classList.contains('dropdown-button')){
+        activeDropdown.element.style.visibility = 'hidden';
+      }
+    }
+  }
+
   displayResults() {
     this.setState({displayResults: 'test', showResults: true})
     setTimeout(() => {
@@ -186,6 +207,17 @@ export class Home extends React.Component {
                       name='emailAddress'
                       onChange={event => this.handleSubmit(event)}
                     />
+                  </div>
+
+                  <div className='dropdown' id='icecream-dropdown'>
+                    <div className='dropdown-button'>Select Mobile Network</div>
+                    <span className='triangle'>&#9660;</span>
+                    <ul className='dropdown-selection'>
+                      <li>MTN</li>
+                      <li>AirTel</li>
+                      <li>9 Mobile</li>
+                      <li>Glo</li>
+                    </ul>
                   </div>
                   <div className="form-group">
                     <label>Number</label>

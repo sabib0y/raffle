@@ -7,6 +7,7 @@ import {
 import writeNewPost from '../helpers/firebasePostHelper';
 import postWinnerHelper from '../helpers/postWinnerHelper';
 import postAllWinners from '../helpers/postAllWinners';
+import fire from '../fire';
 import getWinningCodeConfirmation from '../helpers/postAllWinners';
 
 const initialState = {
@@ -118,8 +119,15 @@ const reducer = (state = initialState, action) => {
     }
 
     case SET_CODE_CONFIRMATION : {
+      const postData = {
+        winnerConfirmed: action.winningCodeConfirmation.winningCodeConfirmation,
+        confirmedWinningNumber: action.winningCodeConfirmation.mobileNumber
+      };
+
+      fire.database().ref('confirmedWinner/').set({postData});
       return Object.assign({}, state.user, {
-        winningCodeConfirmation: action.winningCodeConfirmation
+        winningCodeConfirmation: action.winningCodeConfirmation.winningCodeConfirmation,
+        mobileNumber: action.winningCodeConfirmation.mobileNumber
       })
     }
 

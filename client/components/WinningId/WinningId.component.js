@@ -40,7 +40,7 @@ export class WinningId extends React.PureComponent {
   }
 
   render() {
-    console.log('this.propsWI', this.state.uniqueId);
+    console.log('this.propsWI', this.props.user.mobileNumber);
     let uniqueCodeSplit;
     if(this.state.uniqueId !== null) {
       //
