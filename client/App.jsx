@@ -5,9 +5,12 @@ class App extends Component {
   render() {
 
     return (
-      <div className="container">
-        <h1>DailyChops</h1>
+      // base content sists here
+      <div className="container-fluid">
+      <div className="draw_content_container">
+        <h1>Welcome to Dailychoppins!</h1>
         <Home/>
+      </div>
       </div>
     );
   }

@@ -176,9 +176,11 @@ export class Home extends React.Component {
       <div>
         <PopupboxContainer />
         {this.state.showResults === false &&
-        <div className="container">
+        <div className="container-fluid">
           <div className="row">
             <div className="col-lg-6">
+            <div className="negative_margin">
+              <p id="intro_tease">Enter your details in here daily to stand a chance to win  500 naira  top up! Winners will be announced at 7pm Nigerian time.</p>
               <form action="" id="user-form" noValidate="novalidate" onSubmit={e => this.handleSubmitForm(e)}>
                 <fieldset>
                   <div className="form-group">
@@ -238,6 +240,7 @@ export class Home extends React.Component {
                   </button>
                 </fieldset>
               </form>
+              </div>
             </div>
           </div>
         </div>
