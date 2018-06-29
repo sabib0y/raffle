@@ -258,7 +258,7 @@ export class Home extends React.Component {
                   </div>
                   <button
                     disabled={this.state.disabled}
-                    className="btn btn-primary"
+                    className="btn btn-primary custom-button"
                     type="submit">
                     Submit
                   </button>

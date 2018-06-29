@@ -6,7 +6,7 @@
   "homepage": "https://doc-khumalo.github.io/raffle/",
   "scripts": {
     "start": "webpack-dev-server",
-    "build-prod": "webpack -p && cp client/index.js dist/index.html",
+    "build-prod": "webpack -p && copy client/index.js dist/index.html",
     "predeploy": "yarn build-prod",
     "deploy": "gh-pages -d dist"
   },
