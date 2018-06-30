@@ -11,7 +11,7 @@
 
 
 import React, { Component } from 'react';
-import '../Home/PopUp.css';
+import '../Home/PopUp.scss';
 
 import {
   PopupboxManager,

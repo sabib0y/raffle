@@ -1,5 +1,5 @@
 import React from 'react';
-import './PopUp.css';
+import './PopUp.scss';
 import moment from 'moment';
 import uniqid from 'uniqid';
 // import twilio from 'twilio';
@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { getUsers, getNumbers } from "../../redux/actions";
 import { randomizedData } from '../../helpers/getDataFirebase';
 import WinningID from '../WinningId/WinningId.component';
-import './Home.css';
+import './Home.scss';
 import WinningCodeValidation from '../WinningCodeValidation/WinningCodeValidation';
 
 import { PopupboxManager, PopupboxContainer } from 'react-popupbox';
@@ -269,7 +269,6 @@ export class Home extends React.Component {
                         onChange={event => this.handleSubmit(event)}
                       />
                     </div>
-                    <span className="errorNumber">{this.state.errorMessageNumber}</span>
                   </div>
                   <div className="form-group">
                     <label>Email ** OPTIONAL **</label>
