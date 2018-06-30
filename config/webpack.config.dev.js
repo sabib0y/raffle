@@ -151,7 +151,6 @@ module.exports = {
               cacheDirectory: true,
             },
           },
-
           {
             test:/\.scss$/,
             use:['style-loader','css-loader', 'sass-loader']
