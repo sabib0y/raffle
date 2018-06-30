@@ -11,8 +11,7 @@ import fire from '../fire';
 
 const initialState = {
   user: {
-    firstName: null,
-    lastName: null,
+    fullName: null,
     emailAddress: null,
     mobileNumber: null,
     date: {},
@@ -36,8 +35,7 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_USER :
       const dataToSend = {
-        firstName: action.newUser.firstName,
-        lastName: action.newUser.lastName,
+        fullName: action.newUser.fullName,
         emailAddress: action.newUser.emailAddress,
         selectedNetwork: action.newUser.selectedNetwork,
         mobileNumber: action.newUser.mobileNumber,
@@ -47,8 +45,7 @@ const reducer = (state = initialState, action) => {
       };
 
       writeNewPost(
-        dataToSend.firstName,
-        dataToSend.lastName,
+        dataToSend.fullName,
         dataToSend.emailAddress,
         dataToSend.selectedNetwork,
         dataToSend.mobileNumber,
@@ -59,8 +56,7 @@ const reducer = (state = initialState, action) => {
 
       return Object.assign({}, state.user, {
         // visibilityFilter: action.filter
-        firstName: action.newUser.firstName,
-        lastName: action.newUser.lastName,
+        fullName: action.newUser.fullName,
         emailAddress: action.newUser.emailAddress,
         selectedNetwork: action.newUser.selectedNetwork,
         mobileNumber: action.newUser.mobileNumber,
@@ -76,8 +72,7 @@ const reducer = (state = initialState, action) => {
 
     case SET_WINNING_ID : {
       const dataToSend = {
-        firstName: action.winningId.firstName,
-        lastName: action.winningId.lastName,
+        fullName: action.winningId.fullName,
         emailAddress: action.winningId.emailAddress,
         selectedNetwork: action.winningId.selectedNetwork,
         mobileNumber: action.winningId.mobileNumber,
@@ -87,8 +82,7 @@ const reducer = (state = initialState, action) => {
       };
 
       postWinnerHelper(
-        dataToSend.firstName,
-        dataToSend.lastName,
+        dataToSend.fullName,
         dataToSend.emailAddress,
         dataToSend.selectedNetwork,
         dataToSend.mobileNumber,
@@ -97,8 +91,7 @@ const reducer = (state = initialState, action) => {
         dataToSend.winningCodeConfirmation,
       );
       postAllWinners(
-        dataToSend.firstName,
-        dataToSend.lastName,
+        dataToSend.fullName,
         dataToSend.emailAddress,
         dataToSend.selectedNetwork,
         dataToSend.mobileNumber,
@@ -108,8 +101,7 @@ const reducer = (state = initialState, action) => {
       );
 
       return Object.assign({}, state.user, {
-        firstName: action.winningId.firstName,
-        lastName: action.winningId.lastName,
+        fullName: action.winningId.fullName,
         emailAddress: action.winningId.emailAddress,
         selectedNetwork: action.winningId.selectedNetwork,
         mobileNumber: action.winningId.mobileNumber,

@@ -9,6 +9,8 @@ import { randomizedData } from '../../helpers/getDataFirebase';
 import WinningID from '../WinningId/WinningId.component';
 import './Home.scss';
 import WinningCodeValidation from '../WinningCodeValidation/WinningCodeValidation';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 import { PopupboxManager, PopupboxContainer } from 'react-popupbox';
 import fire from "../../fire";
@@ -17,8 +19,7 @@ export class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: null,
-      lastName: null,
+      fullName: null,
       emailAddress: null,
       mobileNumber: null,
       date: {},
@@ -32,61 +33,18 @@ export class Home extends React.Component {
       dataCollected: false,
       revealRedeem: false,
       duplicateNumber: null,
-      selectedNetwork: 'Select Mobile Network',
+      selectedNetwork: 'Select Mobile NetworkX',
       errorMessageNumber: '',
-      errorNumber: false
-    }
+      errorNumber: false,
+      selectedOption: '',
+      network: ''
+    };
+    this.handleChangeNetwork = this.handleChangeNetwork.bind(this);
   }
 
-  componentDidMount() {
-    // let activeDropdown = {};
-    // document.getElementById('icecream-dropdown').addEventListener('click',function() {
-    //   //   for (var i = 0;i<this.children.length;i++){
-    //   //     if (this.children[i].classList.contains('dropdown-selection')){
-    //   //       //saving the data into our object, so we can recall it easily
-    //   //       activeDropdown.id = this.id;
-    //   //       activeDropdown.element = this.children[i];
-    //   //       this.children[i].style.visibility = 'visible';
-    //   //     }
-    //   //   }
-    //   // });
-    //   //
-    //   // window.onclick = function(event){
-    //   //   if(event !== undefined) {
-    //   //     if (!event.target.classList.contains('dropdown-button')){
-    //   //       if(activeDropdown.element.style !== undefined) {
-    //   //         activeDropdown.element.style.visibility = 'hidden';
-    //   //       }
-    //   //     }
-    //   //   }
-    //   // }
-    // }
-  }
 
-  dropDownHandler(event) {
-    let activeDropdown = {};
-      for (let i = 0;i<this.children.length;i++){
-        if (this.children[i].classList.contains('dropdown-selection')){
-          //saving the data into our object, so we can recall it easily
-          activeDropdown.id = this.id;
-          activeDropdown.element = this.children[i];
-          this.children[i].style.visibility = 'visible';
-        }
-      }
-
-      if(event !== undefined) {
-        if (!event.target.classList.contains('dropdown-button')) {
-          if (activeDropdown.element.style !== undefined) {
-            activeDropdown.element.style.visibility = 'hidden';
-          }
-        }
-      }
-  }
-
-  handleChange(network) {
-    this.setState({
-      selectedNetwork: network
-    })
+  handleChangeNetwork(network) {
+    this.setState({selectedNetwork: network.value});
   }
 
   displayResults() {
@@ -146,9 +104,9 @@ export class Home extends React.Component {
 
     fire.database().ref('users').once('value').then((snapshot) => {
 
-      const { firstName, lastName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId } = this.state;
+      const { fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId } = this.state;
       const dataToSend = {
-        firstName, lastName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId
+        fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId
       };
 
       if (snapshot.exists()) {
@@ -162,7 +120,7 @@ export class Home extends React.Component {
           });
 
           if (collectedNumbers.indexOf(this.state.mobileNumber) > -1) {
-            this.props.getNumbers({ firstName, lastName, emailAddress, mobileNumber, date, uniqueId });
+            this.props.getNumbers({ fullName, emailAddress, mobileNumber, date, uniqueId });
             this.setState({disabled: true});
             document.getElementById("user-form").reset();
             this.openPopupbox();
@@ -214,10 +172,19 @@ export class Home extends React.Component {
   }
 
   render() {
+    const options = [
+      { value: 'MTN', label: 'MTN', },
+      { value: '9 Mobile', label: '9 Mobile'},
+      { value: 'Glo Network', label: 'Glo'},
+      { value: 'AirTel', label: 'AirTel'},
+    ];
+    const { selectedNetwork } = this.state;
+
     return (
       <div>
       <div className="formWrapper">
         <PopupboxContainer />
+        {/* eslint-disable */}
         {this.state.showResults === false &&
         <div>
           <div className="row">
@@ -230,34 +197,22 @@ export class Home extends React.Component {
                     <label>Name</label>
                     <input
                       className="form-control formInput"
-                      placeholder="name"
-                      name='firstName'
+                      placeholder="Full Name"
+                      name='fullName'
                       onChange={event => this.handleSubmit(event)}
                     />
                   </div>
-                  <div className="form-group">
-                    <label>Surname</label>
-                    <input
-                      className="form-control formInput"
-                      placeholder="Last Name"
-                      name='lastName'
-                      onChange={event => this.handleSubmit(event)}
-                    />
-                  </div>
-
                   <div className="form-group form-row form-row-edit">
                     <div className="network-wrapper">
-                      <label>Name</label>
-                      <div className='dropdown' onClick={() => this.dropDownHandler()}>
-                        <div className='dropdown-button'>{this.state.selectedNetwork}</div>
-                        <span className='triangle'>&#9660;</span>
-                        <ul className='dropdown-selection'>
-                          <li onClick={() => this.handleChange('MTN Network')}>MTN</li>
-                          <li onClick={() => this.handleChange('Airtel Network')}>AirTel</li>
-                          <li onClick={() => this.handleChange('9 Mobile Network')}>9 Mobile</li>
-                          <li onClick={() => this.handleChange('GLOW Network')}>Glo</li>
-                        </ul>
-                      </div>
+                      <label>Network</label>
+                      <Select
+                        name="form-field-name"
+                        className="basic-single"
+                        classNamePrefix="select"
+                        value={selectedNetwork}
+                        options={options}
+                        onChange={this.handleChangeNetwork}
+                      />
                     </div>
                     <div className="number-wrapper">
                       <label>Number</label>
@@ -292,6 +247,7 @@ export class Home extends React.Component {
           </div>
         </div>
          }
+        {/* eslint-disable */}
         {this.state.showResults === true &&
           <div>
             <WinningID

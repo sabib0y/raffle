@@ -1,10 +1,9 @@
 import fire from '../fire';
 
-export default function postWinnerHelper(firstName, lastName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId, winningCodeConfirmation) {
+export default function postWinnerHelper(fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId, winningCodeConfirmation) {
 
   let postData = {
-    firstName,
-    lastName,
+    fullName,
     emailAddress,
     selectedNetwork,
     mobileNumber,

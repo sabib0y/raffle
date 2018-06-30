@@ -1,11 +1,10 @@
 import fire from '../fire';
 
-export default function writeNewPost(firstName, lastName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId, winningCodeConfirmation) {
+export default function writeNewPost(fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId, winningCodeConfirmation) {
 
   // A post entry.
   let postData = {
-    firstName,
-    lastName,
+    fullName,
     emailAddress,
     selectedNetwork,
     mobileNumber,

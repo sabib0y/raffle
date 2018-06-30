@@ -25,7 +25,7 @@ export class WinningCodeValidation extends React.Component {
       config: {
         titleBar: {
           enable: true,
-          text: `Congratulations ${this.props.user.firstName}!!`
+          text: `Congratulations ${this.props.user.fullName}!!`
 
         },
         fadeIn: true,

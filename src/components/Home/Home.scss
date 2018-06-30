@@ -27,6 +27,7 @@ body {
 
 .network-wrapper {
  flex-grow: 1;
+ padding-right: 24px;
 }
 
 .number-wrapper {
@@ -41,7 +42,11 @@ body {
 
 .formInput {
  padding: .75rem 0.75rem;
- font-size: 12px;
+ font-size: 12.5px;
+}
+
+.Select-menu-outer {
+ color: #000;
 }
 
 .formWrapper {

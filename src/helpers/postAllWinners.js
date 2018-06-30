@@ -1,11 +1,10 @@
 import fire from '../fire';
 import moment from "moment/moment";
 
-export default function postAllWinners(firstName, lastName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId, winningCodeConfirmation) {
+export default function postAllWinners(fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId, winningCodeConfirmation) {
 
   let postData = {
-    firstName,
-    lastName,
+    fullName,
     emailAddress,
     selectedNetwork,
     mobileNumber,
