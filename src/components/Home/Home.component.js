@@ -211,6 +211,7 @@ export class Home extends React.Component {
                         classNamePrefix="select"
                         value={selectedNetwork}
                         options={options}
+                        clearable={false}
                         onChange={this.handleChangeNetwork}
                       />
                     </div>
