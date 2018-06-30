@@ -8,7 +8,7 @@ import { getUsers, getNumbers } from "../../redux/actions";
 import { randomizedData } from '../../helpers/getDataFirebase';
 import WinningID from '../WinningId/WinningId.component';
 import './Home.scss';
-import WinningCodeValidation from '../WinningCodeValidation/WinningCodeValidation';
+import WinningCodeValidation from '../WinningCodeValidation/WinningCodeValidation.component';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
@@ -39,7 +39,7 @@ export class Home extends React.Component {
       selectedOption: '',
       network: ''
     };
-  }
+  }Ó
 
   handleChangeNetwork() {
     let elements = document.getElementById('dropDown-custom');
@@ -179,14 +179,17 @@ export class Home extends React.Component {
       { value: 'Glo Network', label: 'Glo', id: 'glo-mobile'},
       { value: 'AirTel', label: 'AirTel', id: 'airtel'},
     ];
-    const { selectedNetwork } = this.state;
+
+    let nowTime = moment().format();
+    nowTime = moment(nowTime).format("HH:mm:ss");
+    console.log('nowTime', nowTime);
 
     return (
       <div>
       <div className="formWrapper">
         <PopupboxContainer />
         {/* eslint-disable */}
-        {this.state.showResults === false &&
+        {/*{this.props.user.showResults === false &&*/}
         <div>
           <div className="row">
             <div>
@@ -258,38 +261,38 @@ export class Home extends React.Component {
             </div>
           </div>
         </div>
-         }
+         {/*}*/}
         {/* eslint-disable */}
-        {this.state.showResults === true &&
-          <div>
-            <WinningID
-              id={this.props.id}
-              uniqueId={this.props.uniqueId}
-            />
-            <div>
-              Have a winning code?
-              <a
-                href="#"
-                onClick={() => this.redeemCode()}
-              >click to redeem code
-              </a>
-            </div>
-            {this.state.revealRedeem &&
-              <WinningCodeValidation
-                uniqueId={this.props.uniqueId}
-              />
-            }
-          </div>
-        }
+        {/*{this.state.showResults === true &&*/}
+          {/*<div>*/}
+            {/*<WinningID*/}
+              {/*id={this.props.id}*/}
+              {/*uniqueId={this.props.uniqueId}*/}
+            {/*/>*/}
+            {/*<div>*/}
+              {/*Have a winning code?*/}
+              {/*<a*/}
+                {/*href="#"*/}
+                {/*onClick={() => this.redeemCode()}*/}
+              {/*>click to redeem code*/}
+              {/*</a>*/}
+            {/*</div>*/}
+            {/*{this.state.revealRedeem &&*/}
+              {/*<WinningCodeValidation*/}
+                {/*uniqueId={this.props.uniqueId}*/}
+              {/*/>*/}
+            {/*}*/}
+          {/*</div>*/}
+        {/*}*/}
       </div>
-      <div className="formWrapper">
-        <button
-          className="btn btn-primary formInput tempButton"
-          onClick={() => this.testFunc()
-          }>
-            Test Random Generator
-        </button>
-      </div>
+      {/*<div className="formWrapper">*/}
+        {/*<button*/}
+          {/*className="btn btn-primary formInput tempButton"*/}
+          {/*onClick={() => this.testFunc()*/}
+          {/*}>*/}
+            {/*Test Random Generator*/}
+        {/*</button>*/}
+      {/*</div>*/}
     </div>
     )
   }
@@ -297,7 +300,7 @@ export class Home extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.reducer
+    user: state.reducer.user
   };
 };
 

@@ -56,18 +56,23 @@ const reducer = (state = initialState, action) => {
 
       return Object.assign({}, state.user, {
         // visibilityFilter: action.filter
-        fullName: action.newUser.fullName,
-        emailAddress: action.newUser.emailAddress,
-        selectedNetwork: action.newUser.selectedNetwork,
-        mobileNumber: action.newUser.mobileNumber,
-        date: action.newUser.date,
-        uniqueId: action.newUser.uniqueId,
-        winningCodeConfirmation:false,
+        user: {
+          fullName: action.newUser.fullName,
+          emailAddress: action.newUser.emailAddress,
+          selectedNetwork: action.newUser.selectedNetwork,
+          mobileNumber: action.newUser.mobileNumber,
+          date: action.newUser.date,
+          uniqueId: action.newUser.uniqueId,
+          winningCodeConfirmation:false,
+          showResults: false,
+        }
       });
 
     case SET_NUMBER :
       return Object.assign({}, state.user, {
-        duplicateNumber: action.newNumber.mobileNumber,
+        user: {
+          duplicateNumber: action.newNumber.mobileNumber,
+        }
       });
 
     case SET_WINNING_ID : {
@@ -101,19 +106,23 @@ const reducer = (state = initialState, action) => {
       );
 
       return Object.assign({}, state.user, {
-        fullName: action.winningId.fullName,
-        emailAddress: action.winningId.emailAddress,
-        selectedNetwork: action.winningId.selectedNetwork,
-        mobileNumber: action.winningId.mobileNumber,
-        date: action.winningId.date,
-        uniqueId: action.winningId.uniqueId,
-        winningCodeConfirmation: action.winningId.winningCodeConfirmation,
+        user: {
+          fullName: action.winningId.fullName,
+          emailAddress: action.winningId.emailAddress,
+          selectedNetwork: action.winningId.selectedNetwork,
+          mobileNumber: action.winningId.mobileNumber,
+          date: action.winningId.date,
+          uniqueId: action.winningId.uniqueId,
+          winningCodeConfirmation: action.winningId.winningCodeConfirmation,
+        }
       });
     }
 
     case SET_WINNING_CODE : {
       return Object.assign({}, state.user, {
-        winningCode: action.winningCode
+        user: {
+          winningCode: action.winningCode
+        }
       })
     }
 
@@ -126,9 +135,11 @@ const reducer = (state = initialState, action) => {
 
       fire.database().ref('confirmedWinner/').set({postData});
       return Object.assign({}, state.user, {
-        winningCodeConfirmation: action.winningCodeConfirmation.winningCodeConfirmation,
-        selectedNetwork: action.winningCodeConfirmation.selectedNetwork,
-        mobileNumber: action.winningCodeConfirmation.mobileNumber
+        user: {
+          winningCodeConfirmation: action.winningCodeConfirmation.winningCodeConfirmation,
+          selectedNetwork: action.winningCodeConfirmation.selectedNetwork,
+          mobileNumber: action.winningCodeConfirmation.mobileNumber
+        }
       })
     }
 
