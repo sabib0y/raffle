@@ -42,7 +42,6 @@ export class WinningCodeValidation extends React.Component {
 
   handleSubmitCode(e) {
     e.preventDefault();
-
     if(this.state.code !== this.props.user.mobileNumber) {
       console.log('Sorry Try Again')
     } else {

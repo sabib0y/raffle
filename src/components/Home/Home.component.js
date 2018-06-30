@@ -39,12 +39,12 @@ export class Home extends React.Component {
       selectedOption: '',
       network: ''
     };
-    this.handleChangeNetwork = this.handleChangeNetwork.bind(this);
   }
 
-
-  handleChangeNetwork(network) {
-    this.setState({selectedNetwork: network.value});
+  handleChangeNetwork() {
+    let elements = document.getElementById('dropDown-custom');
+    let selectedValue = elements.options[elements.selectedIndex].value;
+    this.setState({ selectedNetwork: selectedValue});
   }
 
   displayResults() {
@@ -173,10 +173,11 @@ export class Home extends React.Component {
 
   render() {
     const options = [
-      { value: 'MTN', label: 'MTN', },
-      { value: '9 Mobile', label: '9 Mobile'},
-      { value: 'Glo Network', label: 'Glo'},
-      { value: 'AirTel', label: 'AirTel'},
+      { value: 'Select Network', label: 'select network', id: 'select-network'},
+      { value: 'MTN', label: 'MTN', id: 'mtn' },
+      { value: '9 Mobile', label: '9 Mobile', id: '9-mobile'},
+      { value: 'Glo Network', label: 'Glo', id: 'glo-mobile'},
+      { value: 'AirTel', label: 'AirTel', id: 'airtel'},
     ];
     const { selectedNetwork } = this.state;
 
@@ -205,15 +206,25 @@ export class Home extends React.Component {
                   <div className="form-group form-row form-row-edit">
                     <div className="network-wrapper">
                       <label>Network</label>
-                      <Select
-                        name="form-field-name"
-                        className="basic-single"
-                        classNamePrefix="select"
-                        value={selectedNetwork}
-                        options={options}
-                        clearable={false}
-                        onChange={this.handleChangeNetwork}
-                      />
+                      <div className="form-group">
+                        <select
+                          className="dropDown-custom"
+                          id="dropDown-custom"
+                          onChange={() => this.handleChangeNetwork()}
+                        >
+                          {options.map((item, i) => {
+                            return (
+                              <option
+                                key={i}
+                                className="dropdown-option"
+                                value={item.label}
+                              >
+                                {item.value}
+                              </option>
+                            )
+                          })}
+                        </select>
+                      </div>
                     </div>
                     <div className="number-wrapper">
                       <label>Number</label>
