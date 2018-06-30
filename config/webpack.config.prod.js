@@ -153,10 +153,10 @@ module.exports = {
               compact: true,
             },
           },
-          {
-            test:/\.scss$/,
-            use:['style-loader','css-loader', 'sass-loader']
-          },
+          // {
+          //   test:/\.scss$/,
+          //   use:['style-loader','css-loader', 'sass-loader']
+          // },
           // The notation here is somewhat confusing.
           // "postcss" loader applies autoprefixer to our CSS.
           // "css" loader resolves paths in CSS and adds assets as dependencies.
@@ -170,7 +170,7 @@ module.exports = {
           // use the "style" loader inside the async code so CSS from them won't be
           // in the main CSS file.
           {
-            test: /\.css$/,
+            test: [/\.css$/, /\.scss$/],
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {
@@ -183,6 +183,14 @@ module.exports = {
                   use: [
                     {
                       loader: require.resolve('css-loader'),
+                      options: {
+                        importLoaders: 1,
+                        minimize: true,
+                        sourceMap: shouldUseSourceMap,
+                      },
+                    },
+                    {
+                      loader: require.resolve('sass-loader'),
                       options: {
                         importLoaders: 1,
                         minimize: true,
@@ -216,16 +224,16 @@ module.exports = {
             ),
             // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
           },
-          {
-            test: /\.sass$/,
-            include: paths.appSrc,
-            loaders: ["css", "sass"]
-          },
-          {
-            test: /\.scss$/,
-            include: paths.appSrc,
-            loaders: ["css", "sass"]
-          },
+          // {
+          //   test: /\.sass$/,
+          //   include: paths.appSrc,
+          //   loaders: ["css", "sass"]
+          // },
+          // {
+          //   test: /\.scss$/,
+          //   include: paths.appSrc,
+          //   loaders: ["css", "sass"]
+          // },
           // "file" loader makes sure assets end up in the `build` folder.
           // When you `import` an asset, you get its filename.
           // This loader doesn't use a "test" so it will catch all modules
