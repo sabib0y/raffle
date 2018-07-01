@@ -48,6 +48,7 @@ export class WinningCodeValidation extends React.Component {
       this.setState({ winningCodeConfirmation: true });
 
       this.props.getWinningCodeConfirmation({winningCodeConfirmation: true, selectedNetwork: this.props.user.selectedNetwork, mobileNumber: this.props.user.mobileNumber});
+      console.log('pop up appears here');
       this.openPopupbox();
     }
   }
@@ -56,9 +57,10 @@ export class WinningCodeValidation extends React.Component {
     console.log('this.propsWICV', this.props.user.winningCodeConfirmation);
     return (
       <div>
+        <PopupboxContainer />
         <form action="" id="user-form" noValidate="noValidate">
           <fieldset>
-            {this.state.winningCodeConfirmation === false &&
+            {this.props.user.winningCodeConfirmation === false &&
               <div className="form-group">
                 <input
                   type="text"
@@ -74,11 +76,6 @@ export class WinningCodeValidation extends React.Component {
                 >
                   redeem code
                 </button>
-              </div>
-            }
-            {
-              <div>
-
               </div>
             }
           </fieldset>

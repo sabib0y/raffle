@@ -1,11 +1,11 @@
 import React from 'react';
 import './InterimPage.scss';
 
-const InterimPage = () => {
+const InterimPage = (props) => {
   return (
     <div className="containerWrapper">
       Competition is closed currently...
-      <p>Please check back in a couple of hours</p>
+      <p>{props.textInterim}</p>
     </div>
   )
 }
