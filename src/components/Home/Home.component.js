@@ -180,9 +180,9 @@ export class Home extends React.Component {
       { value: 'AirTel', label: 'AirTel', id: 'airtel'},
     ];
 
-    let nowTime = moment().format();
-    nowTime = moment(nowTime).format("HH:mm:ss");
-    console.log('nowTime', nowTime);
+    // let nowTime = moment().format();
+    // nowTime = moment(nowTime).format("HH:mm:ss");
+    // console.log('nowTime', nowTime);
 
     return (
       <div>

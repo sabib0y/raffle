@@ -11,16 +11,15 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      revealRedeem: false
+      revealRedeem: false,
+      formStartTime: '07:00:00',
+      formEndTime: '19:00:00',
+      resultsStartTime: '20:00:00',
+      resultsEndTime: '21:00:00',
     }
   }
 
   static isTimeForm(formStartTime, formEndTime, nowTime) {
-    // let formStartTime = '09:25:00';
-    // let formEndTime = '09:27:00';
-    // let nowTime = moment().format();
-    // nowTime = moment(nowTime).format("HH:mm:ss");
-
     if(nowTime >= formStartTime && nowTime <= formEndTime) {
       return true;
     }
@@ -28,11 +27,21 @@ class App extends Component {
   }
 
   static isTimeResults(resultsStartTime, resultsEndTime, nowTime) {
-    // let resultsStartTime = '09:28:00';
-    // let resultsEndTime = '09:56:00';
-    // nowTime = moment(nowTime).format("HH:mm:ss");
-
     if(nowTime >= resultsStartTime && nowTime <= resultsEndTime) {
+      return true;
+    }
+    return false;
+  }
+
+  static isIntervalPreResults(formEndTime, resultsStartTime, nowTime) {
+    if(nowTime > formEndTime && nowTime < resultsStartTime) {
+      return true;
+    }
+    return false;
+  }
+
+  static isIntervalPreForm(resultsEndTime, formStartTime, nowTime) {
+    if(nowTime > resultsEndTime && nowTime < formStartTime) {
       return true;
     }
     return false;
@@ -43,22 +52,31 @@ class App extends Component {
   }
 
   render() {
-    let nowTime = moment().format();
-    nowTime = moment(nowTime).format("HH:mm:ss");
+    const timeToCheck = [
+      '07:00:00', //form startTime
+      '19:00:00', //form endTime
+      '21:00:00', //results startTime
+      '20:00:00', //results endTime
+    ];
 
-    const formStartTime = '09:25:00';
-    const formEndTime = '09:27:00';
+    let newArray = [];
 
-    const resultsStartTime = '09:28:00';
-    const resultsEndTime = '09:56:00';
+    timeToCheck.map(item => {
+      let timeToConvert = moment().utc().toISOString();
+      timeToConvert = timeToConvert.split('T')[0];
+      timeToConvert = `${timeToConvert}T${item}`;
+      timeToConvert = moment.parseZone(timeToConvert).utc().format();
+      newArray.push(timeToConvert)
+    });
 
+    let nowTime = moment().utc().format();
     let textInterim;
 
-    if (nowTime > formEndTime && nowTime < resultsStartTime) {
+    if (nowTime > newArray[1] && nowTime < newArray[2]) {
       textInterim = 'Results will be published shortly... Thank you.'
     }
 
-    if (nowTime > resultsEndTime && nowTime < formStartTime) {
+    if (nowTime > newArray[3] && nowTime < newArray[0]) {
       textInterim = 'New competition entry will resume shortly ... Thank you.'
     }
     else {
@@ -70,11 +88,11 @@ class App extends Component {
         <div>
           <h1 className="headerText">Welcome to Dailychoppins!</h1>
         </div>
-        {App.isTimeForm(formStartTime, formEndTime, nowTime) &&
+        {App.isTimeForm(newArray[0], newArray[1], nowTime) &&
           <Home/>
         }
-        {App.isTimeResults(resultsStartTime, resultsEndTime, nowTime) ?
-          (<div>
+        {App.isTimeResults(newArray[2], newArray[3], nowTime) &&
+          <div>
             <WinningID
               id={this.props.id}
               uniqueId={this.props.uniqueId}
@@ -92,12 +110,18 @@ class App extends Component {
               uniqueId={this.props.uniqueId}
             />
             }
-          </div>) :
-          (
-            <InterimPage
-              textInterim={textInterim}
-            />
-          )}
+          </div>
+        }
+        {App.isIntervalPreForm(newArray[3], newArray[0], nowTime) &&
+          <InterimPage
+            textInterim={textInterim}
+          />
+        }
+        {App.isIntervalPreResults(newArray[1], newArray[2], nowTime) &&
+          <InterimPage
+            textInterim={textInterim}
+          />
+        }
       </div>
     );
   }
