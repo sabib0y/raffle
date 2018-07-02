@@ -56,8 +56,8 @@ class App extends Component {
     const timeToCheck = [
       '07:00:00', //form startTime
       '10:00:00', //form endTime
-      '11:00:00', //results startTime
-      '11:30:00', //results endTime
+      '10:40:00', //results startTime
+      '10:50:00', //results endTime
     ];
 
     let newArray = [];
