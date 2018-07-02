@@ -57,7 +57,7 @@ class App extends Component {
       '07:00:00', //form startTime
       '10:00:00', //form endTime
       '11:00:00', //results startTime
-      '00:00:00', //results endTime
+      '11:30:00', //results endTime
     ];
 
     let newArray = [];
