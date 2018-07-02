@@ -6,10 +6,7 @@ import uniqid from 'uniqid';
 import { connect } from "react-redux";
 import { getUsers, getNumbers } from "../../redux/actions";
 import { randomizedData } from '../../helpers/getDataFirebase';
-import WinningID from '../WinningId/WinningId.component';
 import './Home.scss';
-import WinningCodeValidation from '../WinningCodeValidation/WinningCodeValidation.component';
-import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
 import { PopupboxManager, PopupboxContainer } from 'react-popupbox';
@@ -261,38 +258,7 @@ export class Home extends React.Component {
             </div>
           </div>
         </div>
-         {/*}*/}
-        {/* eslint-disable */}
-        {/*{this.state.showResults === true &&*/}
-          {/*<div>*/}
-            {/*<WinningID*/}
-              {/*id={this.props.id}*/}
-              {/*uniqueId={this.props.uniqueId}*/}
-            {/*/>*/}
-            {/*<div>*/}
-              {/*Have a winning code?*/}
-              {/*<a*/}
-                {/*href="#"*/}
-                {/*onClick={() => this.redeemCode()}*/}
-              {/*>click to redeem code*/}
-              {/*</a>*/}
-            {/*</div>*/}
-            {/*{this.state.revealRedeem &&*/}
-              {/*<WinningCodeValidation*/}
-                {/*uniqueId={this.props.uniqueId}*/}
-              {/*/>*/}
-            {/*}*/}
-          {/*</div>*/}
-        {/*}*/}
       </div>
-      {/*<div className="formWrapper">*/}
-        {/*<button*/}
-          {/*className="btn btn-primary formInput tempButton"*/}
-          {/*onClick={() => this.testFunc()*/}
-          {/*}>*/}
-            {/*Test Random Generator*/}
-        {/*</button>*/}
-      {/*</div>*/}
     </div>
     )
   }

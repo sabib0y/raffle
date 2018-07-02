@@ -6,6 +6,7 @@ import WinningID from './components/WinningId/WinningId.component';
 import WinningCodeValidation from './components/WinningCodeValidation/WinningCodeValidation.component';
 import InterimPage from './components/InterimPage/InterimPage';
 import moment from 'moment';
+import Footer from'./components/Footer/Footer.component';
 
 class App extends Component {
   constructor(props) {
@@ -54,9 +55,9 @@ class App extends Component {
   render() {
     const timeToCheck = [
       '07:00:00', //form startTime
-      '19:00:00', //form endTime
-      '21:00:00', //results startTime
-      '20:00:00', //results endTime
+      '10:00:00', //form endTime
+      '11:00:00', //results startTime
+      '00:00:00', //results endTime
     ];
 
     let newArray = [];
@@ -70,7 +71,7 @@ class App extends Component {
     });
 
     let nowTime = moment().utc().format();
-    let textInterim;
+    var textInterim;
 
     if (nowTime > newArray[1] && nowTime < newArray[2]) {
       textInterim = 'Results will be published shortly... Thank you.'
@@ -122,6 +123,7 @@ class App extends Component {
             textInterim={textInterim}
           />
         }
+        <Footer />
       </div>
     );
   }
