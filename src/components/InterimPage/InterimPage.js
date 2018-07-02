@@ -4,7 +4,7 @@ import './InterimPage.scss';
 const InterimPage = (props) => {
   return (
     <div className="containerWrapper">
-      Competition is closed currently...
+      <p>Competition is currently closed...</p>
       <p>{props.textInterim}</p>
     </div>
   )

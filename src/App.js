@@ -78,7 +78,7 @@ class App extends Component {
     }
 
     if (nowTime > newArray[3] && nowTime < newArray[0]) {
-      textInterim = 'New competition entry will resume shortly ... Thank you.'
+      textInterim = 'New competition entry will be available shortly ... Thank you.'
     }
     else {
       textInterim = 'Thank you';
