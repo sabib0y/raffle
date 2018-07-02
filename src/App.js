@@ -66,11 +66,11 @@ class App extends Component {
       let timeToConvert = moment().utc().toISOString();
       timeToConvert = timeToConvert.split('T')[0];
       timeToConvert = `${timeToConvert}T${item}`;
-      timeToConvert = moment.parseZone(timeToConvert).utc().format();
+      timeToConvert = moment.parseZone(timeToConvert).format();
       newArray.push(timeToConvert)
     });
 
-    let nowTime = moment().utc().format();
+    let nowTime = moment().format();
     var textInterim;
 
     if (nowTime > newArray[1] && nowTime < newArray[2]) {
