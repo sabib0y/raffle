@@ -6,8 +6,8 @@ import uniqid from 'uniqid';
 import { connect } from "react-redux";
 import { getUsers, getNumbers } from "../../redux/actions";
 import { randomizedData } from '../../helpers/getDataFirebase';
-import './Home.scss';
 import 'react-select/dist/react-select.css';
+import './Home.scss';
 
 import { PopupboxManager, PopupboxContainer } from 'react-popupbox';
 import fire from "../../fire";
@@ -34,7 +34,8 @@ export class Home extends React.Component {
       errorMessageNumber: '',
       errorNumber: false,
       selectedOption: '',
-      network: ''
+      network: '',
+      clickedClass: ''
     };
   }Ó
 
@@ -168,6 +169,15 @@ export class Home extends React.Component {
     this.setState({revealRedeem: true});
   }
 
+  runThis(e){
+    console.log(e);
+    this.setState({clickedClass: 'active'})
+  }
+
+  componentDidMount(){
+    const $in = document.querySelectorAll('input.formInput');
+  }
+
   render() {
     const options = [
       { value: 'Select Network', label: 'select network', id: 'select-network'},
@@ -189,43 +199,22 @@ export class Home extends React.Component {
         {/*{this.props.user.showResults === false &&*/}
         <div>
           <div className="row">
-            <div>
-            <div>
-              <p id="intro_tease">Enter your details in here daily to stand a chance to win  500 naira  top up! Winners will be announced at 7pm Nigerian time.</p>
+            <div className="draw_content_container">
+              <p id="intro_tease">Enter your details in here daily to stand a chance to win  <span className="large_text">500 naira</span>  top up! Winners will be announced at 7pm Nigerian time.</p>
+            <div className = "main_form">
               <form action="" id="user-form" noValidate="novalidate" onSubmit={e => this.handleSubmitForm(e)}>
                 <fieldset>
-                  <div className="form-group">
+                  <div className={`form-group ${this.state.clickedClass ? 'active' : ''}`}>
                     <label>Name</label>
                     <input
-                      className="form-control formInput"
+                      className={`form-control formInput`}
                       placeholder="Full Name"
                       name='fullName'
                       onChange={event => this.handleSubmit(event)}
+                      onClick={() => this.runThis(event)}
                     />
                   </div>
                   <div className="form-group form-row form-row-edit">
-                    <div className="network-wrapper">
-                      <label>Network</label>
-                      <div className="form-group">
-                        <select
-                          className="dropDown-custom"
-                          id="dropDown-custom"
-                          onChange={() => this.handleChangeNetwork()}
-                        >
-                          {options.map((item, i) => {
-                            return (
-                              <option
-                                key={i}
-                                className="dropdown-option"
-                                value={item.label}
-                              >
-                                {item.value}
-                              </option>
-                            )
-                          })}
-                        </select>
-                      </div>
-                    </div>
                     <div className="number-wrapper">
                       <label>Number</label>
                       <input
@@ -236,6 +225,28 @@ export class Home extends React.Component {
                         onChange={event => this.handleSubmit(event)}
                       />
                     </div>
+                    <div className="network-wrapper">
+                        <label>Network</label>
+                        <div className="form-group">
+                          <select
+                            className="dropDown-custom"
+                            id="dropDown-custom"
+                            onChange={() => this.handleChangeNetwork()}
+                          >
+                            {options.map((item, i) => {
+                              return (
+                                <option
+                                  key={i}
+                                  className="dropdown-option"
+                                  value={item.label}
+                                >
+                                  {item.value}
+                                </option>
+                              )
+                            })}
+                          </select>
+                        </div>
+                      </div>
                   </div>
                   <div className="form-group">
                     <label>Email ** OPTIONAL **</label>

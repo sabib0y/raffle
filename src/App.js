@@ -20,33 +20,33 @@ class App extends Component {
     }
   }
 
-  static isTimeForm(formStartTime, formEndTime, nowTime) {
-    if(nowTime >= formStartTime && nowTime <= formEndTime) {
-      return true;
-    }
-    return false;
-  }
-
-  static isTimeResults(resultsStartTime, resultsEndTime, nowTime) {
-    if(nowTime >= resultsStartTime && nowTime <= resultsEndTime) {
-      return true;
-    }
-    return false;
-  }
-
-  static isIntervalPreResults(formEndTime, resultsStartTime, nowTime) {
-    if(nowTime > formEndTime && nowTime < resultsStartTime) {
-      return true;
-    }
-    return false;
-  }
-
-  static isIntervalPreForm(resultsEndTime, formStartTime, nowTime) {
-    if(nowTime > resultsEndTime && nowTime < formStartTime) {
-      return true;
-    }
-    return false;
-  }
+  // static isTimeForm(formStartTime, formEndTime, nowTime) {
+  //   if(nowTime >= formStartTime && nowTime <= formEndTime) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+  //
+  // static isTimeResults(resultsStartTime, resultsEndTime, nowTime) {
+  //   if(nowTime >= resultsStartTime && nowTime <= resultsEndTime) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+  //
+  // static isIntervalPreResults(formEndTime, resultsStartTime, nowTime) {
+  //   if(nowTime > formEndTime && nowTime < resultsStartTime) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+  //
+  // static isIntervalPreForm(resultsEndTime, formStartTime, nowTime) {
+  //   if(nowTime > resultsEndTime && nowTime < formStartTime) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   redeemCode() {
     this.setState({revealRedeem: true});
@@ -89,11 +89,9 @@ class App extends Component {
         <div>
           <h1 className="headerText">Welcome to Dailychoppins!</h1>
         </div>
-        {App.isTimeForm(newArray[0], newArray[1], nowTime) &&
           <Home/>
-        }
-        {App.isTimeResults(newArray[2], newArray[3], nowTime) &&
-          <div>
+
+        <div>
             <WinningID
               id={this.props.id}
               uniqueId={this.props.uniqueId}
@@ -112,20 +110,21 @@ class App extends Component {
             />
             }
           </div>
-        }
-        {App.isIntervalPreForm(newArray[3], newArray[0], nowTime) &&
-          <InterimPage
+
+        <InterimPage
             textInterim={textInterim}
           />
-        }
-        {App.isIntervalPreResults(newArray[1], newArray[2], nowTime) &&
-          <InterimPage
+
+        <InterimPage
             textInterim={textInterim}
           />
-        }
+
         <Footer />
       </div>
     );
+
+
+      alert(1);
   }
 }
 

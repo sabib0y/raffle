@@ -1,20 +1,15 @@
+@import "../../settings";
+
 /*.winningId {*/
   /*span {*/
     /*text-transform: uppercase;*/
   /*}*/
 /*}*/
 
-body {
- color: red;
-}
-
-.draw_content_container {
- padding: 40px 55px 0 55px;
-}
-
 .errorNumber {
  background-color: red;
 }
+
 .tempButton {
  margin: 15px 0 0 0;
 }
@@ -22,17 +17,15 @@ body {
 .form-row-edit {
  margin-left: 0;
  margin-right: 0;
- display: flex;
+ display: block;
 }
-
+/*
 .network-wrapper {
- flex-grow: 1;
- padding-right: 24px;
 }
 
 .number-wrapper {
- flex-grow: 1;
 }
+*/
 
 .custom-button {
  width: 100%;
@@ -45,14 +38,61 @@ body {
  font-size: 12.5px;
 }
 
-.formWrapper {
- display:flex;
- justify-content:center;
- align-items:center;
-}
-
 .dropDown-custom {
  padding: .75rem 0.75rem;
  font-size: 12.5px;
  border-radius: 2.125px;
+ width: 100%;
+}
+
+#intro_tease{
+  font-size: 2.5rem;
+  text-align: center;
+  @include quickSand;
+}
+
+.main_form{
+  background: white;
+  max-width: 63rem;
+  color: $dark_text;
+  margin: 3.4rem auto 0;
+  padding: 7rem 6rem 5.6rem;
+
+  .form-group{
+    position: relative;
+    height: 5rem;
+    @include quickSand;
+    @include smart_row;
+
+    &.form-row-edit{
+      height: auto;
+
+      >div{
+        position: relative;
+      }
+
+      .network-wrapper label{
+        position: static;
+        font-size: 1.7rem;
+        color: #5a5656;
+        padding: 0;
+        height: auto;
+      }
+
+      .number-wrapper{
+        margin-bottom: 1rem;
+      }
+
+      .network-wrapper select{
+        @include input_field;
+      }
+
+      .network-wrapper select,
+      .number-wrapper{
+        height: 5rem;
+      }
+    }
+  }
+
+
 }
