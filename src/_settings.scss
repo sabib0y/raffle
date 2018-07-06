@@ -1,0 +1,93 @@
+//vars
+$dark_text : #5a5656;
+$label_colour: #9f9f9f;
+
+//mixins
+//fonts
+@mixin quickSand{font-family: 'Quicksand', sans-serif;}
+@mixin poppins{font-family: 'Poppins', sans-serif;}
+
+//placeholder styling mixing
+@mixin optional-at-root($sel) {
+  @at-root #{if(not &, $sel, selector-append(&, $sel))} {
+    @content;
+  }
+}
+
+@mixin placeholder {
+  @include optional-at-root('::-webkit-input-placeholder') {
+    @content;
+  }
+
+  @include optional-at-root(':-moz-placeholder') {
+    @content;
+  }
+
+  @include optional-at-root('::-moz-placeholder') {
+    @content;
+  }
+
+  @include optional-at-root(':-ms-input-placeholder') {
+    @content;
+  }
+}
+
+// buttons
+@mixin btn{
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  -webkit-box-shadow: 0px 0px 10px 3px rgba(125,129,255,1);
+  -moz-box-shadow: 0px 0px 10px 3px rgba(125,129,255,1);
+  box-shadow: 0px 0px 10px 3px rgba(125,129,255,1);
+  background: #2e3192;
+  @include quickSand;
+  font-weight: 700;
+  letter-spacing: 1px;
+  height: 7.7rem;
+  margin-top: 2rem;
+
+  &:disabled{
+    background: #2e3192;
+    opacity: 1;
+    box-shadow: none;
+  }
+}
+
+//labels and fields
+
+@mixin input_field{
+    height: 100%;
+    border: 2px solid black;
+    font-size: 2.1rem;
+}
+
+@mixin smart_row{
+  position: relative;
+  height: 5rem;
+  margin-bottom: 2rem;
+
+  label{
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 2.1rem;
+    margin: 0;
+    pointer-events: none;
+    color: $label_colour;
+    padding: 1rem;
+    height: 100%;
+  }
+
+  input{
+    @include input_field;
+      @include placeholder {
+        color: transparent;
+      }
+  }
+
+  &.active{
+    label{
+      font-size: 1.3rem;
+    }
+  }
+}

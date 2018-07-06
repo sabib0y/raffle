@@ -1,6 +1,4 @@
-//mixins
-@mixin quickSand{font-family: 'Quicksand', sans-serif;}
-@mixin poppins{font-family: 'Poppins', sans-serif;}
+@import "settings";
 
 :root { font-size: 10px; }
 html{
@@ -14,10 +12,28 @@ html,body{
   @include quickSand;
 }
 
+h1,h2,h3,h4{
+  @include quickSand;
+  font-size: 4.2rem;
+  font-weight: 700;
+}
+
 .negative_margin{
   margin: 0 -15px;
 }
 
 .draw_content_container{
+  width: 100%;
+  max-width: 97.9rem;
+  margin: 0 auto;
+}
 
+.custom-button{
+  @include btn;
+}
+
+span.large_text{
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 0.7rem;
 }
