@@ -8,6 +8,15 @@ body {
  color: red;
 }
 
+.clicked {
+ background-color: green;
+ color: red;
+}
+
+.notClicked {
+ background-color: blue;
+}
+
 .draw_content_container {
  padding: 40px 55px 0 55px;
 }

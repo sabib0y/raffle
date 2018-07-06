@@ -34,7 +34,8 @@ export class Home extends React.Component {
       errorMessageNumber: '',
       errorNumber: false,
       selectedOption: '',
-      network: ''
+      network: '',
+      classClick: ''
     };
   }Ó
 
@@ -53,6 +54,10 @@ export class Home extends React.Component {
 
   handleSubmit(event) {
     // event.preventDefault();
+
+
+    this.state.classClick = 'clicked';
+
     let change = {};
     change[event.target.name] = event.target.value;
     this.setState(change);
@@ -85,6 +90,9 @@ export class Home extends React.Component {
   }
 
   handleSubmitForm(event) {
+
+
+
     event.preventDefault();
     let newDate = moment();
     newDate = newDate.format();
@@ -169,6 +177,9 @@ export class Home extends React.Component {
   }
 
   render() {
+
+    console.log('classClick', this.state.classClick)
+
     const options = [
       { value: 'Select Network', label: 'select network', id: 'select-network'},
       { value: 'MTN', label: 'MTN', id: 'mtn' },
@@ -197,10 +208,10 @@ export class Home extends React.Component {
                   <div className="form-group">
                     <label>Name</label>
                     <input
-                      className="form-control formInput"
+                      className={`form-control formInput ${this.state.classClick ? 'clicked' : 'notClicked' }`}
                       placeholder="Full Name"
                       name='fullName'
-                      onChange={event => this.handleSubmit(event)}
+                      onClick={event => this.handleSubmit(event)}
                     />
                   </div>
                   <div className="form-group form-row form-row-edit">

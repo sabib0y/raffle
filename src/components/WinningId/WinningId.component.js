@@ -24,16 +24,6 @@ export class WinningId extends React.PureComponent {
          return  collectedData.push(item[1].user);
         });
       }
-      if (collectedData.length > 0) {
-        let randomIndex = Math.floor(Math.random() * collectedData.length);
-        let randomElement = collectedData[randomIndex];
-        randomizedData.push(randomElement);
-
-        this.setState(randomizedData[0]);
-        this.props.getWinningId(randomizedData[0]);
-      } else {
-        console.error('No Entries Found', randomizedData)
-      }
     });
   }
 
