@@ -70,10 +70,10 @@ class App extends Component {
     let testTime = moment().format('HH:MM:SS');
     console.log('test', testTime);
     const timeToCheck = [
-      '00:10:00', //form startTime
-      '00:30:00', //form endTime
-      '02:00:00', //results startTime
-      '22:00:00', //results endTime
+      '07:10:00', //form startTime
+      '12:30:00', //form endTime
+      '13:00:00', //results startTime
+      '14:00:00', //results endTime
     ];
 
     let newArray = [];
@@ -91,8 +91,7 @@ class App extends Component {
     nextDayValue = nextDayValue.add(1, 'days').format();
     nextDayValue = nextDayValue.split('T')[0];
     nextDayValue = `${nextDayValue}T07:00:00Z`;
-    nextDayValue = moment(nextDayValue);
-    nextDayValue = nextDayValue.add(1, 'days').format();
+    nextDayValue = moment(nextDayValue).format();
 
     newArray.push(nextDayValue);
 
@@ -121,7 +120,7 @@ class App extends Component {
           <Home/>
         }
         {App.isTimeResults(newArray[2], newArray[3], nowTime) &&
-          <div>
+          <div className="block-text">
             <WinningID
               id={this.props.id}
               uniqueId={this.props.uniqueId}
