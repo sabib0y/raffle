@@ -14,10 +14,10 @@ class App extends Component {
     super(props);
     this.state = {
       revealRedeem: false,
-      formStartTime: '07:00:00',
-      formEndTime: '12:30:00',
-      resultsStartTime: '12:45:00',
-      resultsEndTime: '13:45:00',
+      formStartTime: null,
+      formEndTime: null,
+      resultsStartTime: null,
+      resultsEndTime: null
     }
   }
 
@@ -53,8 +53,21 @@ class App extends Component {
     this.setState({revealRedeem: true});
   }
 
-  render() {
+  componentWillMount() {
+    fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
+      let receivedDataTime = snapshot.val();
 
+      this.setState({
+        formStartTime: receivedDataTime.postData.formStart,
+        formEndTime: receivedDataTime.postData.formEnd,
+        resultsStartTime: receivedDataTime.postData.resultStart,
+        resultsEndTime: receivedDataTime.postData.resultEnd
+      });
+    });
+  }
+
+  render() {
+    console.log('receivedDataTime', this.state.receivedDataTime)
 
     const test = true;
     // fromNow
@@ -69,23 +82,35 @@ class App extends Component {
 
     let testTime = moment().format('HH:MM:SS');
     console.log('test', testTime);
+    // const timeToCheck = [
+    //   '01:10:00', //form startTime
+    //   '12:30:00', //form endTime
+    //   '13:00:00', //results startTime
+    //   '14:00:00', //results endTime
+    // ];
+
     const timeToCheck = [
-      '01:10:00', //form startTime
-      '12:30:00', //form endTime
-      '13:00:00', //results startTime
-      '14:00:00', //results endTime
+      this.state.formStartTime, //form startTime
+      this.state.formEndTime, //form endTime
+      this.state.resultsStartTime, //results startTime
+      this.state.resultsEndTime, //results endTime
     ];
 
     let newArray = [];
+    newArray.push(
+      timeToCheck[0],
+      timeToCheck[1],
+      timeToCheck[2],
+      timeToCheck[3]
+      );
 
-    timeToCheck.map(item => {
-      let timeToConvert = moment().utc().toISOString();
-      timeToConvert = timeToConvert.split('T')[0];
-      timeToConvert = `${timeToConvert}T${item}`;
-      timeToConvert = moment(timeToConvert).format();
-      // timeToConvert = timeToConvert.moment(timeToConvert)
-      newArray.push(timeToConvert)
-    });
+    // timeToCheck.map(item => {
+    //   // let timeToConvert = moment().utc().toISOString();
+    //   // timeToConvert = timeToConvert.split('T')[0];
+    //   // timeToConvert = `${timeToConvert}T${item}`;
+    //   // timeToConvert = moment(timeToConvert).format();
+    //   newArray.push(timeToConvert)
+    // });
 
     let nextDayValue = moment();
     nextDayValue = nextDayValue.add(1, 'days').format();
