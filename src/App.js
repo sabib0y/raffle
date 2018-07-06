@@ -70,7 +70,7 @@ class App extends Component {
     let testTime = moment().format('HH:MM:SS');
     console.log('test', testTime);
     const timeToCheck = [
-      '07:10:00', //form startTime
+      '01:10:00', //form startTime
       '12:30:00', //form endTime
       '13:00:00', //results startTime
       '14:00:00', //results endTime
