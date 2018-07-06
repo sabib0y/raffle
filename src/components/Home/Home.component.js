@@ -169,7 +169,7 @@ export class Home extends React.Component {
     this.setState({revealRedeem: true});
   }
 
-  runThis(e){
+  labelHandler(e){
     console.log(e);
     this.setState({clickedClass: 'active'})
   }
@@ -211,10 +211,10 @@ export class Home extends React.Component {
                       placeholder="Full Name"
                       name='fullName'
                       onChange={event => this.handleSubmit(event)}
-                      onClick={() => this.runThis(event)}
+                      onClick={() => this.labelHandler(event)}
                     />
                   </div>
-                  <div className="form-group form-row form-row-edit">
+                  <div className={`form-group form-row form-row-edit ${this.state.clickedClass ? 'active' : ''}`}>
                     <div className="number-wrapper">
                       <label>Number</label>
                       <input
@@ -223,6 +223,7 @@ export class Home extends React.Component {
                         name='mobileNumber'
                         type='telephone'
                         onChange={event => this.handleSubmit(event)}
+                        onClick={() => this.labelHandler(event)}
                       />
                     </div>
                     <div className="network-wrapper">
@@ -248,13 +249,14 @@ export class Home extends React.Component {
                         </div>
                       </div>
                   </div>
-                  <div className="form-group">
+                  <div className={`form-group ${this.state.clickedClass ? 'active' : ''}`}>
                     <label>Email ** OPTIONAL **</label>
                     <input
                       className="form-control formInput"
                       placeholder="Please enter Email"
                       name='emailAddress'
                       onChange={event => this.handleSubmit(event)}
+                      onClick={() => this.labelHandler(event)}
                     />
                   </div>
                   <button

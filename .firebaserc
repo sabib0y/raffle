@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "dailychoppin"
+    "default": "dailychoppin",
+    "test": "dailychoppin"
   }
 }

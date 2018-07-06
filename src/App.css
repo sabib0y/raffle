@@ -7,6 +7,10 @@
   height: 80px;
 }
 
+.block-text {
+  text-align: center;
+}
+
 .App-header {
   background-color: #222;
   height: 150px;
