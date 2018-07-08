@@ -36,8 +36,9 @@ export class Home extends React.Component {
       selectedOption: '',
       network: '',
       clickedClass: ''
+
     };
-  }Ó
+  }
 
   handleChangeNetwork() {
     let elements = document.getElementById('dropDown-custom');
@@ -67,14 +68,12 @@ export class Home extends React.Component {
         })
       }
       if (!isNaN(event.target.value)) {
-        console.log('is a number')
         this.setState({
           errorMessageNumber: `Mobile number should only be numbers.`,
           errorNumber: false
         })
       }
 
-      console.log('reg', reg)
 
       if(event.target.value) {
         this.setState({ disabled: false })
@@ -169,13 +168,20 @@ export class Home extends React.Component {
     this.setState({revealRedeem: true});
   }
 
-  labelHandler(e){
-    console.log(e);
-    this.setState({clickedClass: 'active'})
+  catchInputs(){
+    const smartInputs = [...document.querySelectorAll('input.formInput')];
+
+    smartInputs.map(smartInput => {
+      smartInput.addEventListener('click', (e) =>{
+        smartInput.closest('.form-group').classList.add('active');
+      });
+    })
   }
 
   componentDidMount(){
-    const $in = document.querySelectorAll('input.formInput');
+    // fancy label and field behaviour
+    this.catchInputs();
+
   }
 
   render() {
@@ -189,8 +195,6 @@ export class Home extends React.Component {
 
     // let nowTime = moment().format();
     // nowTime = moment(nowTime).format("HH:mm:ss");
-    // console.log('nowTime', nowTime);
-
     return (
       <div>
       <div className="formWrapper">
@@ -204,17 +208,16 @@ export class Home extends React.Component {
             <div className = "main_form">
               <form action="" id="user-form" noValidate="novalidate" onSubmit={e => this.handleSubmitForm(e)}>
                 <fieldset>
-                  <div className={`form-group ${this.state.clickedClass ? 'active' : ''}`}>
+                  <div className="form-group">
                     <label>Name</label>
                     <input
                       className={`form-control formInput`}
                       placeholder="Full Name"
                       name='fullName'
                       onChange={event => this.handleSubmit(event)}
-                      onClick={() => this.labelHandler(event)}
                     />
                   </div>
-                  <div className={`form-group form-row form-row-edit ${this.state.clickedClass ? 'active' : ''}`}>
+                  <div className="form-group form-row form-row-edit">
                     <div className="number-wrapper">
                       <label>Number</label>
                       <input
@@ -223,7 +226,6 @@ export class Home extends React.Component {
                         name='mobileNumber'
                         type='telephone'
                         onChange={event => this.handleSubmit(event)}
-                        onClick={() => this.labelHandler(event)}
                       />
                     </div>
                     <div className="network-wrapper">
@@ -249,14 +251,13 @@ export class Home extends React.Component {
                         </div>
                       </div>
                   </div>
-                  <div className={`form-group ${this.state.clickedClass ? 'active' : ''}`}>
+                  <div className="form-group">
                     <label>Email ** OPTIONAL **</label>
                     <input
                       className="form-control formInput"
                       placeholder="Please enter Email"
                       name='emailAddress'
                       onChange={event => this.handleSubmit(event)}
-                      onClick={() => this.labelHandler(event)}
                     />
                   </div>
                   <button
