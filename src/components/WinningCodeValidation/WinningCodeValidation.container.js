@@ -63,7 +63,7 @@ export class WinningCodeValidation extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="validate_form">
         <PopupboxContainer />
         <form action="" id="user-form" noValidate="noValidate">
           <fieldset>

@@ -43,7 +43,7 @@ export class WinningId extends React.PureComponent {
     return (
       <div>
         <div className="winningId">
-          the winning ID is <span>{uniqueCodeSplit} </span>
+          Today’s winning code is:<span className="large_text">{uniqueCodeSplit}</span>
           <p>** <i>test purposes: copy phone number</i> {this.state.receivedMobileNumber} **</p>
         </div>
         <div>

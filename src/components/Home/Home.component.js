@@ -37,7 +37,7 @@ export class Home extends React.Component {
       network: '',
       clickedClass: ''
     };
-  }Ó
+  }
 
   handleChangeNetwork() {
     let elements = document.getElementById('dropDown-custom');
