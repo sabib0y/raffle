@@ -36,9 +36,8 @@ export class Home extends React.Component {
       selectedOption: '',
       network: '',
       clickedClass: ''
-
     };
-  }
+  }Ó
 
   handleChangeNetwork() {
     let elements = document.getElementById('dropDown-custom');
@@ -74,7 +73,6 @@ export class Home extends React.Component {
         })
       }
 
-
       if(event.target.value) {
         this.setState({ disabled: false })
       }
@@ -97,26 +95,12 @@ export class Home extends React.Component {
 
     let collectedData = [];
     let collectedNumbers = [];
-    let arrangedData = [];
 
     fire.database().ref('users').once('value').then((snapshot) => {
 
-      const {
-        fullName,
-        emailAddress,
-        selectedNetwork,
-        mobileNumber,
-        date,
-        uniqueId
-      } = this.state;
-      
+      const { fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId } = this.state;
       const dataToSend = {
-        fullName,
-        emailAddress,
-        selectedNetwork,
-        mobileNumber,
-        date,
-        uniqueId
+        fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId
       };
 
       if (snapshot.exists()) {
@@ -181,20 +165,13 @@ export class Home extends React.Component {
     this.setState({revealRedeem: true});
   }
 
-  catchInputs(){
-    const smartInputs = [...document.querySelectorAll('input.formInput')];
-
-    smartInputs.map(smartInput => {
-      smartInput.addEventListener('click', (e) =>{
-        smartInput.closest('.form-group').classList.add('active');
-      });
-    })
+  labelHandler(e){
+    console.log(e);
+    this.setState({clickedClass: 'active'})
   }
 
   componentDidMount(){
-    // fancy label and field behaviour
-    this.catchInputs();
-
+    const $in = document.querySelectorAll('input.formInput');
   }
 
   render() {
@@ -206,14 +183,10 @@ export class Home extends React.Component {
       { value: 'AirTel', label: 'AirTel', id: 'airtel'},
     ];
 
-    // let nowTime = moment().format();
-    // nowTime = moment(nowTime).format("HH:mm:ss");
     return (
       <div>
       <div className="formWrapper">
         <PopupboxContainer />
-        {/* eslint-disable */}
-        {/*{this.props.user.showResults === false &&*/}
         <div>
           <div className="row">
             <div className="draw_content_container">
@@ -221,16 +194,17 @@ export class Home extends React.Component {
             <div className = "main_form">
               <form action="" id="user-form" noValidate="novalidate" onSubmit={e => this.handleSubmitForm(e)}>
                 <fieldset>
-                  <div className="form-group">
+                  <div className={`form-group ${this.state.clickedClass ? 'active' : ''}`}>
                     <label>Name</label>
                     <input
                       className={`form-control formInput`}
                       placeholder="Full Name"
                       name='fullName'
                       onChange={event => this.handleSubmit(event)}
+                      onClick={event => this.labelHandler(event)}
                     />
                   </div>
-                  <div className="form-group form-row form-row-edit">
+                  <div className={`form-group form-row form-row-edit ${this.state.clickedClass ? 'active' : ''}`}>
                     <div className="number-wrapper">
                       <label>Number</label>
                       <input
@@ -239,6 +213,7 @@ export class Home extends React.Component {
                         name='mobileNumber'
                         type='telephone'
                         onChange={event => this.handleSubmit(event)}
+                        onClick={event => this.labelHandler(event)}
                       />
                     </div>
                     <div className="network-wrapper">
@@ -264,13 +239,14 @@ export class Home extends React.Component {
                         </div>
                       </div>
                   </div>
-                  <div className="form-group">
+                  <div className={`form-group ${this.state.clickedClass ? 'active' : ''}`}>
                     <label>Email ** OPTIONAL **</label>
                     <input
                       className="form-control formInput"
                       placeholder="Please enter Email"
                       name='emailAddress'
                       onChange={event => this.handleSubmit(event)}
+                      onClick={event => this.labelHandler(event)}
                     />
                   </div>
                   <button

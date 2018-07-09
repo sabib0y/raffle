@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.scss';
+import './App.css';
 import Home from './components/Home/Home.component';
 import WinningID from './components/WinningId/WinningId.component';
-import WinningCodeValidation from './components/WinningCodeValidation/WinningCodeValidation.component';
 import InterimPage from './components/InterimPage/InterimPage';
 import moment from 'moment-timezone';
 import Footer from'./components/Footer/Footer.component';
@@ -49,11 +48,6 @@ class App extends Component {
     return false;
   }
 
-  redeemCode(e) {
-    e.preventDefault();
-    this.setState({revealRedeem: true});
-  }
-
   componentWillMount() {
     fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
       let receivedDataTime = snapshot.val();
@@ -68,28 +62,6 @@ class App extends Component {
   }
 
   render() {
-    console.log('receivedDataTime', this.state.receivedDataTime)
-
-    const test = true;
-    // fromNow
-    const produceResults = {
-      formEnd: '14:00:00',
-      resultsStart: '19:00:00',
-    };
-    let timeNow = moment().tz("Europe/London").format('HH:MM:SS');
-
-    let todayDate = moment().tz("Europe/London").format();
-    todayDate = todayDate.split('T')[0];
-
-    let testTime = moment().format('HH:MM:SS');
-    console.log('test', testTime);
-    // const timeToCheck = [
-    //   '01:10:00', //form startTime
-    //   '12:30:00', //form endTime
-    //   '13:00:00', //results startTime
-    //   '14:00:00', //results endTime
-    // ];
-
     const timeToCheck = [
       this.state.formStartTime, //form startTime
       this.state.formEndTime, //form endTime
@@ -105,14 +77,6 @@ class App extends Component {
       timeToCheck[3]
       );
 
-    // timeToCheck.map(item => {
-    //   // let timeToConvert = moment().utc().toISOString();
-    //   // timeToConvert = timeToConvert.split('T')[0];
-    //   // timeToConvert = `${timeToConvert}T${item}`;
-    //   // timeToConvert = moment(timeToConvert).format();
-    //   newArray.push(timeToConvert)
-    // });
-
     let nextDayValue = moment();
     nextDayValue = nextDayValue.add(1, 'days').format();
     nextDayValue = nextDayValue.split('T')[0];
@@ -120,8 +84,6 @@ class App extends Component {
     nextDayValue = moment(nextDayValue).format();
 
     newArray.push(nextDayValue);
-
-    console.log('nextDayValue', nextDayValue, newArray);
 
     let nowTime = moment().format();
     var textInterim;
@@ -146,24 +108,11 @@ class App extends Component {
           <Home/>
         }
         {App.isTimeResults(newArray[2], newArray[3], nowTime) &&
-          <div className="winning_validation draw_content_container">
+          <div className="block-text">
             <WinningID
               id={this.props.id}
               uniqueId={this.props.uniqueId}
             />
-          <p>
-              Have a winning code?
-              <a
-                href="#"
-                onClick={event => this.redeemCode(event)}
-              >click to redeem code
-              </a>
-            </p>
-            {this.state.revealRedeem &&
-            <WinningCodeValidation
-              uniqueId={this.props.uniqueId}
-            />
-            }
           </div>
         }
         {App.isIntervalPreForm(newArray[3], newArray[4], nowTime) &&

@@ -5,8 +5,6 @@ import {
   SET_WINNING_CODE, SET_CODE_CONFIRMATION
 } from './constants/type';
 import writeNewPost from '../helpers/firebasePostHelper';
-import postWinnerHelper from '../helpers/postWinnerHelper';
-import postAllWinners from '../helpers/postAllWinners';
 import fire from '../fire';
 
 const initialState = {
@@ -55,7 +53,6 @@ const reducer = (state = initialState, action) => {
       );
 
       return Object.assign({}, state.user, {
-        // visibilityFilter: action.filter
         user: {
           fullName: action.newUser.fullName,
           emailAddress: action.newUser.emailAddress,
@@ -76,44 +73,11 @@ const reducer = (state = initialState, action) => {
       });
 
     case SET_WINNING_ID : {
-      const dataToSend = {
-        fullName: action.winningId.fullName,
-        emailAddress: action.winningId.emailAddress,
-        selectedNetwork: action.winningId.selectedNetwork,
-        mobileNumber: action.winningId.mobileNumber,
-        date: action.winningId.date,
-        uniqueId: action.winningId.uniqueId,
-        winningCodeConfirmation: action.winningId.winningCodeConfirmation,
-      };
-
-      postWinnerHelper(
-        dataToSend.fullName,
-        dataToSend.emailAddress,
-        dataToSend.selectedNetwork,
-        dataToSend.mobileNumber,
-        dataToSend.date,
-        dataToSend.uniqueId,
-        dataToSend.winningCodeConfirmation,
-      );
-      postAllWinners(
-        dataToSend.fullName,
-        dataToSend.emailAddress,
-        dataToSend.selectedNetwork,
-        dataToSend.mobileNumber,
-        dataToSend.date,
-        dataToSend.uniqueId,
-        dataToSend.winningCodeConfirmation,
-      );
 
       return Object.assign({}, state.user, {
         user: {
-          fullName: action.winningId.fullName,
-          emailAddress: action.winningId.emailAddress,
-          selectedNetwork: action.winningId.selectedNetwork,
           mobileNumber: action.winningId.mobileNumber,
-          date: action.winningId.date,
           uniqueId: action.winningId.uniqueId,
-          winningCodeConfirmation: action.winningId.winningCodeConfirmation,
         }
       });
     }
@@ -129,16 +93,12 @@ const reducer = (state = initialState, action) => {
     case SET_CODE_CONFIRMATION : {
       const postData = {
         winnerConfirmed: action.winningCodeConfirmation.winningCodeConfirmation,
-        selectedNetwork: action.winningCodeConfirmation.selectedNetwork,
-        confirmedWinningNumber: action.winningCodeConfirmation.mobileNumber
       };
 
       fire.database().ref('confirmedWinner/').set({postData});
       return Object.assign({}, state.user, {
         user: {
           winningCodeConfirmation: action.winningCodeConfirmation.winningCodeConfirmation,
-          selectedNetwork: action.winningCodeConfirmation.selectedNetwork,
-          mobileNumber: action.winningCodeConfirmation.mobileNumber
         }
       })
     }
