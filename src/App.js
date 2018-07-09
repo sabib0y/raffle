@@ -62,28 +62,6 @@ class App extends Component {
   }
 
   render() {
-    console.log('receivedDataTime', this.state.receivedDataTime)
-
-    const test = true;
-    // fromNow
-    const produceResults = {
-      formEnd: '14:00:00',
-      resultsStart: '19:00:00',
-    };
-    let timeNow = moment().tz("Europe/London");
-
-    let todayDate = moment().tz("Europe/London").format();
-    todayDate = todayDate.split('T')[0];
-
-    let testTime = moment().format('HH:MM:SS');
-    console.log('test', testTime);
-    // const timeToCheck = [
-    //   '01:10:00', //form startTime
-    //   '12:30:00', //form endTime
-    //   '13:00:00', //results startTime
-    //   '14:00:00', //results endTime
-    // ];
-
     const timeToCheck = [
       this.state.formStartTime, //form startTime
       this.state.formEndTime, //form endTime
@@ -99,14 +77,6 @@ class App extends Component {
       timeToCheck[3]
       );
 
-    // timeToCheck.map(item => {
-    //   // let timeToConvert = moment().utc().toISOString();
-    //   // timeToConvert = timeToConvert.split('T')[0];
-    //   // timeToConvert = `${timeToConvert}T${item}`;
-    //   // timeToConvert = moment(timeToConvert).format();
-    //   newArray.push(timeToConvert)
-    // });
-
     let nextDayValue = moment();
     nextDayValue = nextDayValue.add(1, 'days').format();
     nextDayValue = nextDayValue.split('T')[0];
@@ -114,8 +84,6 @@ class App extends Component {
     nextDayValue = moment(nextDayValue).format();
 
     newArray.push(nextDayValue);
-
-    console.log('nextDayValue', nextDayValue, newArray);
 
     let nowTime = moment().format();
     var textInterim;

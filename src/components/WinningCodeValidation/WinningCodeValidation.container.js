@@ -45,7 +45,12 @@ export class WinningCodeValidation extends React.Component {
     e.preventDefault();
     if(this.state.code !== this.props.user.mobileNumber) {
       message = `Sorry ..not a winner blah blah`;
+      const postData = {
+        winningCodeConfirmation: false,
+      };
+      this.props.getWinningCodeConfirmation(postData);
       this.openPopupbox(message);
+      window.location.reload();
     } else {
       this.setState({ winningCodeConfirmation: true });
       message = `Congratulations! send you your prize blah blah`;
@@ -54,7 +59,7 @@ export class WinningCodeValidation extends React.Component {
       };
       this.props.getWinningCodeConfirmation(postData);
       this.openPopupbox(message);
-      document.getElementById("user-form").reset();
+      window.location.reload();
     }
   }
 

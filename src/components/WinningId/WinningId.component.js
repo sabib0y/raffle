@@ -36,8 +36,6 @@ export class WinningId extends React.PureComponent {
   }
 
   render() {
-    console.log('props', this.props)
-
     return (
       <div>
         <div className="winningId">

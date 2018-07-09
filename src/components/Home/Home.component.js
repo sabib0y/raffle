@@ -67,14 +67,11 @@ export class Home extends React.Component {
         })
       }
       if (!isNaN(event.target.value)) {
-        console.log('is a number')
         this.setState({
           errorMessageNumber: `Mobile number should only be numbers.`,
           errorNumber: false
         })
       }
-
-      console.log('reg', reg)
 
       if(event.target.value) {
         this.setState({ disabled: false })
@@ -98,7 +95,6 @@ export class Home extends React.Component {
 
     let collectedData = [];
     let collectedNumbers = [];
-    let arrangedData = [];
 
     fire.database().ref('users').once('value').then((snapshot) => {
 
@@ -187,16 +183,10 @@ export class Home extends React.Component {
       { value: 'AirTel', label: 'AirTel', id: 'airtel'},
     ];
 
-    // let nowTime = moment().format();
-    // nowTime = moment(nowTime).format("HH:mm:ss");
-    // console.log('nowTime', nowTime);
-
     return (
       <div>
       <div className="formWrapper">
         <PopupboxContainer />
-        {/* eslint-disable */}
-        {/*{this.props.user.showResults === false &&*/}
         <div>
           <div className="row">
             <div className="draw_content_container">
@@ -211,7 +201,7 @@ export class Home extends React.Component {
                       placeholder="Full Name"
                       name='fullName'
                       onChange={event => this.handleSubmit(event)}
-                      onClick={() => this.labelHandler(event)}
+                      onClick={event => this.labelHandler(event)}
                     />
                   </div>
                   <div className={`form-group form-row form-row-edit ${this.state.clickedClass ? 'active' : ''}`}>
@@ -223,7 +213,7 @@ export class Home extends React.Component {
                         name='mobileNumber'
                         type='telephone'
                         onChange={event => this.handleSubmit(event)}
-                        onClick={() => this.labelHandler(event)}
+                        onClick={event => this.labelHandler(event)}
                       />
                     </div>
                     <div className="network-wrapper">
@@ -256,7 +246,7 @@ export class Home extends React.Component {
                       placeholder="Please enter Email"
                       name='emailAddress'
                       onChange={event => this.handleSubmit(event)}
-                      onClick={() => this.labelHandler(event)}
+                      onClick={event => this.labelHandler(event)}
                     />
                   </div>
                   <button

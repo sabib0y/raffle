@@ -5,8 +5,6 @@ import {
   SET_WINNING_CODE, SET_CODE_CONFIRMATION
 } from './constants/type';
 import writeNewPost from '../helpers/firebasePostHelper';
-import postWinnerHelper from '../helpers/postWinnerHelper';
-import postAllWinners from '../helpers/postAllWinners';
 import fire from '../fire';
 
 const initialState = {
@@ -55,7 +53,6 @@ const reducer = (state = initialState, action) => {
       );
 
       return Object.assign({}, state.user, {
-        // visibilityFilter: action.filter
         user: {
           fullName: action.newUser.fullName,
           emailAddress: action.newUser.emailAddress,
@@ -86,21 +83,6 @@ const reducer = (state = initialState, action) => {
     }
 
     case SET_WINNING_CODE : {
-      let winningCodeReceived;
-      let collectedData = [];
-
-      fire.database().ref('randomWinnerSetWeb').once('value').then((snapshot) => {
-        let receivedData = snapshot.val();
-        console.log('receivedData', receivedData)
-        // if (Object.entries !== null || Object.entries !== undefined) {
-        //   let receivedData = Object.entries(snapshot.val());
-        //   receivedData.map(item => {
-        //     return  collectedData.push(item[1].user);
-        //   });
-        // }
-      });
-
-
       return Object.assign({}, state.user, {
         user: {
           winningCode: action.winningCode
