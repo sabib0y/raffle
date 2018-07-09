@@ -14,7 +14,7 @@ export class WinningCodeValidation extends React.Component {
     }
   }
 
-  openPopupbox() {
+  openPopupbox(message) {
     const content = (
       <div>
         {/*<button onClick={() => this.updatePopupbox()}>Update!</button>*/}
@@ -25,7 +25,7 @@ export class WinningCodeValidation extends React.Component {
       config: {
         titleBar: {
           enable: true,
-          text: `Congratulations ${this.props.user.fullName}!!`
+          text: `${message}`
 
         },
         fadeIn: true,
@@ -41,43 +41,45 @@ export class WinningCodeValidation extends React.Component {
   }
 
   handleSubmitCode(e) {
+    let message;
     e.preventDefault();
     if(this.state.code !== this.props.user.mobileNumber) {
-      console.log('Sorry Try Again')
+      message = `Sorry ..not a winner blah blah`;
+      this.openPopupbox(message);
     } else {
       this.setState({ winningCodeConfirmation: true });
-
-      this.props.getWinningCodeConfirmation({winningCodeConfirmation: true, selectedNetwork: this.props.user.selectedNetwork, mobileNumber: this.props.user.mobileNumber});
-      console.log('pop up appears here');
-      this.openPopupbox();
+      message = `Congratulations! send you your prize blah blah`;
+      const postData = {
+        winningCodeConfirmation: true
+      };
+      this.props.getWinningCodeConfirmation(postData);
+      this.openPopupbox(message);
+      document.getElementById("user-form").reset();
     }
   }
 
   render() {
-    console.log('this.propsWICV', this.props.user.winningCodeConfirmation);
     return (
       <div>
         <PopupboxContainer />
         <form action="" id="user-form" noValidate="noValidate">
           <fieldset>
-            {this.props.user.winningCodeConfirmation === false &&
-              <div className="form-group">
-                <input
-                  type="text"
-                  className="form-control codeValidate"
-                  placeholder="validate code"
-                  name="code"
-                  onChange={event => this.handleSubmit(event)}
-                />
-                <button
-                  className="btn btn-primary codeValidate"
-                  type="button"
-                  onClick={e => this.handleSubmitCode(e)}
-                >
-                  redeem code
-                </button>
-              </div>
-            }
+            <div className="form-group">
+              <input
+                type="text"
+                className="form-control codeValidate"
+                placeholder="validate code"
+                name="code"
+                onChange={event => this.handleSubmit(event)}
+              />
+              <button
+                className="btn btn-primary codeValidate"
+                type="button"
+                onClick={e => this.handleSubmitCode(e)}
+              >
+                redeem code
+              </button>
+            </div>
           </fieldset>
         </form>
       </div>

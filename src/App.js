@@ -3,7 +3,6 @@ import logo from './logo.svg';
 import './App.css';
 import Home from './components/Home/Home.component';
 import WinningID from './components/WinningId/WinningId.component';
-import WinningCodeValidation from './components/WinningCodeValidation/WinningCodeValidation.component';
 import InterimPage from './components/InterimPage/InterimPage';
 import moment from 'moment-timezone';
 import Footer from'./components/Footer/Footer.component';
@@ -49,10 +48,6 @@ class App extends Component {
     return false;
   }
 
-  redeemCode() {
-    this.setState({revealRedeem: true});
-  }
-
   componentWillMount() {
     fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
       let receivedDataTime = snapshot.val();
@@ -75,7 +70,7 @@ class App extends Component {
       formEnd: '14:00:00',
       resultsStart: '19:00:00',
     };
-    let timeNow = moment().tz("Europe/London").format('HH:MM:SS');
+    let timeNow = moment().tz("Europe/London");
 
     let todayDate = moment().tz("Europe/London").format();
     todayDate = todayDate.split('T')[0];
@@ -150,19 +145,6 @@ class App extends Component {
               id={this.props.id}
               uniqueId={this.props.uniqueId}
             />
-            <div>
-              Have a winning code?
-              <a
-                href="#"
-                onClick={() => this.redeemCode()}
-              >click to redeem code
-              </a>
-            </div>
-            {this.state.revealRedeem &&
-            <WinningCodeValidation
-              uniqueId={this.props.uniqueId}
-            />
-            }
           </div>
         }
         {App.isIntervalPreForm(newArray[3], newArray[4], nowTime) &&
