@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 import Home from './components/Home/Home.component';
 import WinningID from './components/WinningId/WinningId.component';
 import WinningCodeValidation from './components/WinningCodeValidation/WinningCodeValidation.component';
@@ -49,7 +49,8 @@ class App extends Component {
     return false;
   }
 
-  redeemCode() {
+  redeemCode(e) {
+    e.preventDefault();
     this.setState({revealRedeem: true});
   }
 
@@ -145,19 +146,19 @@ class App extends Component {
           <Home/>
         }
         {App.isTimeResults(newArray[2], newArray[3], nowTime) &&
-          <div className="block-text">
+          <div className="winning_validation draw_content_container">
             <WinningID
               id={this.props.id}
               uniqueId={this.props.uniqueId}
             />
-            <div>
+          <p>
               Have a winning code?
               <a
                 href="#"
-                onClick={() => this.redeemCode()}
+                onClick={event => this.redeemCode(event)}
               >click to redeem code
               </a>
-            </div>
+            </p>
             {this.state.revealRedeem &&
             <WinningCodeValidation
               uniqueId={this.props.uniqueId}

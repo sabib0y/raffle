@@ -36,7 +36,7 @@ export class WinningId extends React.PureComponent {
       <div>
         {this.state.uniqueId !== null &&
           <div className="winningId">
-            the winning ID is <span>{uniqueCodeSplit}</span>
+          Today’s winning code is:<span>{uniqueCodeSplit}</span>
           </div>
         }
       </div>

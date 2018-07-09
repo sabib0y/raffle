@@ -19,13 +19,6 @@
  margin-right: 0;
  display: block;
 }
-/*
-.network-wrapper {
-}
-
-.number-wrapper {
-}
-*/
 
 .custom-button {
  width: 100%;
@@ -52,15 +45,8 @@
 }
 
 .main_form{
-  background: white;
-  max-width: 63rem;
-  color: $dark_text;
-  margin: 3.4rem auto 0;
-  padding: 7rem 6rem 5.6rem;
-
+  @include form_width;
   .form-group{
-    position: relative;
-    height: 5rem;
     @include quickSand;
     @include smart_row;
 

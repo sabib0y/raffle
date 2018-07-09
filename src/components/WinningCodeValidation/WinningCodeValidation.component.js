@@ -1,5 +1,5 @@
 import React from 'react';
-// import './WinningCodeValidation.scss';
+import './WinningCodeValidation.scss';
 import {getWinningCode, getWinningCodeConfirmation} from "../../redux/actions";
 import {connect} from "react-redux";
 import { PopupboxManager, PopupboxContainer } from 'react-popupbox';
@@ -58,10 +58,11 @@ export class WinningCodeValidation extends React.Component {
     return (
       <div>
         <PopupboxContainer />
-        <form action="" id="user-form" noValidate="noValidate">
+        <form action="" id="user-form" className="user_form" noValidate="noValidate">
           <fieldset>
             {this.props.user.winningCodeConfirmation === false &&
               <div className="form-group">
+                <label>Enter your number</label>
                 <input
                   type="text"
                   className="form-control codeValidate"
@@ -70,7 +71,7 @@ export class WinningCodeValidation extends React.Component {
                   onChange={event => this.handleSubmit(event)}
                 />
                 <button
-                  className="btn btn-primary codeValidate"
+                  className="btn btn-primary codeValidate custom-button"
                   type="button"
                   onClick={e => this.handleSubmitCode(e)}
                 >

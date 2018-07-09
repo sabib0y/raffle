@@ -101,9 +101,22 @@ export class Home extends React.Component {
 
     fire.database().ref('users').once('value').then((snapshot) => {
 
-      const { fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId } = this.state;
+      const {
+        fullName,
+        emailAddress,
+        selectedNetwork,
+        mobileNumber,
+        date,
+        uniqueId
+      } = this.state;
+      
       const dataToSend = {
-        fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId
+        fullName,
+        emailAddress,
+        selectedNetwork,
+        mobileNumber,
+        date,
+        uniqueId
       };
 
       if (snapshot.exists()) {
