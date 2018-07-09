@@ -11,7 +11,10 @@ export class WinningId extends React.PureComponent {
       randomizedData: null,
       uniqueCodeSplit: '',
       uniqueId: null,
-      revealRedeem: false
+      revealRedeem: false,
+      receivedData: null,
+      receivedMobileNumber: null,
+      receivedCode: null
     }
   }
 
@@ -19,16 +22,13 @@ export class WinningId extends React.PureComponent {
     fire.database().ref('randomWinnerSetWeb').once('value').then((snapshot) => {
       if (Object.entries !== null || Object.entries !== undefined) {
         let receivedData = snapshot.val();
-        this.props.getWinningId(receivedData.postDataWeb)
+        // this.props.getWinningId(receivedData.postDataWeb)
+        this.setState({
+          receivedMobileNumber: receivedData.postDataWeb.mobileNumber,
+          receivedCode: receivedData.postDataWeb.uniqueId,
+        })
       }
     });
-
-    let uniqueCodeSplit;
-    if(this.props.user.uniqueId !== null) {
-      uniqueCodeSplit = this.props.user.uniqueId.replace(/(\w{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');
-    }
-
-    this.setState({ uniqueCodeSplit })
   }
 
   redeemCode() {
@@ -36,10 +36,15 @@ export class WinningId extends React.PureComponent {
   }
 
   render() {
+    let uniqueCodeSplit;
+    if(this.state.receivedCode !== null) {
+      uniqueCodeSplit = this.state.receivedCode.replace(/(\w{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');
+    }
     return (
       <div>
         <div className="winningId">
-          the winning ID is <span>{this.state.uniqueCodeSplit} --- ({this.props.user.mobileNumber})</span>
+          the winning ID is <span>{uniqueCodeSplit} </span>
+          <p>** <i>test purposes: copy phone number</i> {this.state.receivedMobileNumber} **</p>
         </div>
         <div>
           Have a winning code?
@@ -52,6 +57,8 @@ export class WinningId extends React.PureComponent {
         {this.state.revealRedeem &&
         <WinningCodeValidation
           uniqueId={this.props.user.uniqueId}
+          receivedCode={this.state.receivedCode}
+          receivedMobileNumber={this.state.receivedMobileNumber}
         />
         }
       </div>

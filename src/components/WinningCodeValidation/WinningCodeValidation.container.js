@@ -1,5 +1,5 @@
 import React from 'react';
-// import './WinningCodeValidation.scss';
+import './WinningCodeValidation.scss';
 import {getWinningCode, getWinningCodeConfirmation} from "../../redux/actions";
 import {connect} from "react-redux";
 import { PopupboxManager, PopupboxContainer } from 'react-popupbox';
@@ -43,14 +43,13 @@ export class WinningCodeValidation extends React.Component {
   handleSubmitCode(e) {
     let message;
     e.preventDefault();
-    if(this.state.code !== this.props.user.mobileNumber) {
+    if(this.state.code !== this.props.receivedMobileNumber) {
       message = `Sorry ..not a winner blah blah`;
       const postData = {
         winningCodeConfirmation: false,
       };
       this.props.getWinningCodeConfirmation(postData);
       this.openPopupbox(message);
-      window.location.reload();
     } else {
       this.setState({ winningCodeConfirmation: true });
       message = `Congratulations! send you your prize blah blah`;
@@ -59,7 +58,6 @@ export class WinningCodeValidation extends React.Component {
       };
       this.props.getWinningCodeConfirmation(postData);
       this.openPopupbox(message);
-      window.location.reload();
     }
   }
 
