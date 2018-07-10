@@ -44,20 +44,14 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
         uniqueId: randomElement.user.uniqueId,
         mobileNumber: randomElement.user.mobileNumber
       };
+
       response.send(`Random Number generated ${randomizedData}, timeNow: ${timeNow}`);
       admin.database().ref('randomWinnerSetWeb/').set({postDataWeb});
-      return admin.database().ref('randomWinnerSet/').set({postData});
-      // return admin.database().ref('randomWinnerSet/').once('value').then(snapshot => {
-      //   let receivedWinnerData = snapshot.val();
-      //   let dateToCheckDatabase = receivedWinnerData.postData.date.split('T')[0];
-      //   let dateToCheckIncoming = moment().toISOString().split('T')[0];
-      //   if(dateToCheckIncoming <= dateToCheckDatabase) {
-      //     return response.send(`Date Error ${randomizedData}, timeNow: ${timeNow}`);
-      //   } else {
-      //     response.send(`Random Number generated ${randomizedData}, timeNow: ${timeNow}`);
-      //     return admin.database().ref('randomWinnerSet/').set({postData});
-      //   }
-      // });
+      admin.database().ref('randomWinnerSet/').set({postData});
+      admin.database().ref(`usersBackup/${todayDate}`).set({receivedData});
+      admin.database().ref('usersAll/').update({vals});
+      return admin.database().ref(`users`).remove();
+
     } else {
       console.error('No Entries Found', randomizedData);
      return response.send(`No Number generated ${randomizedData}, timeNow: ${timeNow}`);
