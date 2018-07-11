@@ -36,7 +36,7 @@ export class Home extends React.Component {
       network: '',
       clickedClass: '',
       showPopup: false,
-      emailDisable: true
+      emailDisable: false
     };
   }
 
@@ -261,6 +261,9 @@ export class Home extends React.Component {
                       onChange={event => this.handleSubmit(event)}
                       onClick={event => this.labelHandler(event)}
                     />
+                    {this.state.emailDisable === true &&
+                      <div className="errorEmail">Please enter a valid email address</div>
+                    }
                   </div>
                   <button
                     disabled={this.state.disabled}
