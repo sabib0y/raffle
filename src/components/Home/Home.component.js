@@ -35,9 +35,10 @@ export class Home extends React.Component {
       selectedOption: '',
       network: '',
       clickedClass: '',
-      showPopup: false
+      showPopup: false,
+      emailDisable: true
     };
-  }Ó
+  }
 
   handleChangeNetwork() {
     let elements = document.getElementById('dropDown-custom');
@@ -57,6 +58,23 @@ export class Home extends React.Component {
     let change = {};
     change[event.target.name] = event.target.value;
     this.setState(change);
+
+    if(event.target.name === 'emailAddress') {
+      let re = /\S+@\S+\.\S+/;
+      re.test(this.state.emailAddress);
+      if(this.state.emailAddress !== null) {
+        if (re.test(this.state.emailAddress) === true) {
+          this.setState({ emailDisable: false })
+          console.log('true')
+        } else {
+          console.log('false')
+          this.setState({ emailDisable: true })
+        }
+      } else {
+        console.log('true')
+        this.setState({ emailDisable: false })
+      }
+    }
 
     if(event.target.name === 'mobileNumber') {
       let reg = new RegExp('^[0-9]+$');
