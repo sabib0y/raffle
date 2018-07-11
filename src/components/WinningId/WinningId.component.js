@@ -22,7 +22,6 @@ export class WinningId extends React.PureComponent {
     fire.database().ref('randomWinnerSetWeb').once('value').then((snapshot) => {
       if (Object.entries !== null || Object.entries !== undefined) {
         let receivedData = snapshot.val();
-        // this.props.getWinningId(receivedData.postDataWeb)
         this.setState({
           receivedMobileNumber: receivedData.postDataWeb.mobileNumber,
           receivedCode: receivedData.postDataWeb.uniqueId,
@@ -36,24 +35,29 @@ export class WinningId extends React.PureComponent {
   }
 
   render() {
+    console.log('this.props', this.props)
     let uniqueCodeSplit;
     if(this.state.receivedCode !== null) {
       uniqueCodeSplit = this.state.receivedCode.replace(/(\w{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');
     }
     return (
       <div>
-        <div className="winningId">
-          the winning ID is <span>{uniqueCodeSplit} </span>
-          <p>** <i>test purposes: copy phone number</i> {this.state.receivedMobileNumber} **</p>
-        </div>
+        {this.props.user.winningCodeConfirmation === false &&
         <div>
-          Have a winning code?
-          <a
-            href="#"
-            onClick={() => this.redeemCode()}
-          >click to redeem code
-          </a>
+          <div className="winningId">
+            the winning ID is <span>{uniqueCodeSplit} </span>
+            <p>** <i>test purposes: copy phone number</i> {this.state.receivedMobileNumber} **</p>
+          </div>
+          <div>
+            Have a winning code?
+            <a
+              href="#"
+              onClick={() => this.redeemCode()}
+            >click to redeem code
+            </a>
+          </div>
         </div>
+        }
         {this.state.revealRedeem &&
         <WinningCodeValidation
           uniqueId={this.props.user.uniqueId}

@@ -8,6 +8,6 @@ const InterimPage = (props) => {
       <p>{props.textInterim}</p>
     </div>
   )
-}
+};
 
 export default InterimPage;
