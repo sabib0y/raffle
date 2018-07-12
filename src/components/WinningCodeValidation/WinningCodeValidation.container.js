@@ -58,7 +58,8 @@ export class WinningCodeValidation extends React.Component {
     }
 
     return (
-      <div>
+    
+      <div className="validate_form">
         {this.state.showPopup ?
           <Popup
             info={message}

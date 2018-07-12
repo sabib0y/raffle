@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 import Home from './components/Home/Home.component';
 import WinningID from './components/WinningId/WinningId.component';
 import InterimPage from './components/InterimPage/InterimPage';
@@ -46,6 +46,10 @@ class App extends Component {
       return true;
     }
     return false;
+  }
+  redeemCode(e) {
+    e.preventDefault();
+    this.setState({revealRedeem: true});
   }
 
   componentWillMount() {
@@ -108,7 +112,7 @@ class App extends Component {
           <Home/>
         }
         {App.isTimeResults(newArray[2], newArray[3], nowTime) &&
-          <div className="block-text">
+          <div className="winning_validation draw_content_container">
             <WinningID
               id={this.props.id}
               uniqueId={this.props.uniqueId}

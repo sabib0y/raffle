@@ -53,7 +53,14 @@ $label_colour: #9f9f9f;
   }
 }
 
-//labels and fields
+//Forms
+@mixin form_width{
+  background: white;
+  max-width: 63rem;
+  color: $dark_text;
+  margin: 3.4rem auto 0;
+  padding: 7rem 6rem 5.6rem;
+}
 
 @mixin input_field{
     height: 100%;
