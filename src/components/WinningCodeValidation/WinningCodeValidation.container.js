@@ -2,7 +2,7 @@ import React from 'react';
 import './WinningCodeValidation.scss';
 import {getWinningCode, getWinningCodeConfirmation} from "../../redux/actions";
 import {connect} from "react-redux";
-import { PopupboxManager, PopupboxContainer } from 'react-popupbox';
+import Popup from '../PopUp/PopUp.component';
 
 export class WinningCodeValidation extends React.Component {
   constructor(props) {
@@ -10,28 +10,9 @@ export class WinningCodeValidation extends React.Component {
     this.state = {
       code: null,
       matchMessage: 'Congratulations!',
-      winningCodeConfirmation: false
+      winningCodeConfirmation: false,
+      showPopup: false
     }
-  }
-
-  openPopupbox(message) {
-    const content = (
-      <div>
-        {/*<button onClick={() => this.updatePopupbox()}>Update!</button>*/}
-      </div>
-    );
-    PopupboxManager.open({
-      content,
-      config: {
-        titleBar: {
-          enable: true,
-          text: `${message}`
-
-        },
-        fadeIn: true,
-        fadeInSpeed: 500
-      }
-    })
   }
 
   handleSubmit(event) {
@@ -49,7 +30,7 @@ export class WinningCodeValidation extends React.Component {
         winningCodeConfirmation: false,
       };
       this.props.getWinningCodeConfirmation(postData);
-      this.openPopupbox(message);
+      this.togglePopup();
     } else {
       this.setState({ winningCodeConfirmation: true });
       message = `Congratulations! send you your prize blah blah`;
@@ -57,12 +38,27 @@ export class WinningCodeValidation extends React.Component {
         winningCodeConfirmation: true
       };
       this.props.getWinningCodeConfirmation(postData);
-      this.openPopupbox(message);
+      this.togglePopup();
     }
   }
 
+  togglePopup() {
+    this.setState({
+      showPopup: !this.state.showPopup
+    });
+  }
+
   render() {
+    let message;
+
+    if(this.state.code !== this.props.receivedMobileNumber) {
+      message = `Sorry ..not a winner blah blah`;
+    } else {
+      message = `Congratulations! send you your prize blah blah`;
+    }
+
     return (
+<<<<<<< HEAD
       <div className="validate_form">
         <PopupboxContainer />
         <form action="" id="user-form" noValidate="noValidate">
@@ -85,6 +81,44 @@ export class WinningCodeValidation extends React.Component {
             </div>
           </fieldset>
         </form>
+=======
+      <div>
+        {this.state.showPopup ?
+          <Popup
+            info={message}
+            closePopup={() => this.togglePopup()}
+          />
+          : null
+        }
+        {this.state.winningCodeConfirmation == false &&
+          <form action="" id="user-form" noValidate="noValidate">
+            <fieldset>
+              <div className="form-group">
+                <input
+                  type="text"
+                  className="form-control codeValidate"
+                  placeholder="validate code"
+                  name="code"
+                  onChange={event => this.handleSubmit(event)}
+                />
+                <button
+                  className="btn btn-primary codeValidate"
+                  type="button"
+                  onClick={e => this.handleSubmitCode(e)}
+                >
+                  redeem code
+                </button>
+              </div>
+            </fieldset>
+          </form>
+        }
+        {this.state.winningCodeConfirmation === true &&
+          <div>
+            Osas P Official to make some slick animation to show the code has been redeem.
+            This is to not show the redeem page again for the session incase the user gets confused.
+          </div>
+        }
+>>>>>>> develop
       </div>
     )
   }

@@ -41,8 +41,8 @@ class App extends Component {
     return false;
   }
 
-  static isIntervalPreForm(resultsEndTime, tomorrowFormStartTime, nowTime) {
-    if(nowTime > resultsEndTime && nowTime < tomorrowFormStartTime) {
+  static isIntervalPreForm(formStartTime, resultsEndTime, nowTime) {
+    if(nowTime < formStartTime && nowTime > resultsEndTime) {
       return true;
     }
     return false;
@@ -119,14 +119,14 @@ class App extends Component {
             />
           </div>
         }
-        {App.isIntervalPreForm(newArray[3], newArray[4], nowTime) &&
+        {App.isIntervalPreForm(newArray[0], newArray[3], nowTime) &&
           <InterimPage
-            textInterim={textInterim}
+            textInterim='New competition entry will be available shortly ... Thank you.'
           />
         }
          {App.isIntervalPreResults(newArray[1], newArray[2], nowTime) &&
           <InterimPage
-            textInterim={textInterim}
+            textInterim='Results will be published shortly... Thank you.'
           />
         }
         <Footer />

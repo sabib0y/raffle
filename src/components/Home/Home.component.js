@@ -8,8 +8,7 @@ import { getUsers, getNumbers } from "../../redux/actions";
 import { randomizedData } from '../../helpers/getDataFirebase';
 import 'react-select/dist/react-select.css';
 import './Home.scss';
-
-import { PopupboxManager, PopupboxContainer } from 'react-popupbox';
+import Popup from '../PopUp/PopUp.component';
 import fire from "../../fire";
 
 export class Home extends React.Component {
@@ -35,7 +34,9 @@ export class Home extends React.Component {
       errorNumber: false,
       selectedOption: '',
       network: '',
-      clickedClass: ''
+      clickedClass: '',
+      showPopup: false,
+      emailDisable: false
     };
   }
 
@@ -57,6 +58,23 @@ export class Home extends React.Component {
     let change = {};
     change[event.target.name] = event.target.value;
     this.setState(change);
+
+    if(event.target.name === 'emailAddress') {
+      let re = /\S+@\S+\.\S+/;
+      re.test(this.state.emailAddress);
+      if(this.state.emailAddress !== null) {
+        if (re.test(this.state.emailAddress) === true) {
+          this.setState({ emailDisable: false })
+          console.log('true')
+        } else {
+          console.log('false')
+          this.setState({ emailDisable: true })
+        }
+      } else {
+        console.log('true')
+        this.setState({ emailDisable: false })
+      }
+    }
 
     if(event.target.name === 'mobileNumber') {
       let reg = new RegExp('^[0-9]+$');
@@ -117,12 +135,12 @@ export class Home extends React.Component {
             this.props.getNumbers({ fullName, emailAddress, mobileNumber, date, uniqueId });
             this.setState({disabled: true});
             document.getElementById("user-form").reset();
-            this.openPopupbox();
+            this.togglePopup();
           } else {
             this.props.getUsers(dataToSend);
             this.setState({disabled: true});
             document.getElementById("user-form").reset();
-            this.openPopupbox();
+            this.togglePopup();
           }
         }
       }
@@ -131,30 +149,14 @@ export class Home extends React.Component {
 
         this.setState({disabled: true});
         document.getElementById("user-form").reset();
-        this.openPopupbox();
       }
     });
   }
 
-  openPopupbox() {
-    const content = (
-      <div>
-        {/*<button onClick={() => this.updatePopupbox()}>Update!</button>*/}
-      </div>
-    );
-    PopupboxManager.open({
-      content,
-      config: {
-        titleBar: {
-          enable: true,
-          text: `Your unique entry ID is ${this.state.uniqueId}.
-           We'll be in touch if you're our lucky winner!!!`
-
-        },
-        fadeIn: true,
-        fadeInSpeed: 500
-      }
-    })
+  togglePopup() {
+    this.setState({
+      showPopup: !this.state.showPopup
+    });
   }
 
   testFunc() {
@@ -170,10 +172,6 @@ export class Home extends React.Component {
     this.setState({clickedClass: 'active'})
   }
 
-  componentDidMount(){
-    const $in = document.querySelectorAll('input.formInput');
-  }
-
   render() {
     const options = [
       { value: 'Select Network', label: 'select network', id: 'select-network'},
@@ -183,10 +181,25 @@ export class Home extends React.Component {
       { value: 'AirTel', label: 'AirTel', id: 'airtel'},
     ];
 
+    const popUpInfo = (
+      <div>
+        <h3>Competition Entered!</h3>
+        <div className="uniqueCodePopUp">Your unique code is <span className="codeTransform">{this.state.uniqueId}</span></div>
+        <div>We'll be in touch if you're our lucky winner!!!</div>
+        <p><i>By closing, you confirm that you have copied your unique code and saved it.</i></p>
+      </div>
+    )
+
     return (
       <div>
       <div className="formWrapper">
-        <PopupboxContainer />
+        {this.state.showPopup ?
+          <Popup
+            info={popUpInfo}
+            closePopup={() => this.togglePopup()}
+          />
+          : null
+        }
         <div>
           <div className="row">
             <div className="draw_content_container">
@@ -248,6 +261,9 @@ export class Home extends React.Component {
                       onChange={event => this.handleSubmit(event)}
                       onClick={event => this.labelHandler(event)}
                     />
+                    {this.state.emailDisable === true &&
+                      <div className="errorEmail">Please enter a valid email address</div>
+                    }
                   </div>
                   <button
                     disabled={this.state.disabled}
