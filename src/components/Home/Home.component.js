@@ -213,6 +213,7 @@ export class Home extends React.Component {
                       className={`form-control formInput`}
                       placeholder="Full Name"
                       name='fullName'
+                      type="text"
                       onChange={event => this.handleSubmit(event)}
                       onClick={event => this.labelHandler(event)}
                     />
@@ -224,7 +225,7 @@ export class Home extends React.Component {
                         className="form-control formInput"
                         placeholder="Please Enter Mobile"
                         name='mobileNumber'
-                        type='telephone'
+                        type='number'
                         onChange={event => this.handleSubmit(event)}
                         onClick={event => this.labelHandler(event)}
                       />
@@ -258,6 +259,7 @@ export class Home extends React.Component {
                       className="form-control formInput"
                       placeholder="Please enter Email"
                       name='emailAddress'
+                      type="email"
                       onChange={event => this.handleSubmit(event)}
                       onClick={event => this.labelHandler(event)}
                     />
