@@ -3,3 +3,50 @@
   font-size: 12px;
  margin-top: 15px;
 }
+
+ul {
+ display: flex;
+ justify-content: space-between;
+ list-style-type: none;
+ font-size: 2em;
+ width: 60%;
+}
+
+a {
+ color: #000;
+ text-decoration: none;
+ transition: all .5s ease-in-out;
+}
+[title="Twitter"]:hover{
+ color: rgb(85,172,238);
+}
+[title="Instagram"]:hover{
+ color: rgb(124,86,65);
+}
+[title="Medium"]:hover{
+ color: rgb(75,75,75);
+}
+[title="GitHub"]:hover{
+ color: rgb(114,49,132);
+}
+[title="CodePen"]:hover{
+ color: #000;
+}
+[title="Dribbble"]:hover{
+ color: rgb(195,35,97);
+}
+[title="StackOverflow"]:hover {
+ color: rgb(241,99,3);
+}
+[title="LinkedIn"]:hover{
+ color: rgb(0,119,181);
+}
+[title="Resume"]:hover{
+ color: rgb(178,36,52);
+}
+[title="Contact"]:hover{
+ color: rgb(230,182,10);
+}
+[center]{
+ text-align: center;
+}
