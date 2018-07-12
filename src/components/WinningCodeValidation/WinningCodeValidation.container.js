@@ -58,31 +58,8 @@ export class WinningCodeValidation extends React.Component {
     }
 
     return (
-<<<<<<< HEAD
+    
       <div className="validate_form">
-        <PopupboxContainer />
-        <form action="" id="user-form" noValidate="noValidate">
-          <fieldset>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control codeValidate"
-                placeholder="validate code"
-                name="code"
-                onChange={event => this.handleSubmit(event)}
-              />
-              <button
-                className="btn btn-primary codeValidate"
-                type="button"
-                onClick={e => this.handleSubmitCode(e)}
-              >
-                redeem code
-              </button>
-            </div>
-          </fieldset>
-        </form>
-=======
-      <div>
         {this.state.showPopup ?
           <Popup
             info={message}
@@ -118,7 +95,6 @@ export class WinningCodeValidation extends React.Component {
             This is to not show the redeem page again for the session incase the user gets confused.
           </div>
         }
->>>>>>> develop
       </div>
     )
   }
