@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.scss';
 import Home from './components/Home/Home.component';
 import WinningID from './components/WinningId/WinningId.component';
 import InterimPage from './components/InterimPage/InterimPage';
 import moment from 'moment-timezone';
 import Footer from'./components/Footer/Footer.component';
-import fire from './fire'
+import fire from './fire';
 
 class App extends Component {
   constructor(props) {
@@ -84,7 +83,7 @@ class App extends Component {
     let nextDayValue = moment();
     nextDayValue = nextDayValue.add(1, 'days').format();
     nextDayValue = nextDayValue.split('T')[0];
-    nextDayValue = `${nextDayValue}T07:00:00Z`;
+    nextDayValue = `${nextDayValue}T00:00:01Z`;
     nextDayValue = moment(nextDayValue).format();
 
     newArray.push(nextDayValue);

@@ -1,62 +1,54 @@
 import React from 'react';
 import './Footer.scss';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import {
+  faCoffee,
+  faEnvelope,
+  faCog,
+  faSpinner,
+  faQuoteLeft,
+  faSquare,
+  faCheckSquare
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+library.add(
+  fab,
+  faCoffee,
+  faCog,
+  faSpinner,
+  faQuoteLeft,
+  faSquare,
+  faCheckSquare
+);
 
 const Footer = () => {
   return (
-    <div className="socialLinks">
-      test
-      <ul center>
+    <div className="footerLinkWrapper">
+      <ul>
         <li>
-          <a href="#" title="GitHub">
-            <i className="fa fa-github"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#" title="CodePen">
-            <i className="fa fa-codepen"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#" title="Dribbble">
-            <i className="fa fa-dribbble"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#" title="StackOverflow">
-            <i className="fa fa-stack-overflow"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#" title="LinkedIn">
-            <i className="fa fa-linkedin"></i>
+          <a href="#" title="Facebook">
+            <FontAwesomeIcon icon={['fab', 'facebook-f']} />
           </a>
         </li>
         <li>
           <a href="#" title="Twitter">
-            <i className="fa fa-twitter"></i>
+            <FontAwesomeIcon icon={['fab', 'twitter']} />
           </a>
         </li>
         <li>
           <a href="#" title="Instagram">
-            <i className="fa fa-instagram"></i>
+            <FontAwesomeIcon icon={['fab', 'instagram']} />
           </a>
         </li>
         <li>
-          <a href="#" title="Medium">
-            <i className="fa fa-medium"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#" title="Resume">
-            <i className="fa fa-file-pdf-o"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#" title="Contact">
-            <i className="fa fa-send"></i>
+          <a href="#" title="Envelope">
+            <FontAwesomeIcon icon={faEnvelope} />
           </a>
         </li>
       </ul>
+      <p className="disclaimerText">By clicking submit, you consent to your details being used for marketing purposes.</p>
     </div>
   )
 };

@@ -1,7 +1,17 @@
+@import "../../mixins";
+
+.footerLinkWrapper {
+ font-size: 12px;
+ margin: 25px 0 25px 0px;
+}
 .socialLinks {
   text-align: center;
-  font-size: 12px;
- margin-top: 15px;
+}
+
+.disclaimerText {
+ margin-top: 25px;
+ text-align: center;
+ font-size: 16px;
 }
 
 ul {
@@ -9,11 +19,15 @@ ul {
  justify-content: space-between;
  list-style-type: none;
  font-size: 2em;
- width: 60%;
+ margin: 0 auto;
+}
+
+li {
+ flex-grow: 1;
 }
 
 a {
- color: #000;
+ color: #fff;
  text-decoration: none;
  transition: all .5s ease-in-out;
 }
@@ -49,4 +63,16 @@ a {
 }
 [center]{
  text-align: center;
+}
+
+@include breakpoint(tablet) {
+ ul {
+  width: 60%;
+ }
+}
+
+@include breakpoint(laptop) {
+ ul {
+  width: 40%;
+ }
 }

@@ -183,10 +183,11 @@ export class Home extends React.Component {
 
     const popUpInfo = (
       <div>
-        <h3>Competition Entered!</h3>
-        <div className="uniqueCodePopUp">Your unique code is <span className="codeTransform">{this.state.uniqueId}</span></div>
-        <div>We'll be in touch if you're our lucky winner!!!</div>
-        <p><i>By closing, you confirm that you have copied your unique code and saved it.</i></p>
+        <p className="popUpHeaderText">Competition Entered!</p>
+        <p className="uniqueCodePopUp">Your unique code is <span className="codeTransform">{this.state.uniqueId}</span></p>
+        <div className="uniqueCodePopUpText">We'll be in touch if you're our lucky winner!!!
+        <p className="uniqueCodePopUpDisclaimer"><i>By closing, you confirm that you have copied your unique code and saved it.</i></p>
+        </div>
       </div>
     )
 
