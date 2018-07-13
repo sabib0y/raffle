@@ -1,4 +1,5 @@
 @import "../../settings";
+@import "../../mixins";
 
 .errorEmail {
  color: red;
@@ -55,7 +56,8 @@
 }
 
 .main_form{
-  @include form_width;
+ @include form_width;
+ padding: 7rem 2rem 5.6rem;
   .form-group{
     @include quickSand;
     @include smart_row;
@@ -90,5 +92,11 @@
       }
     }
   }
+}
+
+@include breakpoint(phablet) {
+ .main_form {
+  padding: 7rem 6rem 5.6rem;
+ }
 }
 

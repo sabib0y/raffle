@@ -43,6 +43,11 @@ const Footer = () => {
           </a>
         </li>
         <li>
+          <a href="#" title="Telegram">
+            <FontAwesomeIcon icon={['fab', 'telegram']} />
+          </a>
+        </li>
+        <li>
           <a href="#" title="Envelope">
             <FontAwesomeIcon icon={faEnvelope} />
           </a>
