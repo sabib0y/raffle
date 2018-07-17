@@ -59,6 +59,9 @@ export class Home extends React.Component {
     change[event.target.name] = event.target.value;
     this.setState(change);
 
+    const test = event.target.value;
+    const
+
     if(event.target.name === 'emailAddress') {
       let re = /\S+@\S+\.\S+/;
       re.test(this.state.emailAddress);
