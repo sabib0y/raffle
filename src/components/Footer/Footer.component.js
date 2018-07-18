@@ -53,7 +53,7 @@ const Footer = () => {
           </a>
         </li>
       </ul>
-      <p className="disclaimerText">By clicking submit, you consent to your details being used for marketing purposes.</p>
+      <p className="disclaimerText">By entering the competition, you consent to your details being used for marketing purposes.</p>
     </div>
   )
 };
