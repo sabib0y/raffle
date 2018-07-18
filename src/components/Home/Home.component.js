@@ -111,6 +111,11 @@ export class Home extends React.Component {
         }
       }
       else {
+        this.setState({
+          errorMessageNumber: `Mobile number contain numbers only.`,
+          errorNumber: true
+        });
+        event.target.classList.add('errorOutline')
         event.target.parentNode.parentNode.classList.remove('active')
       }
     }
