@@ -15,7 +15,7 @@ export class Home extends React.Component {
     super(props);
     this.state = {
       fullName: null,
-      emailAddress: null,
+      emailAddress: '',
       mobileNumber: null,
       date: {},
       id: null,
@@ -30,6 +30,7 @@ export class Home extends React.Component {
       duplicateNumber: null,
       selectedNetwork: 'Select Mobile NetworkX',
       errorMessageNumber: '',
+      errorEmail: '',
       errorNumber: false,
       selectedOption: '',
       network: '',
@@ -60,18 +61,22 @@ export class Home extends React.Component {
 
     if(event.target.name === 'emailAddress') {
       let re = /\S+@\S+\.\S+/;
-      re.test(this.state.emailAddress);
-      if(this.state.emailAddress !== null) {
-        if (re.test(this.state.emailAddress) === true) {
-          this.setState({ emailDisable: false })
-          console.log('true')
+      if(event.target.value.length > 0) {
+        event.target.parentNode.classList.add('active');
+        if (re.test(event.target.value) === true) {
+          this.setState({ emailDisable: false });
+          event.target.classList.remove('errorOutline');
         } else {
-          console.log('false')
-          this.setState({ emailDisable: true })
+          this.setState({
+            emailDisable: true,
+            errorEmail: 'Please enter a valid email address'
+          });
+          event.target.classList.add('errorOutline');
         }
       } else {
-        console.log('true')
-        this.setState({ emailDisable: false })
+        this.setState({ emailDisable: false });
+        event.target.parentNode.classList.remove('active');
+        event.target.classList.remove('errorOutline');
       }
     }
 
@@ -88,26 +93,35 @@ export class Home extends React.Component {
           this.setState({ disabled: true})
         }
 
-      event.target.parentNode.parentNode.classList.add('active')
-      console.log(isNaN(parseInt(event.target.value)));
-      if(isNaN(parseInt(event.target.value))) {
-        this.setState({
-          errorMessageNumber: `Mobile number contain numbers only.`,
-          errorNumber: true
-        });
-        event.target.classList.add('errorOutline')
+      if (event.target.value.length > 0) {
+        event.target.parentNode.parentNode.classList.add('active')
+        if (isNaN(parseInt(event.target.value))) {
+          this.setState({
+            errorMessageNumber: `Mobile number contain numbers only.`,
+            errorNumber: true
+          });
+          event.target.classList.add('errorOutline')
+        }
+        if (!isNaN(parseInt(event.target.value))) {
+          this.setState({
+            errorMessageNumber: ``,
+            errorNumber: false
+          });
+          event.target.classList.remove('errorOutline')
+        }
       }
-      if (!isNaN(parseInt(event.target.value))) {
-        this.setState({
-          errorMessageNumber: ``,
-          errorNumber: false
-        });
-        event.target.classList.remove('errorOutline')
+      else {
+        event.target.parentNode.parentNode.classList.remove('active')
       }
     }
 
     if(event.target.name === 'fullName') {
-      event.target.parentNode.classList.add('active')
+      if(event.target.value.length > 0) {
+        event.target.parentNode.classList.add('active')
+      }
+      else {
+        event.target.parentNode.classList.remove('active')
+      }
     }
   }
 
@@ -274,7 +288,7 @@ export class Home extends React.Component {
                       onChange={event => this.handleSubmit(event)}
                     />
                     {this.state.emailDisable === true &&
-                      <div className="errorEmail">Please enter a valid email address</div>
+                      <div className="errorEmail">{this.state.errorEmail}</div>
                     }
                   </div>
                   <button
