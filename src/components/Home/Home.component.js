@@ -112,7 +112,7 @@ export class Home extends React.Component {
         event.target.parentNode.parentNode.classList.add('active')
         if (isNaN(parseInt(event.target.value))) {
           this.setState({
-            errorMessageNumber: `Mobile number contain numbers only.`,
+            errorMessageNumber: `Mobile number contain numbers only`,
             errorNumber: true
           });
           event.target.classList.add('errorOutline')
