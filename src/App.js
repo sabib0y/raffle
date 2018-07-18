@@ -46,6 +46,7 @@ class App extends Component {
     }
     return false;
   }
+
   redeemCode(e) {
     e.preventDefault();
     this.setState({revealRedeem: true});
@@ -89,18 +90,6 @@ class App extends Component {
     newArray.push(nextDayValue);
 
     let nowTime = moment().format();
-    var textInterim;
-
-    if (nowTime > newArray[1] && nowTime < newArray[2]) {
-      textInterim = 'Results will be published shortly... Thank you.'
-    }
-
-    if (nowTime > newArray[3] && nowTime < newArray[0]) {
-      textInterim = 'New competition entry will be available shortly ... Thank you.'
-    }
-    else {
-      textInterim = 'Thank you';
-    }
 
     return (
       <div className="container-fluid appWrapper">

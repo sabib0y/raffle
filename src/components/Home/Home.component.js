@@ -5,7 +5,6 @@ import uniqid from 'uniqid';
 // import twilio from 'twilio';
 import { connect } from "react-redux";
 import { getUsers, getNumbers } from "../../redux/actions";
-import { randomizedData } from '../../helpers/getDataFirebase';
 import 'react-select/dist/react-select.css';
 import './Home.scss';
 import Popup from '../PopUp/PopUp.component';
@@ -59,9 +58,6 @@ export class Home extends React.Component {
     change[event.target.name] = event.target.value;
     this.setState(change);
 
-    const test = event.target.value;
-    const
-
     if(event.target.name === 'emailAddress') {
       let re = /\S+@\S+\.\S+/;
       re.test(this.state.emailAddress);
@@ -80,26 +76,38 @@ export class Home extends React.Component {
     }
 
     if(event.target.name === 'mobileNumber') {
-      let reg = new RegExp('^[0-9]+$');
-      if(isNaN(event.target.value)) {
-        this.setState({
-          errorMessageNumber: `Mobile number should only be numbers.`,
-          errorNumber: true
-        })
+      if(event.target.value.length === 11) {
+        this.setState({ disabled: false})
       }
-      if (!isNaN(event.target.value)) {
-        this.setState({
-          errorMessageNumber: `Mobile number should only be numbers.`,
-          errorNumber: false
-        })
-      }
-
-      if(event.target.value) {
-        this.setState({ disabled: false })
-      }
-      else {
+      else
+        if (event.target.value.length < 11) {
         this.setState({ disabled: true})
       }
+      else
+        if (event.target.value.length > 11) {
+          this.setState({ disabled: true})
+        }
+
+      event.target.parentNode.parentNode.classList.add('active')
+      console.log(isNaN(parseInt(event.target.value)));
+      if(isNaN(parseInt(event.target.value))) {
+        this.setState({
+          errorMessageNumber: `Mobile number contain numbers only.`,
+          errorNumber: true
+        });
+        event.target.classList.add('errorOutline')
+      }
+      if (!isNaN(parseInt(event.target.value))) {
+        this.setState({
+          errorMessageNumber: ``,
+          errorNumber: false
+        });
+        event.target.classList.remove('errorOutline')
+      }
+    }
+
+    if(event.target.name === 'fullName') {
+      event.target.parentNode.classList.add('active')
     }
   }
 
@@ -128,10 +136,10 @@ export class Home extends React.Component {
         if (Object.entries !== null || Object.entries !== undefined) {
           let receivedData = Object.entries(snapshot.val());
           receivedData.map(item => {
-            collectedData.push(item[1]);
+            return collectedData.push(item[1]);
           });
           collectedData.map(user => {
-            collectedNumbers.push(user.user.mobileNumber);
+            return collectedNumbers.push(user.user.mobileNumber);
           });
 
           if (collectedNumbers.indexOf(this.state.mobileNumber) > -1) {
@@ -171,7 +179,6 @@ export class Home extends React.Component {
   }
 
   labelHandler(e){
-    console.log(e);
     this.setState({clickedClass: 'active'})
   }
 
@@ -183,6 +190,7 @@ export class Home extends React.Component {
       { value: 'Glo Network', label: 'Glo', id: 'glo-mobile'},
       { value: 'AirTel', label: 'AirTel', id: 'airtel'},
     ];
+
 
     const popUpInfo = (
       <div>
@@ -211,7 +219,7 @@ export class Home extends React.Component {
             <div className = "main_form">
               <form action="" id="user-form" noValidate="novalidate" onSubmit={e => this.handleSubmitForm(e)}>
                 <fieldset>
-                  <div className={`form-group ${this.state.clickedClass ? 'active' : ''}`}>
+                  <div className='form-group '>
                     <label>Name</label>
                     <input
                       className={`form-control formInput`}
@@ -219,10 +227,9 @@ export class Home extends React.Component {
                       name='fullName'
                       type="text"
                       onChange={event => this.handleSubmit(event)}
-                      onClick={event => this.labelHandler(event)}
                     />
                   </div>
-                  <div className={`form-group form-row form-row-edit ${this.state.clickedClass ? 'active' : ''}`}>
+                  <div className='form-group form-row form-row-edit '>
                     <div className="number-wrapper">
                       <label>Number</label>
                       <input
@@ -231,8 +238,8 @@ export class Home extends React.Component {
                         name='mobileNumber'
                         type='number'
                         onChange={event => this.handleSubmit(event)}
-                        onClick={event => this.labelHandler(event)}
                       />
+                      <span className="errorEmail">{this.state.errorMessageNumber}</span>
                     </div>
                     <div className="network-wrapper">
                         <label>Network</label>
@@ -257,7 +264,7 @@ export class Home extends React.Component {
                         </div>
                       </div>
                   </div>
-                  <div className={`form-group ${this.state.clickedClass ? 'active' : ''}`}>
+                  <div className='form-group '>
                     <label>Email ** OPTIONAL **</label>
                     <input
                       className="form-control formInput"
@@ -265,7 +272,6 @@ export class Home extends React.Component {
                       name='emailAddress'
                       type="email"
                       onChange={event => this.handleSubmit(event)}
-                      onClick={event => this.labelHandler(event)}
                     />
                     {this.state.emailDisable === true &&
                       <div className="errorEmail">Please enter a valid email address</div>

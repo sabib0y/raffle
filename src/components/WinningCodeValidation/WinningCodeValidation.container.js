@@ -22,10 +22,8 @@ export class WinningCodeValidation extends React.Component {
   }
 
   handleSubmitCode(e) {
-    let message;
     e.preventDefault();
     if(this.state.code !== this.props.receivedMobileNumber) {
-      message = `Sorry ..not a winner blah blah`;
       const postData = {
         winningCodeConfirmation: false,
       };
@@ -33,7 +31,6 @@ export class WinningCodeValidation extends React.Component {
       this.togglePopup();
     } else {
       this.setState({ winningCodeConfirmation: true });
-      message = `Congratulations! send you your prize blah blah`;
       const postData = {
         winningCodeConfirmation: true
       };
@@ -66,7 +63,7 @@ export class WinningCodeValidation extends React.Component {
           />
           : null
         }
-        {this.state.winningCodeConfirmation == false &&
+        {this.state.winningCodeConfirmation === false &&
           <form action="" id="user-form" noValidate="noValidate">
             <fieldset>
               <div className="form-group">
