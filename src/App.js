@@ -110,11 +110,13 @@ class App extends Component {
         {App.isIntervalPreForm(newArray[0], newArray[3], newArray[4], nowTime) &&
           <InterimPage
             textInterim='New competition entry will be available shortly ... Thank you.'
+            schedule="form"
           />
         }
          {App.isIntervalPreResults(newArray[1], newArray[2], nowTime) &&
           <InterimPage
             textInterim='Results will be published shortly... Thank you.'
+            schedule="results"
           />
         }
         <Footer />
