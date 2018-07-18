@@ -64,16 +64,30 @@ export class Home extends React.Component {
       if(event.target.value.length > 0) {
         event.target.parentNode.classList.add('active');
         if (re.test(event.target.value) === true) {
-          this.setState({ emailDisable: false });
+          this.setState({
+            emailDisable: false,
+            disabled: false
+          });
           event.target.classList.remove('errorOutline');
         } else {
           this.setState({
             emailDisable: true,
-            errorEmail: 'Please enter a valid email address'
+            errorEmail: 'Please enter a valid email address',
+            disabled: true
           });
           event.target.classList.add('errorOutline');
         }
-      } else {
+      }
+      else
+        if(event.target.value.length <= 0) {
+          event.target.classList.remove('errorOutline');
+          event.target.parentNode.classList.remove('active');
+          this.setState({
+            disabled: false,
+            errorEmail: ''
+          });
+        }
+      else {
         this.setState({ emailDisable: false });
         event.target.parentNode.classList.remove('active');
         event.target.classList.remove('errorOutline');
@@ -91,6 +105,7 @@ export class Home extends React.Component {
       else
         if (event.target.value.length > 11) {
           this.setState({ disabled: true})
+          event.target.parentNode.parentNode.classList.add('active')
         }
 
       if (event.target.value.length > 0) {
