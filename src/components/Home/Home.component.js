@@ -16,7 +16,7 @@ export class Home extends React.Component {
     this.state = {
       fullName: null,
       emailAddress: '',
-      mobileNumber: null,
+      mobileNumber: '',
       date: {},
       id: null,
       disabled: true,
@@ -36,7 +36,9 @@ export class Home extends React.Component {
       network: '',
       clickedClass: '',
       showPopup: false,
-      emailDisable: false
+      emailDisable: false,
+      errorPresent: false,
+      errorName: ''
     };
   }
 
@@ -95,24 +97,11 @@ export class Home extends React.Component {
     }
 
     if(event.target.name === 'mobileNumber') {
-      if(event.target.value.length === 11) {
-        this.setState({ disabled: false})
-      }
-      else
-        if (event.target.value.length < 11) {
-        this.setState({ disabled: true})
-      }
-      else
-        if (event.target.value.length > 11) {
-          this.setState({ disabled: true})
-          event.target.parentNode.parentNode.classList.add('active')
-        }
-
       if (event.target.value.length > 0) {
         event.target.parentNode.parentNode.classList.add('active')
         if (isNaN(parseInt(event.target.value))) {
           this.setState({
-            errorMessageNumber: `Mobile number contain numbers only`,
+            errorMessageNumber: 'Valid mobile number required.',
             errorNumber: true
           });
           event.target.classList.add('errorOutline')
@@ -127,7 +116,7 @@ export class Home extends React.Component {
       }
       else {
         this.setState({
-          errorMessageNumber: `Mobile number contain numbers only.`,
+          errorMessageNumber: 'Valid mobile number required.',
           errorNumber: true
         });
         event.target.classList.add('errorOutline')
@@ -145,62 +134,130 @@ export class Home extends React.Component {
     }
   }
 
+  isSubmit(){
+    // if(this.state.mobileNumber.length === 11) {
+    //   return true
+    // }
+
+    if(this.state.mobileNumber !== null) {
+      if(this.state.mobileNumber.length < 11 || this.state.mobileNumber.length > 11) {
+        return true
+      }
+    }
+
+    return false;
+  }
+
   handleSubmitForm(event) {
     event.preventDefault();
-    let newDate = moment();
-    newDate = newDate.format();
 
-    this.state.id = Math.floor(Math.random() * Math.floor(100000));
-    this.state.date = newDate;
+    if (this.state.mobileNumber === null) {
+      let classTest = document.getElementsByClassName('mobileInput');
 
-    const unidueId = uniqid();
-    this.state.uniqueId = unidueId;
+      classTest.mobileNumber.classList.add('errorOutline')
 
-    let collectedData = [];
-    let collectedNumbers = [];
+      console.log('number is null', classTest);
+      this.setState({
+        errorMessageNumber: 'Valid mobile number required.',
+      });
+    }
 
-    fire.database().ref('users').once('value').then((snapshot) => {
+    else {
+      if(this.state.mobileNumber.length < 11 || this.state.mobileNumber.length > 11) {
+        let classTest = document.getElementsByClassName('mobileInput');
 
-      const { fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId } = this.state;
-      const dataToSend = {
-        fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId
-      };
-
-      if (snapshot.exists()) {
-        if (Object.entries !== null || Object.entries !== undefined) {
-          let receivedData = Object.entries(snapshot.val());
-          receivedData.map(item => {
-            return collectedData.push(item[1]);
-          });
-          collectedData.map(user => {
-            return collectedNumbers.push(user.user.mobileNumber);
-          });
-
-          if (collectedNumbers.indexOf(this.state.mobileNumber) > -1) {
-            this.props.getNumbers({ fullName, emailAddress, mobileNumber, date, uniqueId });
-            this.setState({disabled: true});
-            document.getElementById("user-form").reset();
-            this.togglePopup();
-          } else {
-            this.props.getUsers(dataToSend);
-            this.setState({disabled: true});
-            document.getElementById("user-form").reset();
-            this.togglePopup();
-          }
-        }
+        classTest.mobileNumber.classList.add('errorOutline')
+        this.setState({
+          errorMessageNumber: 'Valid mobile number required.',
+        });
       }
       else {
-        this.props.getUsers(dataToSend);
 
-        this.setState({disabled: true});
-        document.getElementById("user-form").reset();
+
+        let classTest = document.getElementsByClassName('mobileInput');
+
+        let re = /\S+@\S+\.\S+/;
+        let classEmail = document.getElementsByClassName('emailInput');
+
+        if (this.state.emailAddress.length > 0 && re.test(this.state.emailAddress) === false) {
+          console.log('igbo', re.test(this.state.emailAddress))
+          // classEmail.emailAddress.classList.add('errorOutline');
+        }
+
+
+        let resultName = /^[a-zA-Z ]+$/;
+        if (this.state.fullName.length > 0 && resultName.test(this.state.fullName) === false) {
+          console.log('name', re.test(this.state.fullName))
+          // classEmail.emailAddress.classList.add('errorOutline');
+          this.setState({
+            errorName: 'Name contains numbers'
+          })
+        }
+
+        else {
+
+          classTest.mobileNumber.classList.remove('errorOutline')
+          this.setState({
+            errorMessageNumber: '',
+          });
+          let newDate = moment();
+          newDate = newDate.format();
+
+          this.state.id = Math.floor(Math.random() * Math.floor(100000));
+          this.state.date = newDate;
+
+          const unidueId = uniqid();
+          this.state.uniqueId = unidueId;
+
+          let collectedData = [];
+          let collectedNumbers = [];
+
+          fire.database().ref('users').once('value').then((snapshot) => {
+
+            const {fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId} = this.state;
+            const dataToSend = {
+              fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId
+            };
+
+            if (snapshot.exists()) {
+              if (Object.entries !== null || Object.entries !== undefined) {
+                let receivedData = Object.entries(snapshot.val());
+                receivedData.map(item => {
+                  return collectedData.push(item[1]);
+                });
+                collectedData.map(user => {
+                  return collectedNumbers.push(user.user.mobileNumber);
+                });
+
+                if (collectedNumbers.indexOf(this.state.mobileNumber) > -1) {
+                  this.props.getNumbers({fullName, emailAddress, mobileNumber, date, uniqueId});
+                  this.setState({disabled: true});
+                  document.getElementById("user-form").reset();
+                  this.togglePopup();
+                } else {
+                  this.props.getUsers(dataToSend);
+                  this.setState({disabled: true});
+                  document.getElementById("user-form").reset();
+                  this.togglePopup();
+                }
+              }
+            }
+            else {
+              this.props.getUsers(dataToSend);
+
+              this.setState({disabled: true});
+              document.getElementById("user-form").reset();
+            }
+          });
+        }
       }
-    });
+    }
   }
 
   togglePopup() {
     this.setState({
-      showPopup: !this.state.showPopup
+      showPopup: !this.state.showPopup,
+      mobileNumber: ''
     });
   }
 
@@ -262,12 +319,13 @@ export class Home extends React.Component {
                       type="text"
                       onChange={event => this.handleSubmit(event)}
                     />
+                    <span className="errorEmail">{this.state.errorName}</span>
                   </div>
                   <div className='form-group form-row form-row-edit '>
                     <div className="number-wrapper">
                       <label>Number</label>
                       <input
-                        className="form-control formInput"
+                        className="form-control formInput mobileInput"
                         placeholder="Please Enter Mobile"
                         name='mobileNumber'
                         type='number'
@@ -301,7 +359,7 @@ export class Home extends React.Component {
                   <div className='form-group '>
                     <label>Email ** OPTIONAL **</label>
                     <input
-                      className="form-control formInput"
+                      className="form-control formInput emailInput"
                       placeholder="Please enter Email"
                       name='emailAddress'
                       type="email"
@@ -312,7 +370,6 @@ export class Home extends React.Component {
                     }
                   </div>
                   <button
-                    disabled={this.state.disabled}
                     className="btn btn-primary custom-button"
                     type="submit">
                     Submit
