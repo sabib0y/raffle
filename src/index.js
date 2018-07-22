@@ -28,7 +28,7 @@ ReactDOM.render(
   <Router path='/'>
     <Provider store={store}>
       <div>
-        <Route path='/app' component={App} />
+        <Route path='/home' component={App} />
         <Route path='/coming-soon' component={ComingSoon} />
         <Route path='/error' component={Error} />
       </div>
