@@ -25,15 +25,15 @@ const container = document.getElementById('root');
 
 // Render app
 ReactDOM.render(
-  <Provider store={store}>
-      <Router path='/'>
-        <div>
-          <Route path='/app' component={App} />
-          <Route path='/comingsoon' component={ComingSoon} />
-          <Route path='/error' component={Error} />
-        </div>
-      </Router>
-  </Provider>
+  <Router path='/'>
+    <Provider store={store}>
+      <div>
+        <Route path='/home' component={App} />
+        <Route path='/coming-soon' component={ComingSoon} />
+        <Route path='/error' component={Error} />
+      </div>
+    </Provider>
+  </Router>
   , container
 );
 registerServiceWorker();

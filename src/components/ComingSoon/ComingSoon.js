@@ -8,14 +8,12 @@ export class ComingSoon extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      testThis: ''
     };
     this.renderer = this.renderer.bind(this);
   }
 
   renderer() {
-    console.log('event', this);
-    this.props.history.push('/app');
+    this.props.history.push('/home');
   };
 
   render() {
