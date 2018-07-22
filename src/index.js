@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
 import App from './App';
 import ComingSoon from './components/ComingSoon/ComingSoon';
+import Error from './components/Error/Error';
 import reducer from './redux/index';
 import createLogger from 'redux-logger';
 import './base.scss';
@@ -29,6 +30,7 @@ ReactDOM.render(
         <div>
           <Route path='/app' component={App} />
           <Route path='/comingsoon' component={ComingSoon} />
+          <Route path='/error' component={Error} />
         </div>
       </Router>
   </Provider>

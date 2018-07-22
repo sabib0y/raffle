@@ -25,11 +25,13 @@ export class ComingSoon extends React.Component {
         <div>
           <h3 className="headerText">coming soon</h3>
         </div>
-        <Countdown
-          date={Date.now() + 40000}
-          onComplete={this.renderer}
-        >
-        </Countdown>
+        <div className="centreText">
+          <Countdown
+            date={Date.now() + 40000}
+            onComplete={this.renderer}
+          >
+          </Countdown>
+        </div>
         <Footer/>
       </div>
     )
