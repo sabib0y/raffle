@@ -14,7 +14,7 @@ export class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fullName: null,
+      fullName: '',
       emailAddress: '',
       mobileNumber: '',
       date: {},
@@ -28,7 +28,7 @@ export class Home extends React.Component {
       dataCollected: false,
       revealRedeem: false,
       duplicateNumber: null,
-      selectedNetwork: 'Select Mobile NetworkX',
+      selectedNetwork: 'Select Mobile Network',
       errorMessageNumber: '',
       errorEmail: '',
       errorNumber: false,
@@ -38,14 +38,29 @@ export class Home extends React.Component {
       showPopup: false,
       emailDisable: false,
       errorPresent: false,
-      errorName: ''
+      errorName: '',
+      hasError: false,
+      errorNetworkMessage: ''
     };
   }
 
-  handleChangeNetwork() {
+  handleChangeNetwork(event) {
     let elements = document.getElementById('dropDown-custom');
     let selectedValue = elements.options[elements.selectedIndex].value;
     this.setState({ selectedNetwork: selectedValue});
+
+    if(event.target.value === 'select network') {
+      event.target.classList.add('errorOutline');
+      this.setState({
+        errorNetworkMessage: 'Valid network required'
+      })
+    }
+    else {
+      event.target.classList.remove('errorOutline');
+      this.setState({
+        errorNetworkMessage: ''
+      })
+    }
   }
 
   displayResults() {
@@ -75,7 +90,8 @@ export class Home extends React.Component {
           this.setState({
             emailDisable: true,
             errorEmail: 'Please enter a valid email address',
-            disabled: true
+            disabled: true,
+            hasError: true
           });
           event.target.classList.add('errorOutline');
         }
@@ -101,163 +117,218 @@ export class Home extends React.Component {
         event.target.parentNode.parentNode.classList.add('active')
         if (isNaN(parseInt(event.target.value))) {
           this.setState({
-            errorMessageNumber: 'Valid mobile number required.',
-            errorNumber: true
+            errorMessageNumber: 'Valid mobile number required',
+            errorNumber: true,
+            hasError: true
           });
           event.target.classList.add('errorOutline')
         }
         if (!isNaN(parseInt(event.target.value))) {
           this.setState({
             errorMessageNumber: ``,
-            errorNumber: false
+            errorNumber: false,
+            hasError: false
           });
           event.target.classList.remove('errorOutline')
         }
       }
       else {
         this.setState({
-          errorMessageNumber: 'Valid mobile number required.',
-          errorNumber: true
+          errorMessageNumber: 'Valid mobile number required',
+          errorNumber: true,
+          hasError: true
         });
-        event.target.classList.add('errorOutline')
+        event.target.classList.add('errorOutline');
         event.target.parentNode.parentNode.classList.remove('active')
       }
     }
 
     if(event.target.name === 'fullName') {
       if(event.target.value.length > 0) {
-        event.target.parentNode.classList.add('active')
+        event.target.parentNode.classList.add('active');
+        event.target.classList.remove('errorOutline');
+        this.setState({
+          errorName: '',
+          hasError: false
+        });
+
+        let resultName = /^[a-zA-Z ]+$/;
+        if (resultName.test(event.target.value) === false) {
+          event.target.classList.add('errorOutline');
+          this.setState({
+            errorName: 'Valid name required',
+            hasError: true,
+            fullName: ''
+          })
+        }
+
       }
       else {
-        event.target.parentNode.classList.remove('active')
+        event.target.parentNode.classList.remove('active');
+        event.target.classList.add('errorOutline');
+        this.setState({
+          errorName: 'Valid name required',
+          hasError: true,
+          fullName: ''
+        })
       }
     }
-  }
-
-  isSubmit(){
-    // if(this.state.mobileNumber.length === 11) {
-    //   return true
-    // }
-
-    if(this.state.mobileNumber !== null) {
-      if(this.state.mobileNumber.length < 11 || this.state.mobileNumber.length > 11) {
-        return true
-      }
-    }
-
-    return false;
   }
 
   handleSubmitForm(event) {
     event.preventDefault();
+    let resultName = /^[a-zA-Z ]+$/;
+    let className = document.getElementsByClassName('nameInput');
+    let classTest = document.getElementsByClassName('mobileInput');
+    let classSelect = document.getElementsByClassName('dropDown-custom');
 
-    if (this.state.mobileNumber === null) {
+    let re = /\S+@\S+\.\S+/;
+    let classEmail = document.getElementsByClassName('emailInput');
+
+    if (this.state.mobileNumber.length < 1) {
       let classTest = document.getElementsByClassName('mobileInput');
 
       classTest.mobileNumber.classList.add('errorOutline')
 
       console.log('number is null', classTest);
       this.setState({
-        errorMessageNumber: 'Valid mobile number required.',
+        errorMessageNumber: 'Valid mobile number required',
+        mobileNumber: '',
+        hasError: true
       });
     }
 
-    else {
-      if(this.state.mobileNumber.length < 11 || this.state.mobileNumber.length > 11) {
-        let classTest = document.getElementsByClassName('mobileInput');
+    if(this.state.fullName.length < 1) {
+      className.fullName.classList.add('errorOutline');
+      this.setState({
+        errorName: 'Valid name required',
+        fullName: '',
+        hasError: true
+      })
+    }
 
-        classTest.mobileNumber.classList.add('errorOutline')
-        this.setState({
-          errorMessageNumber: 'Valid mobile number required.',
-        });
-      }
-      else {
+    if(this.state.selectedNetwork === 'Select Mobile Network' || this.state.selectedNetwork === 'select network') {
+      classSelect.selectNetwork.classList.add('errorOutline');
+      console.log('network', this.state.selectedNetwork);
+      this.setState({
+        errorNetworkMessage: 'Valid network required',
+      })
+    }
 
+    else
+    if(this.state.selectedNetwork === 'Select Mobile Network' || this.state.selectedNetwork === 'select network') {
+      classSelect.selectNetwork.classList.add('errorOutline');
+      console.log('network', this.state.selectedNetwork)
+      this.setState({
+        errorNetworkMessage: 'Valid network required',
+      })
+    }
 
-        let classTest = document.getElementsByClassName('mobileInput');
+    else
+      if(this.state.mobileNumber.length !== 11) {
+      let classTest = document.getElementsByClassName('mobileInput');
 
-        let re = /\S+@\S+\.\S+/;
-        let classEmail = document.getElementsByClassName('emailInput');
+      classTest.mobileNumber.classList.add('errorOutline');
+      this.setState({
+        errorMessageNumber: 'Valid mobile number required',
+        mobileNumber: '',
+        hasError: true
+      });
+    }
 
-        if (this.state.emailAddress.length > 0 && re.test(this.state.emailAddress) === false) {
-          console.log('igbo', re.test(this.state.emailAddress))
-          // classEmail.emailAddress.classList.add('errorOutline');
-        }
+    else
+      if (this.state.emailAddress.length > 0 && re.test(this.state.emailAddress) === false) {
+      console.log('igbo', re.test(this.state.emailAddress))
+      // classEmail.emailAddress.classList.add('errorOutline');
+    }
 
+    else
+      if (resultName.test(this.state.fullName) === false) {
+      console.log('name', re.test(this.state.fullName));
+      className.fullName.classList.add('errorOutline');
+      this.setState({
+        errorName: 'Valid name required',
+        fullName: '',
+        hasError: true
+      })
+    }
 
-        let resultName = /^[a-zA-Z ]+$/;
-        if (this.state.fullName.length > 0 && resultName.test(this.state.fullName) === false) {
-          console.log('name', re.test(this.state.fullName))
-          // classEmail.emailAddress.classList.add('errorOutline');
-          this.setState({
-            errorName: 'Name contains numbers'
-          })
-        }
+    else
+      {
 
-        else {
+      classTest.mobileNumber.classList.remove('errorOutline');
+      className.fullName.classList.remove('errorOutline');
+      classSelect.selectNetwork.classList.remove('errorOutline');
+      this.setState({
+        errorMessageNumber: '',
+        errorNetworkMessage: '',
+        errorName: '',
+      });
+      let newDate = moment();
+      newDate = newDate.format();
 
-          classTest.mobileNumber.classList.remove('errorOutline')
-          this.setState({
-            errorMessageNumber: '',
-          });
-          let newDate = moment();
-          newDate = newDate.format();
+      this.state.id = Math.floor(Math.random() * Math.floor(100000));
+      this.state.date = newDate;
 
-          this.state.id = Math.floor(Math.random() * Math.floor(100000));
-          this.state.date = newDate;
+      const unidueId = uniqid();
+      this.state.uniqueId = unidueId;
 
-          const unidueId = uniqid();
-          this.state.uniqueId = unidueId;
+      let collectedData = [];
+      let collectedNumbers = [];
 
-          let collectedData = [];
-          let collectedNumbers = [];
+      fire.database().ref('users').once('value').then((snapshot) => {
 
-          fire.database().ref('users').once('value').then((snapshot) => {
+        const {fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId} = this.state;
+        const dataToSend = {
+          fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId
+        };
 
-            const {fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId} = this.state;
-            const dataToSend = {
-              fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId
-            };
+        if (snapshot.exists()) {
+          if (Object.entries !== null || Object.entries !== undefined) {
+            let receivedData = Object.entries(snapshot.val());
+            receivedData.map(item => {
+              return collectedData.push(item[1]);
+            });
+            collectedData.map(user => {
+              return collectedNumbers.push(user.user.mobileNumber);
+            });
 
-            if (snapshot.exists()) {
-              if (Object.entries !== null || Object.entries !== undefined) {
-                let receivedData = Object.entries(snapshot.val());
-                receivedData.map(item => {
-                  return collectedData.push(item[1]);
-                });
-                collectedData.map(user => {
-                  return collectedNumbers.push(user.user.mobileNumber);
-                });
-
-                if (collectedNumbers.indexOf(this.state.mobileNumber) > -1) {
-                  this.props.getNumbers({fullName, emailAddress, mobileNumber, date, uniqueId});
-                  this.setState({disabled: true});
-                  document.getElementById("user-form").reset();
-                  this.togglePopup();
-                } else {
-                  this.props.getUsers(dataToSend);
-                  this.setState({disabled: true});
-                  document.getElementById("user-form").reset();
-                  this.togglePopup();
-                }
-              }
-            }
-            else {
-              this.props.getUsers(dataToSend);
-
+            if (collectedNumbers.indexOf(this.state.mobileNumber) > -1) {
+              this.props.getNumbers({fullName, emailAddress, mobileNumber, date, uniqueId});
               this.setState({disabled: true});
               document.getElementById("user-form").reset();
+              this.togglePopup();
+            } else {
+              this.props.getUsers(dataToSend);
+              this.setState({disabled: true});
+              document.getElementById("user-form").reset();
+              this.togglePopup();
             }
-          });
+          }
         }
-      }
+        else {
+          this.props.getUsers(dataToSend);
+
+          this.setState({disabled: true});
+          document.getElementById("user-form").reset();
+        }
+      });
+
+      let classRemove = document.getElementsByClassName('form-group');
+        for ( let value of classRemove) {
+          console.log(value);
+          value.classList.remove('active');
+        }
     }
   }
 
   togglePopup() {
     this.setState({
       showPopup: !this.state.showPopup,
-      mobileNumber: ''
+      mobileNumber: '',
+      fullName: '',
+      emailAddress: '',
+      selectedNetwork: 'Select Mobile Network'
     });
   }
 
@@ -313,7 +384,7 @@ export class Home extends React.Component {
                   <div className='form-group '>
                     <label>Name</label>
                     <input
-                      className={`form-control formInput`}
+                      className='form-control formInput nameInput'
                       placeholder="Full Name"
                       name='fullName'
                       type="text"
@@ -339,7 +410,8 @@ export class Home extends React.Component {
                           <select
                             className="dropDown-custom"
                             id="dropDown-custom"
-                            onChange={() => this.handleChangeNetwork()}
+                            name='selectNetwork'
+                            onChange={item => this.handleChangeNetwork(item)}
                           >
                             {options.map((item, i) => {
                               return (
@@ -353,6 +425,7 @@ export class Home extends React.Component {
                               )
                             })}
                           </select>
+                          <span className="errorEmail">{this.state.errorNetworkMessage}</span>
                         </div>
                       </div>
                   </div>
