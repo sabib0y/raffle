@@ -48,7 +48,7 @@ export default class InterimPage extends React.Component {
 
   render () {
     const { formStartToCheck, resultStartToCheck } =this.state;
-
+console.log(this.state, 'ssssss')
     return (
       <div className="containerWrapper">
         <p>Competition is currently closed...</p>
