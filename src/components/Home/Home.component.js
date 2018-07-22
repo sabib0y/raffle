@@ -459,7 +459,8 @@ export class Home extends React.Component {
           </div>
         </div>
       </div>
-    </div>
+        <p className="disclaimerText">By entering the competition, you consent to your details being used for marketing purposes.</p>
+      </div>
     )
   }
 }
