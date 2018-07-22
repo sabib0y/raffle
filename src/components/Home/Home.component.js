@@ -52,7 +52,7 @@ export class Home extends React.Component {
     if(event.target.value === 'select network') {
       event.target.classList.add('errorOutline');
       this.setState({
-        errorNetworkMessage: 'Valid network required'
+        errorNetworkMessage: ''
       })
     }
     else {
@@ -89,7 +89,7 @@ export class Home extends React.Component {
         } else {
           this.setState({
             emailDisable: true,
-            errorEmail: 'Please enter a valid email address',
+            errorEmail: '',
             disabled: true,
             hasError: true
           });
@@ -113,11 +113,17 @@ export class Home extends React.Component {
     }
 
     if(event.target.name === 'mobileNumber') {
+      if(event.target.value.length !== 11){
+        event.target.classList.add('errorOutline')
+      }
+      if(event.target.value.length === 11){
+        event.target.classList.remove('errorOutline')
+      }
       if (event.target.value.length > 0) {
         event.target.parentNode.parentNode.classList.add('active')
         if (isNaN(parseInt(event.target.value))) {
           this.setState({
-            errorMessageNumber: 'Valid mobile number required',
+            errorMessageNumber: '',
             errorNumber: true,
             hasError: true
           });
@@ -129,16 +135,15 @@ export class Home extends React.Component {
             errorNumber: false,
             hasError: false
           });
-          event.target.classList.remove('errorOutline')
         }
       }
       else {
         this.setState({
-          errorMessageNumber: 'Valid mobile number required',
+          errorMessageNumber: '',
           errorNumber: true,
           hasError: true
         });
-        event.target.classList.add('errorOutline');
+        event.target.classList.remove('errorOutline');
         event.target.parentNode.parentNode.classList.remove('active')
       }
     }
@@ -156,7 +161,7 @@ export class Home extends React.Component {
         if (resultName.test(event.target.value) === false) {
           event.target.classList.add('errorOutline');
           this.setState({
-            errorName: 'Valid name required',
+            errorName: '',
             hasError: true,
             fullName: ''
           })
@@ -167,7 +172,7 @@ export class Home extends React.Component {
         event.target.parentNode.classList.remove('active');
         event.target.classList.add('errorOutline');
         this.setState({
-          errorName: 'Valid name required',
+          errorName: '',
           hasError: true,
           fullName: ''
         })
