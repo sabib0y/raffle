@@ -2,7 +2,7 @@ import registerServiceWorker from './registerServiceWorker';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {applyMiddleware, compose, createStore} from 'redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, HashRouter } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
 import App from './App';
@@ -25,7 +25,7 @@ const container = document.getElementById('root');
 
 // Render app
 ReactDOM.render(
-  <Router path='/'>
+  <HashRouter path='/'>
     <Provider store={store}>
       <div>
         <Route path='/home' component={App} />
@@ -33,7 +33,7 @@ ReactDOM.render(
         <Route path='/error' component={Error} />
       </div>
     </Provider>
-  </Router>
+  </HashRouter>
   , container
 );
 registerServiceWorker();
