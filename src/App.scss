@@ -1,8 +1,31 @@
 @import "./settings";
 
+#root,
+#root >div{
+  height: 100%;
+}
+
+#overall_wrapper{
+  position: relative;
+  height: 100%;
+  background-image: url('./images/glow.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  
+}
+
+.appWrapper{
+}
+
 .headerText {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 6rem;
+}
+
+header{
+  text-align: center;
+  margin-bottom: 10rem;
 }
 
 .App-logo {
@@ -37,3 +60,4 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+

@@ -15,25 +15,22 @@ export class ComingSoon extends React.Component {
   }
 
   renderer(event) {
+    //console.log('test', event)
     if (event.completed) {
       // Render a completed state
       return this.props.history.push('/home');
     } else {
-      // Render a countdown
-      return (
-        <div>
-          <span>Days</span>
-          <span>{event.days}</span>:
-          <span>Hours</span>
-          <span>{event.hours}</span>:
-          <span>minutes</span>
-          <span>{event.minutes}</span>:
-          <span>Seconds</span>
-          <span>{event.seconds}</span>
-        </div>
-      );
-    }
+      // Render a countdown  
+      runthis();
+    }    
+
+
   };
+
+  runthis(){
+    console.log('ping');    
+  }
+
 
   componentDidMount() {
     let collectedData;
@@ -48,21 +45,23 @@ export class ComingSoon extends React.Component {
       this.setState({
         timeMathResultStartTime
       });
-      console.log('ttttttt', this.state.timeMathResultStartTime);
     });
   }
+
+//dynamic
+  //on tick, populate static wrappers
 
   render() {
     const { timeMathResultStartTime } = this.state;
     return (
       <div className='container-fluid appWrapper'>
         <div>
-          <h3 className="headerText">coming soon</h3>
+          <h3 className="headerText">Dailychoppins comes to life in...</h3>
         </div>
         <div className="centreText">
           <Countdown
             date={Date.now() + timeMathResultStartTime}
-            onComplete={this.renderer}
+            onTick={event => this.renderer(event)}
           >
           </Countdown>
         </div>

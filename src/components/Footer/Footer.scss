@@ -3,6 +3,16 @@
 .footerLinkWrapper {
  font-size: 12px;
  margin: 25px 0 25px 0px;
+
+ 	ul{
+		padding: 0;
+		text-align: center;
+		display: block;
+		li{
+			display: inline-block;
+		    margin: 0 2rem;
+		}
+ 	}
 }
 .socialLinks {
   text-align: center;

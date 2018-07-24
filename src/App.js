@@ -7,6 +7,9 @@ import moment from 'moment-timezone';
 import Footer from'./components/Footer/Footer.component';
 import fire from './fire';
 
+
+
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -66,6 +69,7 @@ class App extends Component {
   }
 
   render() {
+
     const timeToCheck = [
       this.state.formStartTime, //form startTime
       this.state.formEndTime, //form endTime
@@ -93,6 +97,7 @@ class App extends Component {
 
     return (
       <div className="container-fluid appWrapper">
+
         <div>
           <h1 className="headerText">Welcome to Dailychoppins!</h1>
         </div>

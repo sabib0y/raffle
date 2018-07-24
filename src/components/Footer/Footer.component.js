@@ -17,7 +17,7 @@ library.add(
   fab,
   faCoffee,
   faCog,
-  faSpinner,
+  faSpinner, 
   faQuoteLeft,
   faSquare,
   faCheckSquare
