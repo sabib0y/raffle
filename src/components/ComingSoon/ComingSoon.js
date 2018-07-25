@@ -44,10 +44,8 @@ export class ComingSoon extends React.Component {
 
   componentDidMount() {
     let collectedData;
-    let dateToTestAgainst;
     fire.database().ref('setSiteLaunch/siteLaunch').once('value').then((snapshot) => {
       collectedData = snapshot.val();
-      console.log('collectedData', collectedData);
 
       let timeNow = new Date();
       collectedData = new Date(collectedData);
@@ -59,11 +57,16 @@ export class ComingSoon extends React.Component {
           timeMathResultStartTime
         });
 
+
+        // let duration = moment.duration(timeMathResultStartTime*1000, 'milliseconds');
         let duration = moment.duration(timeMathResultStartTime, 'milliseconds');
         let interval = 1000;
 
+        console.log('before interval', duration.hours());
+
         setInterval(() => {
-          let testData = `${duration.days()} : ${duration.hours()} : ${duration.minutes()} : ${duration.seconds()}`;
+          duration = moment.duration(duration - interval, 'milliseconds');
+          let testData = duration.days() + ":" + duration.hours() + ":" + duration.minutes() + ":" + duration.seconds();
 
           this.setState({
             testData
