@@ -1,3 +1,4 @@
+
 .appWrapper {
  padding: 40px 10px 25px 10px;
 }
@@ -9,3 +10,76 @@
 span {
  text-align: center;
 }
+
+#timer_wrapper{
+	>span{
+		display: inline-block;
+    	position: relative;
+    	padding: 0 6rem;
+    	font-size: 3.2rem;
+    	&:after{
+    		position:absolute;
+    		content: '';
+    		width: 0.3rem;
+    		height: 100%;
+    		top: 0;
+    		right: 0;
+
+			/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+50,ffffff+100&0+1,1+50,0+100 */
+			background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 1%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+			background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 1%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 1%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
+
+    	}
+
+    	&:last-child:after{
+    		display: none;
+    	}
+	}
+
+	.dynamic_value{
+		font-size: 12.1rem;
+	    display: block;
+    	line-height: 1;
+
+    	&+span{
+    		position: relative;
+    		top: 2rem;
+    	}
+	}
+}
+
+// responsive
+// tablet
+@media screen and (max-width: 1020px) and (min-width: 741px){
+	#timer_wrapper{
+		> span{
+		    padding: 0 3rem;
+    		font-size: 2.2rem;
+		}
+
+		.dynamic_value{
+			font-size: 9.1rem;
+		}
+	}
+}
+
+// mobile
+@media only screen and (max-width: 740px) {
+	#timer_wrapper{
+		>span{
+			padding: 0 1.3rem;
+		    font-size: 1.3rem;
+		}
+
+		.dynamic_value{
+			font-size: 3.1rem;
+
+			&+span{
+				top: 0.5rem;
+			}
+		}
+	}
+
+ }

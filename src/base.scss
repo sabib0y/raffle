@@ -1,4 +1,4 @@
-@import "settings";
+@import "settings"; 
 
 :root { font-size: 10px; }
 html{
@@ -56,3 +56,36 @@ span.large_text{
   font-weight: 700;
   margin: 0 0.7rem;
 }
+
+
+// responsive
+// tablet
+@media screen and (max-width: 1060px) and (min-width: 841px){
+  header {
+    margin-bottom: 0rem;
+  }
+}
+
+// mobile
+@media only screen and (max-width: 1020px) {
+  #logo{
+    img{
+      max-width: 17rem;
+    }
+  }
+
+  header{
+    margin-bottom: 0;
+    padding-top: 20px;
+  }
+
+  .headerText{
+    margin-bottom: 2rem;
+    font-size: 3.2rem;
+  }
+
+  .footerLinkWrapper{
+    margin-top: 4rem;
+  }
+ }
+

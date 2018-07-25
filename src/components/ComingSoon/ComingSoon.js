@@ -15,7 +15,8 @@ export class ComingSoon extends React.Component {
       day: '',
       hour: '',
       min: '',
-      sec: ''
+      sec: '',
+      testData: ''
     };
     this.renderer = this.renderer.bind(this);
   }
@@ -52,50 +53,59 @@ export class ComingSoon extends React.Component {
       collectedData = new Date(collectedData);
 
       let timeMathResultStartTime = collectedData - timeNow;
-      this.setState({
-        timeMathResultStartTime
-      });
 
-      dateToTestAgainst = new  Date(collectedData);
-      let eventTime= 1366549200; // Timestamp - Sun, 21 Apr 2013 13:00:00 GMT
-      let currentTime = 1366547400; // Timestamp - Sun, 21 Apr 2013 12:30:00 GMT
-      let diffTime = dateToTestAgainst - timeNow;
-      let duration = moment.duration(diffTime*1000, 'milliseconds');
-      let interval = 1000;
+      if(collectedData > timeNow) {
+        this.setState({
+          timeMathResultStartTime
+        });
 
-      setInterval(() => {
-        duration = moment.duration(duration - interval, 'milliseconds');
-        let testData = duration.days() + ":" + duration.hours() + ":" + duration.minutes() + ":" + duration.seconds();
+        dateToTestAgainst = new  Date(collectedData);
+        let eventTime= 1366549200; // Timestamp - Sun, 21 Apr 2013 13:00:00 GMT
+        let currentTime = 1366547400; // Timestamp - Sun, 21 Apr 2013 12:30:00 GMT
+        let diffTime = dateToTestAgainst - timeNow;
+        let duration = moment.duration(diffTime*1000, 'milliseconds');
+        let interval = 1000;
+
+        setInterval(() => {
+          duration = moment.duration(duration - interval, 'milliseconds');
+          let testData = duration.days() + ":" + duration.hours() + ":" + duration.minutes() + ":" + duration.seconds();
 
 
 
-        console.log('testing this badboy', testData);
-
-        let day,
-          hour,
-          min,
-          sec;
-
-        if(testData.length > 1) {
-          let newArray = [];
-          newArray.push(testData.split(':'));
-
-          day = newArray[0][0];
-          hour = newArray[0][1];
-          min = newArray[0][2];
-          sec = newArray[0][3];
-
+          console.log('testing this badboy', testData);
           this.setState({
-            day,
+            testData
+          })
+
+          let day,
             hour,
             min,
-            sec
-          });
-          // console.log('time converted:',newArray, day, hour, min, sec);
-        }
+            sec;
 
-        // $('.countdown').text(duration.hours() + ":" + duration.minutes() + ":" + duration.seconds())
-      }, interval);
+          if(testData.length > 1) {
+            let newArray = [];
+            newArray.push(testData.split(':'));
+
+            day = newArray[0][0];
+            hour = newArray[0][1];
+            min = newArray[0][2];
+            sec = newArray[0][3];
+
+            this.setState({
+              day,
+              hour,
+              min,
+              sec
+            });
+            // console.log('time converted:',newArray, day, hour, min, sec);
+          }
+
+          // $('.countdown').text(duration.hours() + ":" + duration.minutes() + ":" + duration.seconds())
+        }, interval);
+      } else {
+        return this.props.history.push('/home');
+      }
+
     });
   }
 
@@ -104,31 +114,30 @@ export class ComingSoon extends React.Component {
     return (
       <div className='container-fluid appWrapper'>
         <div>
-          <h3 className="headerText">coming soon</h3>
+          <h3 className="headerText">Dailychoppins comes to life in...</h3>
         </div>
         <div className="centreText">
           <div className="timeCountDown">{this.state.newCountDown}</div>
-          {/*<Countdown*/}
-            {/*date={Date.now() + timeMathResultStartTime}*/}
-            {/*onComplete={this.renderer}*/}
-          {/*>*/}
-          {/*</Countdown>*/}
-          <span>
-            <span>Days</span>
-            <span>{this.state.day}</span>
-          </span>
-          <span>
-            <span>Hours</span>
-            <span>{this.state.hour}</span>
-          </span>
-          <span>
-            <span>Minutes</span>
-            <span>{this.state.min}</span>
-          </span>
-          <span>
-            <span>Seconds</span>
-            <span>{this.state.sec}</span>
-          </span>
+          {this.state.testData.length > 0 &&
+            <div id="timer_wrapper">
+              <span>
+                <span className="dynamic_value">{this.state.day}</span>
+                <span>Days</span>
+              </span>
+              <span>
+                <span className="dynamic_value">{this.state.hour}</span>
+                <span>Hours</span>
+              </span>
+              <span>
+                <span className="dynamic_value">{this.state.min}</span>
+                <span>Minutes</span>
+              </span>
+              <span>
+                <span className="dynamic_value">{this.state.sec}</span>
+                <span>Seconds</span>
+              </span>
+            </div>
+          }
         </div>
         <Footer/>
       </div>
