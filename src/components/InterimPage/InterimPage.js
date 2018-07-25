@@ -28,7 +28,6 @@ export default class InterimPage extends React.Component {
       if(timeNow > formStartTime){
         let day;
         day = moment(formStartTime).add(1, 'd');
-        console.log('day', day.format());
         timeMathFormStartTime = day - timeNow;
         this.setState({
           formStartToCheck: timeMathFormStartTime,
@@ -48,7 +47,6 @@ export default class InterimPage extends React.Component {
 
   render () {
     const { formStartToCheck, resultStartToCheck } =this.state;
-console.log(this.state, 'ssssss')
     return (
       <div className="containerWrapper">
         <p>Competition is currently closed...</p>

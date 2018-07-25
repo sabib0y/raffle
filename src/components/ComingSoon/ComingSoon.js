@@ -59,23 +59,15 @@ export class ComingSoon extends React.Component {
           timeMathResultStartTime
         });
 
-        dateToTestAgainst = new  Date(collectedData);
-        let eventTime= 1366549200; // Timestamp - Sun, 21 Apr 2013 13:00:00 GMT
-        let currentTime = 1366547400; // Timestamp - Sun, 21 Apr 2013 12:30:00 GMT
-        let diffTime = dateToTestAgainst - timeNow;
-        let duration = moment.duration(diffTime*1000, 'milliseconds');
+        let duration = moment.duration(timeMathResultStartTime, 'milliseconds');
         let interval = 1000;
 
         setInterval(() => {
-          duration = moment.duration(duration - interval, 'milliseconds');
-          let testData = duration.days() + ":" + duration.hours() + ":" + duration.minutes() + ":" + duration.seconds();
+          let testData = `${duration.days()} : ${duration.hours()} : ${duration.minutes()} : ${duration.seconds()}`;
 
-
-
-          console.log('testing this badboy', testData);
           this.setState({
             testData
-          })
+          });
 
           let day,
             hour,
@@ -97,20 +89,15 @@ export class ComingSoon extends React.Component {
               min,
               sec
             });
-            // console.log('time converted:',newArray, day, hour, min, sec);
           }
-
-          // $('.countdown').text(duration.hours() + ":" + duration.minutes() + ":" + duration.seconds())
         }, interval);
       } else {
         return this.props.history.push('/home');
       }
-
     });
   }
 
   render() {
-    const { timeMathResultStartTime } = this.state;
     return (
       <div className='container-fluid appWrapper'>
         <div>

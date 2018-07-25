@@ -12,6 +12,5 @@ export default function randomizeData() {
     } else {
       console.error('No Entries Found', randomizedData)
     }
-    console.log('randomWinningID', randomizedData);
     return randomizedData;
 };

@@ -35,7 +35,6 @@ export class WinningId extends React.PureComponent {
   }
 
   render() {
-    console.log('this.props', this.props)
     let uniqueCodeSplit;
     if(this.state.receivedCode !== null) {
       uniqueCodeSplit = this.state.receivedCode.replace(/(\w{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');

@@ -195,7 +195,6 @@ export class Home extends React.Component {
 
       classTest.mobileNumber.classList.add('errorOutline')
 
-      console.log('number is null', classTest);
       this.setState({
         errorMessageNumber: 'Valid mobile number required',
         mobileNumber: '',
@@ -223,7 +222,6 @@ export class Home extends React.Component {
     else
     if(this.state.selectedNetwork === 'Select Mobile Network' || this.state.selectedNetwork === 'select network') {
       classSelect.selectNetwork.classList.add('errorOutline');
-      console.log('network', this.state.selectedNetwork)
       this.setState({
         errorNetworkMessage: 'Valid network required',
       })
@@ -249,7 +247,6 @@ export class Home extends React.Component {
 
     else
       if (resultName.test(this.state.fullName) === false) {
-      console.log('name', re.test(this.state.fullName));
       className.fullName.classList.add('errorOutline');
       this.setState({
         errorName: 'Valid name required',
