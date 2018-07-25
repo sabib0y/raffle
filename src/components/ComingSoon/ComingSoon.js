@@ -16,7 +16,9 @@ export class ComingSoon extends React.Component {
       hour: '',
       min: '',
       sec: '',
-      testData: ''
+      testData: '',
+      dateThen: '',
+      dateNow: ''
     };
     this.renderer = this.renderer.bind(this);
   }
@@ -46,25 +48,32 @@ export class ComingSoon extends React.Component {
     let collectedData;
     fire.database().ref('setSiteLaunch/siteLaunch').once('value').then((snapshot) => {
       collectedData = snapshot.val();
+      let interval = 1000;
 
-      let timeNow = new Date();
-      collectedData = new Date(collectedData);
+      setInterval(() => {
+        let timeNow = moment().tz("Europe/London").format();
 
-      let timeMathResultStartTime = collectedData - timeNow;
+        let newDateTime, oldDateTime;
 
-      if(collectedData > timeNow) {
-        this.setState({
-          timeMathResultStartTime
-        });
+        oldDateTime = collectedData;
+        newDateTime = timeNow;
+
+        timeNow = new Date(timeNow);
+        collectedData = new Date(collectedData);
+
+        let timeMathResultStartTime = collectedData - timeNow;
+
+        if (collectedData > timeNow) {
+          this.setState({
+            timeMathResultStartTime
+          });
 
 
-        // let duration = moment.duration(timeMathResultStartTime*1000, 'milliseconds');
-        let duration = moment.duration(timeMathResultStartTime, 'milliseconds');
-        let interval = 1000;
+          // let duration = moment.duration(timeMathResultStartTime*1000, 'milliseconds');
+          let duration = moment.duration(timeMathResultStartTime, 'milliseconds');
 
-        console.log('before interval', duration.hours());
+          console.log('before interval', duration.hours());
 
-        setInterval(() => {
           duration = moment.duration(duration - interval, 'milliseconds');
           let testData = duration.days() + ":" + duration.hours() + ":" + duration.minutes() + ":" + duration.seconds();
 
@@ -77,7 +86,7 @@ export class ComingSoon extends React.Component {
             min,
             sec;
 
-          if(testData.length > 1) {
+          if (testData.length > 1) {
             let newArray = [];
             newArray.push(testData.split(':'));
 
@@ -90,17 +99,34 @@ export class ComingSoon extends React.Component {
               day,
               hour,
               min,
-              sec
+              sec,
+              dateThen: collectedData,
+              dateNow: timeNow,
             });
+            console.log(collectedData.getTime(), 'tetet tetet', timeNow.getTime())
           }
-        }, interval);
-      } else {
-        return this.props.history.push('/home');
-      }
+
+          if (oldDateTime <= newDateTime) {
+            clearInterval(this);
+            return this.props.history.push('/home');
+          }
+        } else {
+          clearInterval(this);
+          return this.props.history.push('/home');
+        }
+      }, interval);
     });
   }
 
   render() {
+    const { dateThen, dateNow } = this.state;
+    if(dateNow.length > 0 && dateThen.length > 0) {
+      console.log(this.state.dateThen.getDate(), 'jdjdjd')
+      if (dateThen.getDate() < dateNow.getDate()) {
+        this.props.history.push('/home');
+      }
+    }
+
     return (
       <div className='container-fluid appWrapper'>
         <div>

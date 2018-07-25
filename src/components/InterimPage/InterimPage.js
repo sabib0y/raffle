@@ -52,9 +52,6 @@ export default class InterimPage extends React.Component {
           durationResult = moment.duration(durationResult - interval, 'milliseconds');
           testData = durationResult.days() + ":" + durationResult.hours() + ":" + durationResult.minutes() + ":" + durationResult.seconds();
         }
-          this.setState({
-            testData,
-          });
 
           let day,
             hour,
@@ -74,10 +71,10 @@ export default class InterimPage extends React.Component {
               day,
               hour,
               min,
-              sec
+              sec,
+              testData
             });
           }
-
       }, interval);
     });
   }
