@@ -30,6 +30,13 @@ export class WinningId extends React.PureComponent {
     });
   }
 
+  componentWillUnmount() {
+    this.setState({
+      receivedMobileNumber: null,
+      receivedCode: null,
+    })
+  }
+
   redeemCode(e) {
     e.preventDefault();
     this.setState({revealRedeem: true});
@@ -72,7 +79,7 @@ export class WinningId extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.reducer.user
+    user: state.toJS()
   };
 };
 

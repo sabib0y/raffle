@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import './App.scss';
 import Home from './components/Home/Home.component';
-import WinningID from './components/WinningId/WinningId.component';
+import WinningID, {WinningId} from './components/WinningId/WinningId.container';
 import InterimPage from './components/InterimPage/InterimPage';
 import moment from 'moment-timezone';
 import fire from './fire';
+import {connect} from "react-redux";
+import {getTimeForm} from "./redux/actions";
 
 
 
 
-class App extends Component {
+export class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -62,48 +64,23 @@ class App extends Component {
     this.setState({revealRedeem: true});
   }
 
-  componentDidMount(){
+  componentDidMount() {
     fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
       let receivedDataTime = snapshot.val();
 
-      this.setState({
+      const dataToSend = {
         formStartTime: new Date(receivedDataTime.postData.formStart),
         formEndTime: new Date(receivedDataTime.postData.formEnd),
         resultsStartTime: new Date(receivedDataTime.postData.resultStart),
         resultsEndTime: new Date(receivedDataTime.postData.resultEnd)
-      });
+      };
+      this.props.getTimeForm(dataToSend)
     });
-  };
+  }
 
   render() {
-
-    const timeToCheck = [
-      this.state.formStartTime, //form startTime
-      this.state.formEndTime, //form endTime
-      this.state.resultsStartTime, //results startTime
-      this.state.resultsEndTime, //results endTime
-    ];
-
-    let newArray = [];
-    newArray.push(
-      timeToCheck[0],
-      timeToCheck[1],
-      timeToCheck[2],
-      timeToCheck[3]
-      );
-
-    let nextDayValue = moment();
-    nextDayValue = nextDayValue.add(1, 'days').format();
-    nextDayValue = nextDayValue.split('T')[0];
-    nextDayValue = `${nextDayValue}T00:00:01Z`;
-    nextDayValue = moment(nextDayValue).format();
-
-    newArray.push(nextDayValue);
-
-    // let nowTime = moment().format();
     let nowTime = new Date();
-
-    const { formStartTime, resultsEndTime, newValueTomorrow, formEndTime, resultsStartTime } =this.state;
+    let formStartTime, resultsEndTime, formEndTime, resultsStartTime, receivedDataTime, newValueTomorrow;
 
     this.isTimeForm(formStartTime, formEndTime, nowTime);
     this.isTimeResults(resultsStartTime, resultsEndTime, nowTime);
@@ -135,4 +112,15 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+
+    user: state
+  };
+};
+
+const mapDispatchToProps = {
+  getTimeForm,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

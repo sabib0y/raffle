@@ -5,7 +5,7 @@ import {applyMiddleware, compose, createStore} from 'redux';
 import { BrowserRouter as Router, Route, HashRouter } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
-import App from './App';
+import App from './App.container';
 import ComingSoon from './components/ComingSoon/ComingSoon';
 import Error from './components/Error/Error';
 import reducer from './redux/index';
@@ -15,7 +15,7 @@ import './index.css';
 import ParticleAnimation from 'react-particle-animation';
 import ImageLocal from './images/logo.png';
 import InterimPage from "./components/InterimPage/InterimPage";
-import WinningID from "./components/WinningId/WinningId.component";
+import WinningID from "./components/WinningId/WinningId.container";
 import Footer from "./components/Footer/Footer.component";
 
 // Create redux store
