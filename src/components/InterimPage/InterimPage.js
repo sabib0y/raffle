@@ -3,8 +3,11 @@ import './InterimPage.scss';
 import fire from '../../fire';
 import moment from 'moment-timezone';
 import Countdown from 'react-countdown-now';
+import {connect} from "react-redux";
+import {getTimeForm} from "../../redux/actions";
+import {App} from "../../App.container";
 
-export default class InterimPage extends React.Component {
+export class InterimPage extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -36,45 +39,7 @@ export default class InterimPage extends React.Component {
 
   preResults() {
 
-    const { timeNow, resultsStartTime } = this.state;
-    let newDateToTest = new Date();
 
-    if(resultsStartTime > newDateToTest) {
-      let testTime = resultsStartTime - newDateToTest;
-
-      let duration = moment.duration(testTime, 'milliseconds');
-
-      duration = moment.duration(duration - 1000, 'milliseconds');
-      let testData = `${duration.days()} : ${duration.hours()} : ${duration.minutes()} : ${duration.seconds()}`;
-      this.setState({ testData});
-
-      let day,
-        hour,
-        min,
-        sec;
-
-      if (testData.length > 1) {
-        let newArray = [];
-        newArray.push(testData.split(':'));
-
-        day = newArray[0][0];
-        hour = newArray[0][1];
-        min = newArray[0][2];
-        sec = newArray[0][3];
-
-        this.setState({
-          day,
-          hour,
-          min,
-          sec,
-          dateNow: timeNow,
-        });
-      }
-
-    }
-    // else {
-    //   this.props.history.push('/home');
-    // }
   }
 
   minusOne() {
@@ -93,10 +58,65 @@ export default class InterimPage extends React.Component {
         resultsStartTime: new Date(receivedDataTime.postData.resultStart),
         resultsEndTime: new Date(receivedDataTime.postData.resultEnd)
       });
+
+
+      const { formStartTime, resultsEndTime, formEndTime, resultsStartTime } = this.state;
+      let nowTime = new Date();
+
+      if(nowTime >= formStartTime && nowTime <= formEndTime) {
+        this.props.history.push('/home');
+      }
+      if(nowTime > resultsStartTime && nowTime < resultsEndTime) {
+        this.props.history.push('/home');
+      }
     });
-    setTimeout( setInterval( () => {this.preResults()}, 1000), 1000);
+    this.timerHandle = setInterval( () => {
+      const { timeNow, resultsStartTime } = this.state;
+      let newDateToTest = new Date();
+
+      if(resultsStartTime > newDateToTest) {
+        let testTime = resultsStartTime - newDateToTest;
+
+        let duration = moment.duration(testTime, 'milliseconds');
+
+        duration = moment.duration(duration - 1000, 'milliseconds');
+        let testData = `${duration.days()} : ${duration.hours()} : ${duration.minutes()} : ${duration.seconds()}`;
+        this.setState({ testData});
+
+        let day,
+          hour,
+          min,
+          sec;
+
+        if (testData.length > 1) {
+          let newArray = [];
+          newArray.push(testData.split(':'));
+
+          day = newArray[0][0];
+          hour = newArray[0][1];
+          min = newArray[0][2];
+          sec = newArray[0][3];
+
+          this.setState({
+            day,
+            hour,
+            min,
+            sec,
+            dateNow: timeNow,
+          });
+        }
+
+      }
+      // else {
+      //   this.props.history.push('/home');
+      // }
+    }, 1000);
   };
 
+  componentWillUnmount() {
+    clearInterval(this.timerHandle);
+    this.timerHandle = 0;
+  }
 
   render () {
     let schedule;
@@ -159,3 +179,15 @@ export default class InterimPage extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.toJS()
+  };
+};
+
+const mapDispatchToProps = {
+  getTimeForm,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(InterimPage);

@@ -108,7 +108,7 @@ const reducer = (state = initialState, action) => {
     };
 
     fire.database().ref('confirmedWinner/').set({postData});
-    return state.user
+    return state
       .set('winningCodeConfirmation', action.winningCodeConfirmation.winningCodeConfirmation)
       .toJS()
   }

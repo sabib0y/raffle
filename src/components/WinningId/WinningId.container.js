@@ -3,6 +3,7 @@ import fire from '../../fire';
 import { getWinningId } from "../../redux/actions";
 import WinningCodeValidation from '../WinningCodeValidation/WinningCodeValidation.container';
 import {connect} from "react-redux";
+import Immutable from 'immutable';
 
 export class WinningId extends React.PureComponent {
   constructor(props) {
@@ -14,7 +15,8 @@ export class WinningId extends React.PureComponent {
       revealRedeem: false,
       receivedData: null,
       receivedMobileNumber: null,
-      receivedCode: null
+      receivedCode: null,
+      winningConfirmation: false
     }
   }
 
@@ -34,7 +36,7 @@ export class WinningId extends React.PureComponent {
     this.setState({
       receivedMobileNumber: null,
       receivedCode: null,
-    })
+    });
   }
 
   redeemCode(e) {
@@ -47,9 +49,19 @@ export class WinningId extends React.PureComponent {
     if(this.state.receivedCode !== null) {
       uniqueCodeSplit = this.state.receivedCode.replace(/(\w{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');
     }
+
+    // let winningConfirmation = this.props.user.reducer.user.winningCodeConfirmation;
+
+    let winningConfirmation = false;
+
+    // if(this.state.revealRedeem === true) {
+    //   winningConfirmation = true;
+    // }
+    console.log(winningConfirmation, 'winning id', this.props.user);
+
     return (
       <div className="winning_validation draw_content_container">
-        {this.props.user.winningCodeConfirmation === false &&
+        {winningConfirmation === false &&
         <div>
           <div className="winningId">
             the winning ID is <span>{uniqueCodeSplit} </span>
@@ -79,7 +91,7 @@ export class WinningId extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    user: state
+    user: state.toJS()
   };
 };
 
