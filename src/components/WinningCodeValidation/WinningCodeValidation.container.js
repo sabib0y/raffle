@@ -98,7 +98,7 @@ export class WinningCodeValidation extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.toJS()
+    user: state
   };
 };
 

@@ -80,11 +80,14 @@ export class App extends Component {
 
   render() {
     let nowTime = new Date();
-    let formStartTime, resultsEndTime, formEndTime, resultsStartTime, receivedDataTime, newValueTomorrow;
+    let newValueTomorrow;
+
+    const { formStartTime, resultsEndTime, formEndTime, resultsStartTime } = this.props.user.reducer;
 
     this.isTimeForm(formStartTime, formEndTime, nowTime);
     this.isTimeResults(resultsStartTime, resultsEndTime, nowTime);
 
+    console.log('this.props', this.props);
       return (
       <div className="container-fluid appWrapper">
         {this.isTimeResults(resultsStartTime, resultsEndTime, nowTime) &&
@@ -114,8 +117,7 @@ export class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-
-    user: state
+    user: state.toJS()
   };
 };
 

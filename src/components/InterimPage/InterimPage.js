@@ -99,13 +99,23 @@ export default class InterimPage extends React.Component {
 
 
   render () {
+    let schedule;
+    let nowTime = new Date();
+
+    if(nowTime > this.state.formEndTime && nowTime < this.state.resultsStartTime) {
+      schedule = 'results'
+    }
+
+    if(nowTime > this.state.resultsEndTime && nowTime < this.state.formStartTime) {
+      schedule = 'form'
+    }
+
+
     return (
       <div className="containerWrapper">
         <p>Competition is currently closed...</p>
         <p>{this.props.textInterim}</p>
-
-        <div>Remaining Time: {this.state.testData}</div>
-        {this.props.schedule === 'form' &&
+        {schedule === 'form' &&
           <div>
             {this.state.testData.length > 0 &&
               <div id="timer_wrapper">
@@ -125,7 +135,7 @@ export default class InterimPage extends React.Component {
             }
           </div>
         }
-        {this.props.schedule === 'results' &&
+        {schedule === 'results' &&
           <div>
             {this.state.testData.length > 0 &&
               <div id="timer_wrapper">

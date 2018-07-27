@@ -17,17 +17,26 @@ export class ComingSoon extends React.Component {
       testData: '',
       dateThen: '',
       dateNow: '',
-      collectedData: ''
-    };
+      collectedData: '',
+      timeNow: new Date(),
+      siteLaunch: '',
+      testTime: ''
+    }
   }
+
+  getData() {
+
+  }
+
+  preForm() {}
 
   preResults() {
 
-    const { timeNow, collectedData } = this.state;
+    const { timeNow, siteLaunch } = this.state;
     let newDateToTest = new Date();
 
-    if(collectedData > newDateToTest) {
-      let testTime = collectedData - newDateToTest;
+    if(siteLaunch > newDateToTest) {
+      let testTime = siteLaunch - newDateToTest;
 
       let duration = moment.duration(testTime, 'milliseconds');
 
@@ -59,9 +68,9 @@ export class ComingSoon extends React.Component {
       }
 
     }
-    // else {
-    //   this.props.history.push('/home');
-    // }
+    else {
+      this.props.history.push('/home');
+    }
   }
 
   minusOne() {
@@ -71,90 +80,15 @@ export class ComingSoon extends React.Component {
   }
 
   componentDidMount(){
-    fire.database().ref('setSiteLaunch/siteLaunch').once('value').then((snapshot) => {
+    fire.database().ref('setSiteLaunch/').once('value').then((snapshot) => {
       let receivedDataTime = snapshot.val();
 
       this.setState({
-        collectedData: new Date(receivedDataTime),
+        siteLaunch: new Date(receivedDataTime.siteLaunch),
       });
     });
     setTimeout( setInterval( () => {this.preResults()}, 1000), 1000);
   };
-
-  // componentDidMount() {
-  //   let collectedData;
-  //   fire.database().ref('setSiteLaunch/siteLaunch').once('value').then((snapshot) => {
-  //     collectedData = snapshot.val();
-  //     let interval = 1000;
-  //
-  //     setInterval(() => {
-  //       let timeNow = moment().tz("Europe/London").format();
-  //
-  //       let newDateTime, oldDateTime;
-  //
-  //       oldDateTime = collectedData;
-  //       newDateTime = timeNow;
-  //
-  //       timeNow = new Date(timeNow);
-  //       collectedData = new Date(collectedData);
-  //
-  //       let timeMathResultStartTime = collectedData - timeNow;
-  //
-  //       if (collectedData > timeNow) {
-  //         this.setState({
-  //           timeMathResultStartTime
-  //         });
-  //
-  //
-  //         // let duration = moment.duration(timeMathResultStartTime*1000, 'milliseconds');
-  //         let duration = moment.duration(timeMathResultStartTime, 'milliseconds');
-  //
-  //         duration = moment.duration(duration - interval, 'milliseconds');
-  //         let testData = duration.days() + ":" + duration.hours() + ":" + duration.minutes() + ":" + duration.seconds();
-  //         console.log('time new', testData, duration);
-  //
-  //         this.setState({
-  //           testData
-  //         });
-  //
-  //         let day,
-  //           hour,
-  //           min,
-  //           sec;
-  //
-  //         if (testData === "0:0:0:0") {
-  //           interval = 0;
-  //         }
-  //
-  //         if (testData.length > 1) {
-  //           let newArray = [];
-  //           newArray.push(testData.split(':'));
-  //
-  //           day = newArray[0][0];
-  //           hour = newArray[0][1];
-  //           min = newArray[0][2];
-  //           sec = newArray[0][3];
-  //
-  //           this.setState({
-  //             day,
-  //             hour,
-  //             min,
-  //             sec,
-  //             dateThen: collectedData,
-  //             dateNow: timeNow,
-  //           });
-  //         }
-  //
-  //         if (oldDateTime <= newDateTime) {
-  //           interval = 0;
-  //         }
-  //       } else {
-  //         interval = 0;
-  //         return this.props.history.push('/home');
-  //       }
-  //     }, interval);
-  //   });
-  // }
 
   render() {
     return (
@@ -163,7 +97,6 @@ export class ComingSoon extends React.Component {
           {/*<h3 className="headerText">Dailychoppins comes to life in...</h3>*/}
         {/*</div>*/}
         <div className="centreText">
-          <div className="timeCountDown">{this.state.newCountDown}</div>
           {this.state.testData.length > 0 &&
             <div id="timer_wrapper">
               <span>
