@@ -4,7 +4,6 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import {
   faCoffee,
-  faEnvelope,
   faCog,
   faSpinner,
   faQuoteLeft,
@@ -48,11 +47,6 @@ const Footer = () => {
             <FontAwesomeIcon icon={['fab', 'telegram']} />
           </a>
         </li>
-        {/* <li>
-          <a href="#" target="_blank" title="Envelope">
-            <FontAwesomeIcon icon={faEnvelope} />
-          </a>
-        </li> */}
       </ul>
     </div>
   )

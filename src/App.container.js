@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import './App.scss';
-import Home from './components/Home/Home.component';
-import WinningID, {WinningId} from './components/WinningId/WinningId.container';
+import WinningID from './components/WinningId/WinningId.container';
 import InterimPage from './components/InterimPage/InterimPage';
-import moment from 'moment-timezone';
 import fire from './fire';
 import {connect} from "react-redux";
 import {getTimeForm} from "./redux/actions";
-
-
-
 
 export class App extends Component {
   constructor(props) {

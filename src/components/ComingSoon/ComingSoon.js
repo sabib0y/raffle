@@ -128,7 +128,8 @@ export class ComingSoon extends React.Component {
 
           }
           else {
-            clearTimeout(this);
+            clearTimeout(this.timerHandle);
+            this.timerHandle = 0;
             this.props.history.push('/home');
           }
 

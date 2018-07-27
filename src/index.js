@@ -2,7 +2,7 @@ import registerServiceWorker from './registerServiceWorker';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {applyMiddleware, compose, createStore} from 'redux';
-import { BrowserRouter as Router, Route, HashRouter } from 'react-router-dom';
+import { Route, HashRouter } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
 import App from './App.container';

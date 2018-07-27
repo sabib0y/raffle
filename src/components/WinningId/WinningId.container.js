@@ -3,7 +3,6 @@ import fire from '../../fire';
 import { getWinningId } from "../../redux/actions";
 import WinningCodeValidation from '../WinningCodeValidation/WinningCodeValidation.container';
 import {connect} from "react-redux";
-import Immutable from 'immutable';
 
 export class WinningId extends React.PureComponent {
   constructor(props) {
@@ -54,9 +53,6 @@ export class WinningId extends React.PureComponent {
 
     let winningConfirmation = false;
 
-    // if(this.state.revealRedeem === true) {
-    //   winningConfirmation = true;
-    // }
     console.log(winningConfirmation, 'winning id', this.props.user);
 
     return (
@@ -70,7 +66,6 @@ export class WinningId extends React.PureComponent {
           <div>
             Have a winning code?
             <a
-              href="#"
               onClick={(e) => this.redeemCode(e)}
             >click to redeem code
             </a>

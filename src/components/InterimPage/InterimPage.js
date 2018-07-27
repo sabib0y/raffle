@@ -2,10 +2,8 @@ import React from 'react';
 import './InterimPage.scss';
 import fire from '../../fire';
 import moment from 'moment-timezone';
-import Countdown from 'react-countdown-now';
 import {connect} from "react-redux";
 import {getTimeForm} from "../../redux/actions";
-import {App} from "../../App.container";
 
 export class InterimPage extends React.Component {
   constructor(props){
@@ -107,9 +105,11 @@ export class InterimPage extends React.Component {
         }
 
       }
-      // else {
-      //   this.props.history.push('/home');
-      // }
+      else {
+        clearInterval(this.timerHandle);
+        this.timerHandle = 0;
+        this.props.history.push('/home');
+      }
     }, 1000);
   };
 
