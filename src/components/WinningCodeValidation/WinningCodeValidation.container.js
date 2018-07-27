@@ -34,6 +34,7 @@ export class WinningCodeValidation extends React.Component {
       const postData = {
         winningCodeConfirmation: true
       };
+      this.props.handleSubmission({ winningCodeConfirmation: true });
       this.props.getWinningCodeConfirmation(postData);
       this.togglePopup();
     }
@@ -59,6 +60,7 @@ export class WinningCodeValidation extends React.Component {
         {this.state.showPopup ?
           <Popup
             info={message}
+            handleSubmission={this.props.handleSubmission}
             closePopup={() => this.togglePopup()}
           />
           : null
@@ -98,7 +100,7 @@ export class WinningCodeValidation extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state
+    user: state.toJS()
   };
 };
 

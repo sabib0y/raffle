@@ -29,6 +29,8 @@ export class WinningId extends React.PureComponent {
         })
       }
     });
+
+
   }
 
   componentWillUnmount() {
@@ -43,6 +45,12 @@ export class WinningId extends React.PureComponent {
     this.setState({revealRedeem: true});
   }
 
+  handleSubmission(event) {
+    if(event.winningCodeConfirmation) {
+      this.setState({ winningConfirmation: true })
+    }
+  }
+
   render() {
     let uniqueCodeSplit;
     if(this.state.receivedCode !== null) {
@@ -50,8 +58,7 @@ export class WinningId extends React.PureComponent {
     }
 
     // let winningConfirmation = this.props.user.reducer.user.winningCodeConfirmation;
-
-    let winningConfirmation = false;
+    const { winningConfirmation } = this.state;
 
     console.log(winningConfirmation, 'winning id', this.props.user);
 
@@ -77,6 +84,7 @@ export class WinningId extends React.PureComponent {
           uniqueId={this.props.user.uniqueId}
           receivedCode={this.state.receivedCode}
           receivedMobileNumber={this.state.receivedMobileNumber}
+          handleSubmission={event => this.handleSubmission(event)}
         />
         }
       </div>
