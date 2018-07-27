@@ -1,7 +1,5 @@
 import React from 'react';
-import Footer from '../Footer/Footer.component';
 import { connect } from "react-redux";
-import Countdown from 'react-countdown-now';
 import moment from 'moment-timezone';
 import fire from '../../fire';
 import './ComingSoon.scss';
@@ -18,120 +16,152 @@ export class ComingSoon extends React.Component {
       sec: '',
       testData: '',
       dateThen: '',
-      dateNow: ''
+      dateNow: '',
+      collectedData: ''
     };
-    this.renderer = this.renderer.bind(this);
   }
 
-  renderer(event) {
-    if (event.completed) {
-      // Render a completed state
-      return this.props.history.push('/home');
-    } else {
-      // Render a countdown
-      return (
-        <div>
-          <span>Days</span>
-          <span>{event.days}</span>:
-          <span>Hours</span>
-          <span>{event.hours}</span>:
-          <span>minutes</span>
-          <span>{event.minutes}</span>:
-          <span>Seconds</span>
-          <span>{event.seconds}</span>
-        </div>
-      );
+  preResults() {
+
+    const { timeNow, collectedData } = this.state;
+    let newDateToTest = new Date();
+
+    if(collectedData > newDateToTest) {
+      let testTime = collectedData - newDateToTest;
+
+      let duration = moment.duration(testTime, 'milliseconds');
+
+      duration = moment.duration(duration - 1000, 'milliseconds');
+      let testData = `${duration.days()} : ${duration.hours()} : ${duration.minutes()} : ${duration.seconds()}`;
+      this.setState({ testData});
+
+      let day,
+        hour,
+        min,
+        sec;
+
+      if (testData.length > 1) {
+        let newArray = [];
+        newArray.push(testData.split(':'));
+
+        day = newArray[0][0];
+        hour = newArray[0][1];
+        min = newArray[0][2];
+        sec = newArray[0][3];
+
+        this.setState({
+          day,
+          hour,
+          min,
+          sec,
+          dateNow: timeNow,
+        });
+      }
+
     }
+    // else {
+    //   this.props.history.push('/home');
+    // }
+  }
+
+  minusOne() {
+    if(this.state.time > 0){
+      this.setState({time: this.state.time -1});
+    }
+  }
+
+  componentDidMount(){
+    fire.database().ref('setSiteLaunch/siteLaunch').once('value').then((snapshot) => {
+      let receivedDataTime = snapshot.val();
+
+      this.setState({
+        collectedData: new Date(receivedDataTime),
+      });
+    });
+    setTimeout( setInterval( () => {this.preResults()}, 1000), 1000);
   };
 
-  componentDidMount() {
-    let collectedData;
-    fire.database().ref('setSiteLaunch/siteLaunch').once('value').then((snapshot) => {
-      collectedData = snapshot.val();
-      let interval = 1000;
-
-      setInterval(() => {
-        let timeNow = moment().tz("Europe/London").format();
-
-        let newDateTime, oldDateTime;
-
-        oldDateTime = collectedData;
-        newDateTime = timeNow;
-
-        timeNow = new Date(timeNow);
-        collectedData = new Date(collectedData);
-
-        let timeMathResultStartTime = collectedData - timeNow;
-
-        if (collectedData > timeNow) {
-          this.setState({
-            timeMathResultStartTime
-          });
-
-
-          // let duration = moment.duration(timeMathResultStartTime*1000, 'milliseconds');
-          let duration = moment.duration(timeMathResultStartTime, 'milliseconds');
-
-          console.log('before interval', duration.hours());
-
-          duration = moment.duration(duration - interval, 'milliseconds');
-          let testData = duration.days() + ":" + duration.hours() + ":" + duration.minutes() + ":" + duration.seconds();
-
-          this.setState({
-            testData
-          });
-
-          let day,
-            hour,
-            min,
-            sec;
-
-          if (testData.length > 1) {
-            let newArray = [];
-            newArray.push(testData.split(':'));
-
-            day = newArray[0][0];
-            hour = newArray[0][1];
-            min = newArray[0][2];
-            sec = newArray[0][3];
-
-            this.setState({
-              day,
-              hour,
-              min,
-              sec,
-              dateThen: collectedData,
-              dateNow: timeNow,
-            });
-            console.log(collectedData.getTime(), 'tetet tetet', timeNow.getTime())
-          }
-
-          if (oldDateTime <= newDateTime) {
-            clearInterval(this);
-            return this.props.history.push('/home');
-          }
-        } else {
-          clearInterval(this);
-          return this.props.history.push('/home');
-        }
-      }, interval);
-    });
-  }
+  // componentDidMount() {
+  //   let collectedData;
+  //   fire.database().ref('setSiteLaunch/siteLaunch').once('value').then((snapshot) => {
+  //     collectedData = snapshot.val();
+  //     let interval = 1000;
+  //
+  //     setInterval(() => {
+  //       let timeNow = moment().tz("Europe/London").format();
+  //
+  //       let newDateTime, oldDateTime;
+  //
+  //       oldDateTime = collectedData;
+  //       newDateTime = timeNow;
+  //
+  //       timeNow = new Date(timeNow);
+  //       collectedData = new Date(collectedData);
+  //
+  //       let timeMathResultStartTime = collectedData - timeNow;
+  //
+  //       if (collectedData > timeNow) {
+  //         this.setState({
+  //           timeMathResultStartTime
+  //         });
+  //
+  //
+  //         // let duration = moment.duration(timeMathResultStartTime*1000, 'milliseconds');
+  //         let duration = moment.duration(timeMathResultStartTime, 'milliseconds');
+  //
+  //         duration = moment.duration(duration - interval, 'milliseconds');
+  //         let testData = duration.days() + ":" + duration.hours() + ":" + duration.minutes() + ":" + duration.seconds();
+  //         console.log('time new', testData, duration);
+  //
+  //         this.setState({
+  //           testData
+  //         });
+  //
+  //         let day,
+  //           hour,
+  //           min,
+  //           sec;
+  //
+  //         if (testData === "0:0:0:0") {
+  //           interval = 0;
+  //         }
+  //
+  //         if (testData.length > 1) {
+  //           let newArray = [];
+  //           newArray.push(testData.split(':'));
+  //
+  //           day = newArray[0][0];
+  //           hour = newArray[0][1];
+  //           min = newArray[0][2];
+  //           sec = newArray[0][3];
+  //
+  //           this.setState({
+  //             day,
+  //             hour,
+  //             min,
+  //             sec,
+  //             dateThen: collectedData,
+  //             dateNow: timeNow,
+  //           });
+  //         }
+  //
+  //         if (oldDateTime <= newDateTime) {
+  //           interval = 0;
+  //         }
+  //       } else {
+  //         interval = 0;
+  //         return this.props.history.push('/home');
+  //       }
+  //     }, interval);
+  //   });
+  // }
 
   render() {
-    const { dateThen, dateNow } = this.state;
-    if(dateNow.length > 0 && dateThen.length > 0) {
-      console.log(this.state.dateThen.getDate(), 'jdjdjd')
-      if (dateThen.getDate() < dateNow.getDate()) {
-        this.props.history.push('/home');
-      }
-    }
-
     return (
       <div className='container-fluid appWrapper'>
-        <div>
-          <h3 className="headerText">Dailychoppins comes to life in...</h3>
-        </div>
+        {/*<div>*/}
+          {/*<h3 className="headerText">Dailychoppins comes to life in...</h3>*/}
+        {/*</div>*/}
         <div className="centreText">
           <div className="timeCountDown">{this.state.newCountDown}</div>
           {this.state.testData.length > 0 &&
@@ -155,7 +185,6 @@ export class ComingSoon extends React.Component {
             </div>
           }
         </div>
-        <Footer/>
       </div>
     )
   }

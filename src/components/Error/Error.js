@@ -1,5 +1,4 @@
 import React from 'react';
-import Footer from '../Footer/Footer.component'
 
 const Error = () => {
   return(
@@ -9,7 +8,6 @@ const Error = () => {
       </div>
       <p className="centreText">Error redirect here..</p>
       <div>
-        <Footer />
       </div>
     </div>
   )

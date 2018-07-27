@@ -30,7 +30,8 @@ export class WinningId extends React.PureComponent {
     });
   }
 
-  redeemCode() {
+  redeemCode(e) {
+    e.preventDefault();
     this.setState({revealRedeem: true});
   }
 
@@ -40,7 +41,7 @@ export class WinningId extends React.PureComponent {
       uniqueCodeSplit = this.state.receivedCode.replace(/(\w{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');
     }
     return (
-      <div>
+      <div className="winning_validation draw_content_container">
         {this.props.user.winningCodeConfirmation === false &&
         <div>
           <div className="winningId">
@@ -51,7 +52,7 @@ export class WinningId extends React.PureComponent {
             Have a winning code?
             <a
               href="#"
-              onClick={() => this.redeemCode()}
+              onClick={(e) => this.redeemCode(e)}
             >click to redeem code
             </a>
           </div>

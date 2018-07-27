@@ -4,7 +4,6 @@ import Home from './components/Home/Home.component';
 import WinningID from './components/WinningId/WinningId.component';
 import InterimPage from './components/InterimPage/InterimPage';
 import moment from 'moment-timezone';
-import Footer from'./components/Footer/Footer.component';
 import fire from './fire';
 
 
@@ -18,33 +17,41 @@ class App extends Component {
       formStartTime: null,
       formEndTime: null,
       resultsStartTime: null,
-      resultsEndTime: null
+      resultsEndTime: null,
+      time: 10,
+      timeNow: new Date(),
+      testData: '',
+      testTime: ''
     }
   }
 
-  static isTimeForm(formStartTime, formEndTime, nowTime) {
-    if(nowTime >= formStartTime && nowTime <= formEndTime) {
+  isTimeForm(formStartTime, formEndTime, nowTime) {
+    if(nowTime >= formStartTime && nowTime <= formEndTime && formStartTime !== null) {
+      this.props.history.push('/awaiting-page');
       return true;
     }
     return false;
   }
 
-  static isTimeResults(resultsStartTime, resultsEndTime, nowTime) {
-    if(nowTime >= resultsStartTime && nowTime <= resultsEndTime) {
+  isTimeResults(resultsStartTime, resultsEndTime, nowTime) {
+    if(nowTime >= resultsStartTime && nowTime <= resultsEndTime && resultsEndTime !== null) {
+      this.props.history.push('/claim-winnings');
       return true;
     }
     return false;
   }
 
-  static isIntervalPreResults(formEndTime, preResults, nowTime) {
-    if(nowTime > formEndTime && nowTime < preResults) {
+  isIntervalPreResults(formEndTime, resultsStartTime, nowTime) {
+    if(nowTime > formEndTime && nowTime < resultsStartTime && formEndTime !== null) {
+      this.props.history.push('/awaiting-page');
       return true;
     }
     return false;
   }
 
-  static isIntervalPreForm(formStartTime, resultsEndTime, newValueTomorrow, nowTime) {
-    if(nowTime > resultsEndTime && nowTime < newValueTomorrow) {
+  isIntervalPreForm(formStartTime, resultsEndTime, newValueTomorrow, nowTime) {
+    if(nowTime > resultsEndTime && nowTime < newValueTomorrow && resultsEndTime !== null) {
+
       return true;
     }
     return false;
@@ -55,18 +62,18 @@ class App extends Component {
     this.setState({revealRedeem: true});
   }
 
-  componentWillMount() {
+  componentDidMount(){
     fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
       let receivedDataTime = snapshot.val();
 
       this.setState({
-        formStartTime: receivedDataTime.postData.formStart,
-        formEndTime: receivedDataTime.postData.formEnd,
-        resultsStartTime: receivedDataTime.postData.resultStart,
-        resultsEndTime: receivedDataTime.postData.resultEnd
+        formStartTime: new Date(receivedDataTime.postData.formStart),
+        formEndTime: new Date(receivedDataTime.postData.formEnd),
+        resultsStartTime: new Date(receivedDataTime.postData.resultStart),
+        resultsEndTime: new Date(receivedDataTime.postData.resultEnd)
       });
     });
-  }
+  };
 
   render() {
 
@@ -93,18 +100,17 @@ class App extends Component {
 
     newArray.push(nextDayValue);
 
-    let nowTime = moment().format();
+    // let nowTime = moment().format();
+    let nowTime = new Date();
 
-    return (
+    const { formStartTime, resultsEndTime, newValueTomorrow, formEndTime, resultsStartTime } =this.state;
+
+    this.isTimeForm(formStartTime, formEndTime, nowTime);
+    this.isTimeResults(resultsStartTime, resultsEndTime, nowTime);
+
+      return (
       <div className="container-fluid appWrapper">
-
-        <div>
-          <h1 className="headerText">Welcome to Dailychoppins!</h1>
-        </div>
-        {App.isTimeForm(newArray[0], newArray[1], nowTime) &&
-          <Home/>
-        }
-        {App.isTimeResults(newArray[2], newArray[3], nowTime) &&
+        {this.isTimeResults(resultsStartTime, resultsEndTime, nowTime) &&
           <div className="winning_validation draw_content_container">
             <WinningID
               id={this.props.id}
@@ -112,19 +118,18 @@ class App extends Component {
             />
           </div>
         }
-        {App.isIntervalPreForm(newArray[0], newArray[3], newArray[4], nowTime) &&
+        {this.isIntervalPreForm(formStartTime, resultsEndTime, newValueTomorrow, nowTime) &&
           <InterimPage
             textInterim='New competition entry will be available in:'
             schedule="form"
           />
         }
-         {App.isIntervalPreResults(newArray[1], newArray[2], nowTime) &&
+         {this.isIntervalPreResults(formEndTime, resultsStartTime, nowTime) &&
           <InterimPage
             textInterim='Results will be published in:'
             schedule="results"
           />
         }
-        <Footer />
       </div>
     );
   }

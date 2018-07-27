@@ -16,74 +16,95 @@ export default class InterimPage extends React.Component {
       hour: '',
       min: '',
       sec: '',
-      testData: ''
+      revealRedeem: false,
+      formStartTime: null,
+      formEndTime: null,
+      resultsStartTime: null,
+      resultsEndTime: null,
+      time: 10,
+      timeNow: new Date(),
+      testData: '',
+      testTime: ''
     }
   }
 
+  getData() {
 
-  componentDidMount() {
-    let collectedData;
-    fire.database().ref('setTimeForm/postData').once('value').then((snapshot) => {
-      collectedData = snapshot.val();
-      let formStart, formEnd, resultStart, resultEnd;
-
-      // let timeNow = new Date(collectedData);
-      formStart = new Date(collectedData.formStart);
-      formEnd = new Date(collectedData.formEnd);
-      resultStart = new Date(collectedData.resultStart);
-      resultEnd = new Date(collectedData.resultEnd);
-
-      let timeNow = new Date();
-
-      let formTimeStart = formStart - timeNow;
-      let resultStartTime = resultStart - timeNow;
-      // let duration = moment.duration(timeMathResultStartTime*1000, 'milliseconds');
-      let durationForm = moment.duration(formTimeStart, 'milliseconds');
-      let durationResult = moment.duration(resultStartTime, 'milliseconds');
-      let interval = 1000;
-
-      setInterval(() => {
-        var testData;
-        if(this.props.schedule === 'form') {
-          durationForm = moment.duration(durationForm - interval, 'milliseconds');
-          testData = durationForm.days() + ":" + durationForm.hours() + ":" + durationForm.minutes() + ":" + durationForm.seconds();
-        }
-        else {
-          durationResult = moment.duration(durationResult - interval, 'milliseconds');
-          testData = durationResult.days() + ":" + durationResult.hours() + ":" + durationResult.minutes() + ":" + durationResult.seconds();
-        }
-
-          let day,
-            hour,
-            min,
-            sec;
-
-          if (testData.length > 1) {
-            let newArray = [];
-            newArray.push(testData.split(':'));
-
-            day = newArray[0][0];
-            hour = newArray[0][1];
-            min = newArray[0][2];
-            sec = newArray[0][3];
-
-            this.setState({
-              day,
-              hour,
-              min,
-              sec,
-              testData
-            });
-          }
-      }, interval);
-    });
   }
+
+  preForm() {}
+
+  preResults() {
+
+    const { timeNow, resultsStartTime } = this.state;
+    let newDateToTest = new Date();
+
+    if(resultsStartTime > newDateToTest) {
+      let testTime = resultsStartTime - newDateToTest;
+
+      let duration = moment.duration(testTime, 'milliseconds');
+
+      duration = moment.duration(duration - 1000, 'milliseconds');
+      let testData = `${duration.days()} : ${duration.hours()} : ${duration.minutes()} : ${duration.seconds()}`;
+      this.setState({ testData});
+
+      let day,
+        hour,
+        min,
+        sec;
+
+      if (testData.length > 1) {
+        let newArray = [];
+        newArray.push(testData.split(':'));
+
+        day = newArray[0][0];
+        hour = newArray[0][1];
+        min = newArray[0][2];
+        sec = newArray[0][3];
+
+        this.setState({
+          day,
+          hour,
+          min,
+          sec,
+          dateNow: timeNow,
+        });
+      }
+
+    }
+    // else {
+    //   this.props.history.push('/home');
+    // }
+  }
+
+  minusOne() {
+    if(this.state.time > 0){
+      this.setState({time: this.state.time -1});
+    }
+  }
+
+  componentDidMount(){
+    fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
+      let receivedDataTime = snapshot.val();
+
+      this.setState({
+        formStartTime: new Date(receivedDataTime.postData.formStart),
+        formEndTime: new Date(receivedDataTime.postData.formEnd),
+        resultsStartTime: new Date(receivedDataTime.postData.resultStart),
+        resultsEndTime: new Date(receivedDataTime.postData.resultEnd)
+      });
+    });
+    setTimeout( setInterval( () => {this.preResults()}, 1000), 1000);
+  };
+
 
   render () {
     return (
       <div className="containerWrapper">
         <p>Competition is currently closed...</p>
         <p>{this.props.textInterim}</p>
+
+        <div>Remaining Time: {this.state.testData}</div>
         {this.props.schedule === 'form' &&
           <div>
             {this.state.testData.length > 0 &&

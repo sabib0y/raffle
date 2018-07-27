@@ -14,6 +14,9 @@ import './base.scss';
 import './index.css';
 import ParticleAnimation from 'react-particle-animation';
 import ImageLocal from './images/logo.png';
+import InterimPage from "./components/InterimPage/InterimPage";
+import WinningID from "./components/WinningId/WinningId.component";
+import Footer from "./components/Footer/Footer.component";
 
 // Create redux store
 const loggerMiddleware = createLogger();
@@ -55,10 +58,16 @@ ReactDOM.render(
               src={ImageLocal}
               alt="dailychoppins logo"/>
           </a>
+          <div>
+            <h1 className="headerText">Welcome to Dailychoppins!</h1>
+          </div>
         </header>
         <Route path='/home' component={App} />
+        <Route path='/awaiting-page' component={InterimPage} />
+        <Route path='/claim-winnings' component={WinningID} />
         <Route path='/coming-soon' component={ComingSoon} />
         <Route path='/error' component={Error} />
+        <Footer />
       </div>
       </div>
 
