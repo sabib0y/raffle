@@ -56,7 +56,7 @@ export class App extends Component {
 
   isErrorLaunch(formStartTime, siteLaunch, nowTime) {
     if(nowTime < siteLaunch) {
-      this.props.history.push('/error');
+      // this.props.history.push('/error');
       return true;
     }
     return false
@@ -130,12 +130,14 @@ export class App extends Component {
           <InterimPage
             textInterim='New competition entry will be available in:'
             schedule="form"
+            siteLaunch={siteLaunch}
           />
         }
          {this.isIntervalPreResults(formEndTime, resultsStartTime, nowTime, siteLaunch) &&
           <InterimPage
             textInterim='Results will be published in:'
             schedule="results"
+            siteLaunch={siteLaunch}
           />
         }
       </div>

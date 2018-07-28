@@ -122,9 +122,18 @@ export class InterimPage extends React.Component {
     this.timerHandle = 0;
   }
 
+  checkPageLocation(siteLaunch, nowTime) {
+    if(nowTime < siteLaunch){
+      this.props.history.push('/coming-soon');
+      return true;
+    }
+    return false;
+  };
+
   render () {
     let schedule, message;
     let nowTime = new Date();
+    this.checkPageLocation(this.props.siteLaunch, nowTime);
 
     if(nowTime > this.state.formEndTime && nowTime < this.state.resultsStartTime) {
       schedule = 'results';
