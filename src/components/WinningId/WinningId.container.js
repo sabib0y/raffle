@@ -94,7 +94,7 @@ export class WinningId extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.toJS()
+    user: state.get('reducer').user
   };
 };
 

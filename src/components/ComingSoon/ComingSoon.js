@@ -177,6 +177,7 @@ export class ComingSoon extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    user: state.get('reducer').user
   };
 };
 

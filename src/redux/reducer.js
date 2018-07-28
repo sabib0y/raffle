@@ -32,7 +32,8 @@ const initialState = Immutable.fromJS({
     formStartTime: null,
     formEndTime: null,
     resultsStartTime: null,
-    resultsEndTime: null
+    resultsEndTime: null,
+    siteLaunch: null
   }
 });
 
@@ -97,6 +98,8 @@ const reducer = (state = initialState, action) => {
        .set('formEndTime', action.formTime.formEndTime)
        .set('resultsStartTime', action.formTime.resultsStartTime)
        .set('resultsEndTime', action.formTime.resultsEndTime)
+       .set('siteLaunch', action.formTime.siteLaunch)
+       .set('nextDayValue', action.formTime.nextDayValue)
        .toJS()
   }
 

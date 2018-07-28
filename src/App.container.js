@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './App.scss';
 import WinningID from './components/WinningId/WinningId.container';
 import InterimPage from './components/InterimPage/InterimPage';
+import Home from './components/Home/Home.container';
+import moment from 'moment-timezone';
 import fire from './fire';
 import {connect} from "react-redux";
 import {getTimeForm} from "./redux/actions";
@@ -24,7 +26,6 @@ export class App extends Component {
 
   isTimeForm(formStartTime, formEndTime, nowTime) {
     if(nowTime >= formStartTime && nowTime <= formEndTime && formStartTime !== null) {
-      this.props.history.push('/awaiting-page');
       return true;
     }
     return false;
@@ -63,21 +64,35 @@ export class App extends Component {
     fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
       let receivedDataTime = snapshot.val();
 
-      const dataToSend = {
-        formStartTime: new Date(receivedDataTime.postData.formStart),
-        formEndTime: new Date(receivedDataTime.postData.formEnd),
-        resultsStartTime: new Date(receivedDataTime.postData.resultStart),
-        resultsEndTime: new Date(receivedDataTime.postData.resultEnd)
-      };
-      this.props.getTimeForm(dataToSend)
+      fire.database().ref('setSiteLaunch/').once('value').then((snapshot) => {
+        let siteLaunchTime = snapshot.val();
+
+        let nextDayValue = moment();
+        nextDayValue = nextDayValue.add(1, 'days').format();
+        nextDayValue = nextDayValue.split('T')[0];
+        nextDayValue = `${nextDayValue}T00:00:01Z`;
+        nextDayValue = moment(nextDayValue).format();
+
+        const dataToSend = {
+          formStartTime: new Date(receivedDataTime.postData.formStart),
+          formEndTime: new Date(receivedDataTime.postData.formEnd),
+          resultsStartTime: new Date(receivedDataTime.postData.resultStart),
+          resultsEndTime: new Date(receivedDataTime.postData.resultEnd),
+          siteLaunch: new Date(siteLaunchTime.siteLaunch),
+          nextDayValue: new Date(nextDayValue),
+        };
+        this.props.getTimeForm(dataToSend)
+      });
     });
+
+    console.log('these props', this.props)
   }
 
   render() {
     let nowTime = new Date();
     let newValueTomorrow;
 
-    const { formStartTime, resultsEndTime, formEndTime, resultsStartTime } = this.props.user.reducer;
+    const { formStartTime, resultsEndTime, formEndTime, resultsStartTime } = this.props;
 
     this.isTimeForm(formStartTime, formEndTime, nowTime);
     this.isTimeResults(resultsStartTime, resultsEndTime, nowTime);
@@ -85,6 +100,9 @@ export class App extends Component {
     console.log('this.props', this.props);
       return (
       <div className="container-fluid appWrapper">
+        {this.isTimeForm(formStartTime, formEndTime, nowTime) &&
+        <Home/>
+        }
         {this.isTimeResults(resultsStartTime, resultsEndTime, nowTime) &&
           <div className="winning_validation draw_content_container">
             <WinningID
@@ -112,7 +130,12 @@ export class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.toJS()
+    formStartTime: state.get('reducer').formStartTime,
+    resultsEndTime: state.get('reducer').resultsEndTime,
+    formEndTime: state.get('reducer').formEndTime,
+    resultsStartTime: state.get('reducer').resultsStartTime,
+    siteLaunch: state.get('reducer').siteLaunch,
+    nextDayValue: state.get('reducer').nextDayValue,
   };
 };
 

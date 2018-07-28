@@ -464,7 +464,7 @@ export class Home extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.toJS()
+    user: state.get('reducer').user
   };
 };
 

@@ -50,11 +50,15 @@ export class InterimPage extends React.Component {
     fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
       let receivedDataTime = snapshot.val();
 
-      this.setState({
-        formStartTime: new Date(receivedDataTime.postData.formStart),
-        formEndTime: new Date(receivedDataTime.postData.formEnd),
-        resultsStartTime: new Date(receivedDataTime.postData.resultStart),
-        resultsEndTime: new Date(receivedDataTime.postData.resultEnd)
+      fire.database().ref('setSiteLaunch/').once('value').then((snapshot) => {
+        let siteLaunchTime = snapshot.val();
+        this.setState({
+          formStartTime: new Date(receivedDataTime.postData.formStart),
+          formEndTime: new Date(receivedDataTime.postData.formEnd),
+          resultsStartTime: new Date(receivedDataTime.postData.resultStart),
+          resultsEndTime: new Date(receivedDataTime.postData.resultEnd),
+          siteLaunch: new Date(siteLaunchTime.siteLaunch)
+        });
       });
 
 
@@ -182,7 +186,7 @@ export class InterimPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.toJS()
+    user: state.get('reducer').get('user')
   };
 };
 
