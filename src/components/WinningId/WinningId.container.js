@@ -17,11 +17,14 @@ export class WinningId extends React.PureComponent {
       receivedCode: null,
       winningConfirmation: false,
       siteLaunch: null,
-      formStartTime: null
+      formStartTime: null,
+      resultEnd: null,
+      formEndTime: null
     }
   }
 
   componentWillMount(){
+
     fire.database().ref('setSiteLaunch/').once('value').then((snapshot) => {
       if (Object.entries !== null || Object.entries !== undefined) {
         let siteLaunchTime = snapshot.val();
@@ -38,7 +41,9 @@ export class WinningId extends React.PureComponent {
 
         this.setState({
           formStartTime: new Date(siteForm.postData.formStart),
+          formEndTime: new Date(siteForm.postData.formEnd),
           resultStart: new Date(siteForm.postData.resultStart),
+          resultEnd: new Date(siteForm.postData.resultEnd),
         })
       }
     });
@@ -53,6 +58,8 @@ export class WinningId extends React.PureComponent {
           formStartTime: this.state.formStartTime,
           resultStartTime: this.state.resultStart,
           siteLaunch: this.state.siteLaunch,
+          resultEnd: this.state.resultEnd,
+          formEndTime: this.state.formEndTime,
         };
 
         this.props.getWinningId(dataToPost);
@@ -94,20 +101,26 @@ export class WinningId extends React.PureComponent {
   };
 
   render() {
+
+    let nowTime = new Date();
     const { winningConfirmation } = this.state;
-    const { mobileNumber, uniqueId, formStartTime, siteLaunch, resultStartTime  } = this.props;
+    const { mobileNumber, uniqueId, formEndTime, siteLaunch, resultStartTime, resultsEndTime  } = this.props;
+
+    if(nowTime > formEndTime && nowTime < resultStartTime && resultStartTime !== null) {
+      this.props.history.push('/home');
+    }
 
     let uniqueCodeSplit;
     if(this.state.uniqueId !== null) {
       uniqueCodeSplit = uniqueId.replace(/(\w{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');
     }
-    let nowTime = new Date();
-
-    console.log(winningConfirmation, 'winning id', this.props);
     this.isWinningId(siteLaunch, nowTime);
 
     return (
       <div className="winning_validation draw_content_container">
+        <div>
+        <h1 className="headerText">Redeem voucher!</h1>
+        </div>
         {winningConfirmation === false &&
         <div>
           <div className="winningId">
@@ -141,8 +154,10 @@ const mapStateToProps = (state) => {
     mobileNumber: state.get('reducer').mobileNumber,
     uniqueId: state.get('reducer').uniqueId,
     formStartTime: state.get('reducer').formStartTime,
+    formEndTime: state.get('reducer').formEndTime,
     siteLaunch: state.get('reducer').siteLaunch,
     resultStartTime: state.get('reducer').resultStartTime,
+    resultsEndTime: state.get('reducer').resultsEndTime,
   };
 };
 

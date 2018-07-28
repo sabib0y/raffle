@@ -137,21 +137,23 @@ export class InterimPage extends React.Component {
 
     if(nowTime > this.state.formEndTime && nowTime < this.state.resultsStartTime) {
       schedule = 'results';
-      message = 'Form will be displayed in:'
+      message = 'Results will be displayed in:'
     }
 
     if(nowTime > this.state.resultsEndTime && nowTime < this.state.formStartTime) {
       schedule = 'form';
-      message = 'Results will be displayed in:'
+      message = 'Form will be displayed in:'
     }
-
 
     return (
       <div className="containerWrapper">
-        <p>{message}</p>
         <p>{this.props.textInterim}</p>
         {schedule === 'form' &&
           <div>
+            <div>
+              <h1 className="headerText">Welcome to Dailychoppins!</h1>
+            </div>
+            <div>{message}</div>
             {this.state.testData.length > 0 &&
               <div id="timer_wrapper">
                 <span>
@@ -172,6 +174,10 @@ export class InterimPage extends React.Component {
         }
         {schedule === 'results' &&
           <div>
+            <div>
+              <h1 className="headerText">Welcome to Dailychoppins!</h1>
+            </div>
+            <div>{message}</div>
             {this.state.testData.length > 0 &&
               <div id="timer_wrapper">
                 <span>

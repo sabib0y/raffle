@@ -84,6 +84,8 @@ const reducer = (state = initialState, action) => {
       .set('siteLaunch', action.winningId.siteLaunch)
       .set('formStartTime', action.winningId.formStartTime)
       .set('resultStartTime', action.winningId.resultStartTime)
+      .set('resultsEndTime', action.winningId.resultEnd)
+      .set('formEndTime', action.winningId.formEndTime)
       .toJS()
   }
 
