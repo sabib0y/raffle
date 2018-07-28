@@ -123,21 +123,23 @@ export class InterimPage extends React.Component {
   }
 
   render () {
-    let schedule;
+    let schedule, message;
     let nowTime = new Date();
 
     if(nowTime > this.state.formEndTime && nowTime < this.state.resultsStartTime) {
-      schedule = 'results'
+      schedule = 'results';
+      message = 'Form will be displayed in:'
     }
 
     if(nowTime > this.state.resultsEndTime && nowTime < this.state.formStartTime) {
-      schedule = 'form'
+      schedule = 'form';
+      message = 'Results will be displayed in:'
     }
 
 
     return (
       <div className="containerWrapper">
-        <p>Competition is currently closed...</p>
+        <p>{message}</p>
         <p>{this.props.textInterim}</p>
         {schedule === 'form' &&
           <div>

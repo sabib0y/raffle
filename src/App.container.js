@@ -31,8 +31,8 @@ export class App extends Component {
     return false;
   }
 
-  isTimeResults(resultsStartTime, resultsEndTime, nowTime) {
-    if(nowTime >= resultsStartTime && nowTime <= resultsEndTime && resultsEndTime !== null) {
+  isTimeResults(resultsStartTime, resultsEndTime, nowTime, siteLaunch) {
+    if(nowTime > siteLaunch && nowTime >= resultsStartTime && nowTime <= resultsEndTime && resultsEndTime !== null) {
       this.props.history.push('/claim-winnings');
       return true;
     }
@@ -111,7 +111,7 @@ export class App extends Component {
         {this.isTimeForm(formStartTime, formEndTime, nowTime) &&
         <Home/>
         }
-        {this.isTimeResults(resultsStartTime, resultsEndTime, nowTime) &&
+        {this.isTimeResults(resultsStartTime, resultsEndTime, nowTime, siteLaunch) &&
           <div className="winning_validation draw_content_container">
             <WinningID
               id={this.props.id}

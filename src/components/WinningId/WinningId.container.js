@@ -19,10 +19,18 @@ export class WinningId extends React.PureComponent {
     }
   }
 
-  componentDidMount(){
+  componentWillMount(){
     fire.database().ref('randomWinnerSetWeb').once('value').then((snapshot) => {
       if (Object.entries !== null || Object.entries !== undefined) {
         let receivedData = snapshot.val();
+
+        const datatToPost = {
+          receivedMobileNumber: receivedData.postDataWeb.mobileNumber,
+          receivedCode: receivedData.postDataWeb.uniqueId,
+        }
+
+        this.props.getWinningId(datatToPost)
+
         this.setState({
           receivedMobileNumber: receivedData.postDataWeb.mobileNumber,
           receivedCode: receivedData.postDataWeb.uniqueId,
@@ -60,7 +68,7 @@ export class WinningId extends React.PureComponent {
     // let winningConfirmation = this.props.user.reducer.user.winningCodeConfirmation;
     const { winningConfirmation } = this.state;
 
-    console.log(winningConfirmation, 'winning id', this.props.user);
+    console.log(winningConfirmation, 'winning id', this.props);
 
     return (
       <div className="winning_validation draw_content_container">
@@ -94,7 +102,8 @@ export class WinningId extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.get('reducer')
+    mobileNumber: state.get('reducer').mobileNumber,
+    uniqueId: state.get('reducer').uniqueId,
   };
 };
 

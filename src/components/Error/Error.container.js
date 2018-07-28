@@ -8,7 +8,7 @@ export class Error extends React.PureComponent {
     super(props);
     this.state = {}
   }
-  isSiteLauched() {}
+
   render() {
     console.log('this.props', this.props);
     return (
