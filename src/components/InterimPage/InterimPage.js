@@ -140,7 +140,7 @@ export class InterimPage extends React.Component {
       message = 'Results will be displayed in:'
     }
 
-    if(nowTime > this.state.resultsEndTime && nowTime < this.state.formStartTime) {
+    if(nowTime < this.state.formStartTime) {
       schedule = 'form';
       message = 'Form will be displayed in:'
     }
