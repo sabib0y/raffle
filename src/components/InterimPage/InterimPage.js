@@ -186,7 +186,7 @@ export class InterimPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.get('reducer').get('user')
+    user: state.get('reducer').user
   };
 };
 

@@ -49,10 +49,17 @@ export class App extends Component {
 
   isIntervalPreForm(formStartTime, resultsEndTime, newValueTomorrow, nowTime) {
     if(nowTime > resultsEndTime && nowTime < newValueTomorrow && resultsEndTime !== null) {
-
       return true;
     }
     return false;
+  }
+
+  isErrorLaunch(formStartTime, siteLaunch, nowTime) {
+    if(nowTime < siteLaunch) {
+      this.props.history.push('/error');
+      return true;
+    }
+    return false
   }
 
   redeemCode(e) {
@@ -92,9 +99,10 @@ export class App extends Component {
     let nowTime = new Date();
     let newValueTomorrow;
 
-    const { formStartTime, resultsEndTime, formEndTime, resultsStartTime } = this.props;
+    const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch } = this.props;
 
-    this.isTimeForm(formStartTime, formEndTime, nowTime);
+    // this.isTimeForm(formStartTime, formEndTime, nowTime);
+    this.isErrorLaunch(formStartTime, siteLaunch, nowTime);
     this.isTimeResults(resultsStartTime, resultsEndTime, nowTime);
 
     console.log('this.props', this.props);
