@@ -188,7 +188,11 @@ export class InterimPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.get('reducer').user
+    mobileNumber: state.get('reducer').mobileNumber,
+    uniqueId: state.get('reducer').uniqueId,
+    formStartTime: state.get('reducer').formStartTime,
+    siteLaunch: state.get('reducer').siteLaunch,
+    resultStartTime: state.get('reducer').resultStartTime,
   };
 };
 

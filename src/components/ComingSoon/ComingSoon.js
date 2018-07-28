@@ -144,9 +144,9 @@ export class ComingSoon extends React.Component {
   render() {
     return (
       <div className='container-fluid appWrapper'>
-        {/*<div>*/}
-          {/*<h3 className="headerText">Dailychoppins comes to life in...</h3>*/}
-        {/*</div>*/}
+        <div>
+          <h3 className="headerText">Dailychoppins comes to life in...</h3>
+        </div>
         <div className="centreText">
           {this.state.testData.length > 0 &&
             <div id="timer_wrapper">

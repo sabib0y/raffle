@@ -39,8 +39,8 @@ export class App extends Component {
     return false;
   }
 
-  isIntervalPreResults(formEndTime, resultsStartTime, nowTime) {
-    if(nowTime > formEndTime && nowTime < resultsStartTime && formEndTime !== null) {
+  isIntervalPreResults(formEndTime, resultsStartTime, nowTime, siteLaunch) {
+    if(nowTime > formEndTime && nowTime < resultsStartTime && formEndTime !== null && nowTime > siteLaunch) {
       this.props.history.push('/awaiting-page');
       return true;
     }
@@ -61,6 +61,14 @@ export class App extends Component {
     }
     return false
   }
+
+  isWinningId(siteLaunch, nowTime) {
+    if(nowTime < siteLaunch){
+      this.props.history.push('/coming-soon');
+      return true;
+    }
+    return false;
+  };
 
   redeemCode(e) {
     e.preventDefault();
@@ -91,8 +99,6 @@ export class App extends Component {
         this.props.getTimeForm(dataToSend)
       });
     });
-
-    console.log('these props', this.props)
   }
 
   render() {
@@ -104,6 +110,7 @@ export class App extends Component {
     // this.isTimeForm(formStartTime, formEndTime, nowTime);
     this.isErrorLaunch(formStartTime, siteLaunch, nowTime);
     this.isTimeResults(resultsStartTime, resultsEndTime, nowTime);
+    this.isWinningId(siteLaunch, nowTime);
 
     console.log('this.props', this.props);
       return (
@@ -115,7 +122,7 @@ export class App extends Component {
           <div className="winning_validation draw_content_container">
             <WinningID
               id={this.props.id}
-              uniqueId={this.props.uniqueId}
+              passedProps={this.props}
             />
           </div>
         }
@@ -125,7 +132,7 @@ export class App extends Component {
             schedule="form"
           />
         }
-         {this.isIntervalPreResults(formEndTime, resultsStartTime, nowTime) &&
+         {this.isIntervalPreResults(formEndTime, resultsStartTime, nowTime, siteLaunch) &&
           <InterimPage
             textInterim='Results will be published in:'
             schedule="results"

@@ -1,6 +1,6 @@
 import React from 'react';
 import fire from '../../fire';
-import { getWinningId } from "../../redux/actions";
+import {getTimeForm, getWinningId} from "../../redux/actions";
 import WinningCodeValidation from '../WinningCodeValidation/WinningCodeValidation.container';
 import {connect} from "react-redux";
 
@@ -15,21 +15,47 @@ export class WinningId extends React.PureComponent {
       receivedData: null,
       receivedMobileNumber: null,
       receivedCode: null,
-      winningConfirmation: false
+      winningConfirmation: false,
+      siteLaunch: null,
+      formStartTime: null
     }
   }
 
   componentWillMount(){
-    fire.database().ref('randomWinnerSetWeb').once('value').then((snapshot) => {
+    fire.database().ref('setSiteLaunch/').once('value').then((snapshot) => {
+      if (Object.entries !== null || Object.entries !== undefined) {
+        let siteLaunchTime = snapshot.val();
+
+        this.setState({
+          siteLaunch: new Date(siteLaunchTime.siteLaunch),
+        })
+      }
+    });
+
+    fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
+      if (Object.entries !== null || Object.entries !== undefined) {
+        let siteForm = snapshot.val();
+
+        this.setState({
+          formStartTime: new Date(siteForm.postData.formStart),
+          resultStart: new Date(siteForm.postData.resultStart),
+        })
+      }
+    });
+
+    fire.database().ref('randomWinnerSetWeb/').once('value').then((snapshot) => {
       if (Object.entries !== null || Object.entries !== undefined) {
         let receivedData = snapshot.val();
 
-        const datatToPost = {
-          receivedMobileNumber: receivedData.postDataWeb.mobileNumber,
-          receivedCode: receivedData.postDataWeb.uniqueId,
-        }
+        const dataToPost = {
+          mobileNumber: receivedData.postDataWeb.mobileNumber,
+          uniqueId: receivedData.postDataWeb.uniqueId,
+          formStartTime: this.state.formStartTime,
+          resultStartTime: this.state.resultStart,
+          siteLaunch: this.state.siteLaunch,
+        };
 
-        this.props.getWinningId(datatToPost)
+        this.props.getWinningId(dataToPost);
 
         this.setState({
           receivedMobileNumber: receivedData.postDataWeb.mobileNumber,
@@ -59,16 +85,26 @@ export class WinningId extends React.PureComponent {
     }
   }
 
-  render() {
-    let uniqueCodeSplit;
-    if(this.state.receivedCode !== null) {
-      uniqueCodeSplit = this.state.receivedCode.replace(/(\w{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');
+  isWinningId(siteLaunch, nowTime) {
+    if(nowTime < siteLaunch){
+      this.props.history.push('/coming-soon');
+      return true;
     }
+    return false;
+  };
 
-    // let winningConfirmation = this.props.user.reducer.user.winningCodeConfirmation;
+  render() {
     const { winningConfirmation } = this.state;
+    const { mobileNumber, uniqueId, formStartTime, siteLaunch, resultStartTime  } = this.props;
+
+    let uniqueCodeSplit;
+    if(this.state.uniqueId !== null) {
+      uniqueCodeSplit = uniqueId.replace(/(\w{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');
+    }
+    let nowTime = new Date();
 
     console.log(winningConfirmation, 'winning id', this.props);
+    this.isWinningId(siteLaunch, nowTime);
 
     return (
       <div className="winning_validation draw_content_container">
@@ -76,7 +112,7 @@ export class WinningId extends React.PureComponent {
         <div>
           <div className="winningId">
             the winning ID is <span>{uniqueCodeSplit} </span>
-            <p>** <i>test purposes: copy phone number</i> {this.state.receivedMobileNumber} **</p>
+            <p>** <i>test purposes: copy phone number</i> {mobileNumber} **</p>
           </div>
           <div>
             Have a winning code?
@@ -89,9 +125,9 @@ export class WinningId extends React.PureComponent {
         }
         {this.state.revealRedeem &&
         <WinningCodeValidation
-          uniqueId={this.props.user.uniqueId}
-          receivedCode={this.state.receivedCode}
-          receivedMobileNumber={this.state.receivedMobileNumber}
+          uniqueId={uniqueId}
+          receivedCode={uniqueId}
+          receivedMobileNumber={mobileNumber}
           handleSubmission={event => this.handleSubmission(event)}
         />
         }
@@ -104,11 +140,15 @@ const mapStateToProps = (state) => {
   return {
     mobileNumber: state.get('reducer').mobileNumber,
     uniqueId: state.get('reducer').uniqueId,
+    formStartTime: state.get('reducer').formStartTime,
+    siteLaunch: state.get('reducer').siteLaunch,
+    resultStartTime: state.get('reducer').resultStartTime,
   };
 };
 
 const mapDispatchToProps = {
   getWinningId,
+  getTimeForm,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WinningId);
