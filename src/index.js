@@ -58,9 +58,9 @@ ReactDOM.render(
               src={ImageLocal}
               alt="dailychoppins logo"/>
           </a>
-          <div>
-            <h1 className="headerText">Welcome to Dailychoppins!</h1>
-          </div>
+          {/*<div>*/}
+            {/*<h1 className="headerText">Welcome to Dailychoppins!</h1>*/}
+          {/*</div>*/}
         </header>
         <Route path='/home' component={App} />
         <Route path='/awaiting-page' component={InterimPage} />
