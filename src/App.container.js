@@ -24,8 +24,8 @@ export class App extends Component {
     }
   }
 
-  isTimeForm(formStartTime, formEndTime, nowTime) {
-    if(nowTime >= formStartTime && nowTime <= formEndTime && formStartTime !== null) {
+  isTimeForm(formStartTime, formEndTime, siteLaunch, nowTime) {
+    if(nowTime > formStartTime && nowTime < formEndTime && nowTime > siteLaunch && formStartTime !== null) {
       return true;
     }
     return false;
@@ -115,7 +115,7 @@ export class App extends Component {
     console.log('this.props', this.props);
       return (
       <div className="container-fluid appWrapper">
-        {this.isTimeForm(formStartTime, formEndTime, nowTime) &&
+        {this.isTimeForm(formStartTime, formEndTime, siteLaunch, nowTime) &&
         <Home/>
         }
         {this.isTimeResults(resultsStartTime, resultsEndTime, nowTime, siteLaunch) &&

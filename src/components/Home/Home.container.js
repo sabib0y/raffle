@@ -368,6 +368,9 @@ export class Home extends React.Component {
 
     return (
       <div>
+        <div>
+        <h1 className="headerText">Welcome to Dailychoppins!</h1>
+        </div>
       <div className="formWrapper">
         {this.state.showPopup ?
           <Popup
