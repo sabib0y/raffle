@@ -2,7 +2,7 @@ import registerServiceWorker from './registerServiceWorker';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {applyMiddleware, compose, createStore} from 'redux';
-import { Route, HashRouter } from 'react-router-dom';
+import { Route, HashRouter, Link } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
 import App from './App.container';
@@ -53,11 +53,11 @@ ReactDOM.render(
       </div>
       <div id="overall_wrapper">
         <header>
-          <a href="#" id="logo">
+          <Link to="/home" id="logo">
             <img
               src={ImageLocal}
               alt="dailychoppins logo"/>
-          </a>
+          </Link>
           {/*<div>*/}
             {/*<h1 className="headerText">Welcome to Dailychoppins!</h1>*/}
           {/*</div>*/}
