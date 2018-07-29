@@ -70,7 +70,7 @@ export class ComingSoon extends React.Component {
     }
     else {
       clearTimeout(this);
-      this.props.history.push('/home');
+      this.props.history.push('/');
     }
   }
 
@@ -130,7 +130,7 @@ export class ComingSoon extends React.Component {
           else {
             clearTimeout(this.timerHandle);
             this.timerHandle = 0;
-            this.props.history.push('/home');
+            this.props.history.push('/');
           }
 
       }, 1000);

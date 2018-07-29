@@ -69,10 +69,10 @@ export class InterimPage extends Component {
       let nowTime = new Date();
 
       if(nowTime >= formStartTime && nowTime <= formEndTime) {
-        this.props.history.push('/home');
+        this.props.history.push('/');
       }
       if(nowTime > resultsStartTime && nowTime < resultsEndTime) {
-        this.props.history.push('/home');
+        this.props.history.push('/');
       }
     });
 
@@ -138,7 +138,7 @@ export class InterimPage extends Component {
         else {
           clearInterval(this.timerHandle);
           this.timerHandle = 0;
-          // this.props.history.push('/home');
+          // this.props.history.push('/');
         }
       }, 1000);
       this.props.getTimeForm(dataToPost)
@@ -174,7 +174,7 @@ export class InterimPage extends Component {
       message = 'Form will be displayed in:'
     }
 
-    if(nowTime > this.props.formStartTime && this.props.nextDayValue > this.props.formStartTime) {
+    if(nowTime > this.state.formStartTime && nowTime > this.state.resultsEndTime && this.state.nextDayValue > this.state.formStartTime) {
       schedule = 'form';
       message = 'Form will be displayed in:'
     }

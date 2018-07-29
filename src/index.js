@@ -30,7 +30,7 @@ const container = document.getElementById('root');
 
 // Render app
 ReactDOM.render(
-  <HashRouter path='/'>
+  <HashRouter>
     <Provider store={store}>
       <div>
       <div id="particle_wrapper">
@@ -53,7 +53,7 @@ ReactDOM.render(
       </div>
       <div id="overall_wrapper">
         <header>
-          <Link to="/home" id="logo">
+          <Link to="/" id="logo">
             <img
               src={ImageLocal}
               alt="dailychoppins logo"/>
@@ -62,7 +62,7 @@ ReactDOM.render(
             {/*<h1 className="headerText">Welcome to Dailychoppins!</h1>*/}
           {/*</div>*/}
         </header>
-        <Route path='/home' component={App} />
+        <Route exact path='/' component={App} />
         <Route path='/awaiting-page' component={InterimPage} />
         <Route path='/claim-winnings' component={WinningID} />
         <Route path='/coming-soon' component={ComingSoon} />

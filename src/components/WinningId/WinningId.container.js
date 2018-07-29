@@ -107,7 +107,11 @@ export class WinningId extends React.PureComponent {
     const { mobileNumber, uniqueId, formEndTime, siteLaunch, resultStartTime, resultsEndTime  } = this.props;
 
     if(nowTime > formEndTime && nowTime < resultStartTime && resultStartTime !== null) {
-      this.props.history.push('/home');
+      this.props.history.push('/');
+    }
+
+    if(nowTime > formEndTime && nowTime > resultsEndTime && resultStartTime !== null) {
+      this.props.history.push('/');
     }
 
     let uniqueCodeSplit;
