@@ -27,7 +27,7 @@ const Footer = () => {
     <div className="footerLinkWrapper">
       <ul>
         <li>
-          <a href="https://www.facebook.com/daily.choppins" target="_blank" title="Facebook">
+          <a href="https://www.facebook.com/DailyChoppins-461094991028290/?modal=admin_todo_tour" target="_blank" title="Facebook">
             <FontAwesomeIcon icon={['fab', 'facebook-f']} />
           </a>
         </li>
@@ -43,7 +43,7 @@ const Footer = () => {
           </a>
         </li>
         <li>
-          <a href="https://t.me/daaterror" target="_blank" title="Telegram">
+          <a href="https://t.me/dailychoppins" target="_blank" title="Telegram">
             <FontAwesomeIcon icon={['fab', 'telegram']} />
           </a>
         </li>
