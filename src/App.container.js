@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.scss';
 import WinningID from './components/WinningId/WinningId.container';
-import InterimPage from './components/InterimPage/InterimPage';
+import InterimPage from './components/InterimPage/InterimPage.container';
 import Home from './components/Home/Home.container';
 import moment from 'moment-timezone';
 import fire from './fire';
@@ -47,8 +47,9 @@ export class App extends Component {
     return false;
   }
 
-  isIntervalPreForm(formStartTime, resultsEndTime, newValueTomorrow, nowTime) {
-    if(nowTime > resultsEndTime && nowTime < newValueTomorrow && resultsEndTime !== null) {
+  isIntervalPreForm(formStartTime, resultsEndTime, nextDayValue, nowTime) {
+    if(nowTime > resultsEndTime && nowTime < nextDayValue && resultsEndTime !== null) {
+      this.props.history.push('/awaiting-page');
       return true;
     }
     return false;
@@ -105,7 +106,7 @@ export class App extends Component {
     let nowTime = new Date();
     let newValueTomorrow;
 
-    const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch } = this.props;
+    const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch, nextDayValue } = this.props;
 
     // this.isTimeForm(formStartTime, formEndTime, nowTime);
     this.isErrorLaunch(formStartTime, siteLaunch, nowTime);
@@ -126,11 +127,12 @@ export class App extends Component {
             />
           </div>
         }
-        {this.isIntervalPreForm(formStartTime, resultsEndTime, newValueTomorrow, nowTime) &&
+        {this.isIntervalPreForm(formStartTime, resultsEndTime, nextDayValue, nowTime) &&
           <InterimPage
             textInterim='New competition entry will be available in:'
             schedule="form"
             siteLaunch={siteLaunch}
+            nextDayValue={nextDayValue}
           />
         }
          {this.isIntervalPreResults(formEndTime, resultsStartTime, nowTime, siteLaunch) &&

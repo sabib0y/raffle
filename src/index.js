@@ -14,7 +14,7 @@ import './base.scss';
 import './index.css';
 import ParticleAnimation from 'react-particle-animation';
 import ImageLocal from './images/logo.png';
-import InterimPage from "./components/InterimPage/InterimPage";
+import InterimPage from "./components/InterimPage/InterimPage.container";
 import WinningID from "./components/WinningId/WinningId.container";
 import Footer from "./components/Footer/Footer.component";
 
