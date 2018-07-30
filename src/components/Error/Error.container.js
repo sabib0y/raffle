@@ -1,7 +1,5 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {App} from "../../App.container";
-import {getTimeForm} from "../../redux/actions";
 
 export class Error extends React.PureComponent {
   constructor(props) {

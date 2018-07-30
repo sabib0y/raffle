@@ -121,7 +121,7 @@ export class Home extends React.Component {
       }
       if (event.target.value.length > 0) {
         event.target.parentNode.parentNode.classList.add('active')
-        if (isNaN(parseInt(event.target.value))) {
+        if (isNaN(parseInt(event.target.value, 10))) {
           this.setState({
             errorMessageNumber: '',
             errorNumber: true,
@@ -129,7 +129,7 @@ export class Home extends React.Component {
           });
           event.target.classList.add('errorOutline')
         }
-        if (!isNaN(parseInt(event.target.value))) {
+        if (!isNaN(parseInt(event.target.value, 10))) {
           this.setState({
             errorMessageNumber: ``,
             errorNumber: false,
@@ -188,7 +188,6 @@ export class Home extends React.Component {
     let classSelect = document.getElementsByClassName('dropDown-custom');
 
     let re = /\S+@\S+\.\S+/;
-    let classEmail = document.getElementsByClassName('emailInput');
 
     if (this.state.mobileNumber.length < 1) {
       let classTest = document.getElementsByClassName('mobileInput');
@@ -267,11 +266,16 @@ export class Home extends React.Component {
       let newDate = moment();
       newDate = newDate.format();
 
-      this.state.id = Math.floor(Math.random() * Math.floor(100000));
-      this.state.date = newDate;
-
       const unidueId = uniqid();
-      this.state.uniqueId = unidueId;
+      this.setState({
+        id: Math.floor(Math.random() * Math.floor(100000)),
+        date: newDate,
+        uniqueId: unidueId
+      });
+      // this.state.id = Math.floor(Math.random() * Math.floor(100000));
+      // this.state.date = newDate;
+
+      // this.state.uniqueId = unidueId;
 
       let collectedData = [];
       let collectedNumbers = [];

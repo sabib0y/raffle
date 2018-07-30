@@ -94,6 +94,7 @@ export class InterimPage extends Component {
         const { timeNow, resultsStartTime } = this.state;
         let newDateToTest = new Date();
 
+        /*eslint no-mixed-operators:*/
         if(resultsStartTime > newDateToTest || newDateToTest > resultsStartTime && newDateToTest > formStartTime) {
           let testTime;
           if(resultsStartTime > newDateToTest) {

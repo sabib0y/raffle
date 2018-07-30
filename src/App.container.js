@@ -104,7 +104,6 @@ export class App extends Component {
 
   render() {
     let nowTime = new Date();
-    let newValueTomorrow;
 
     const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch, nextDayValue } = this.props;
 
