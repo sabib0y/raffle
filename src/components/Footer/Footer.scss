@@ -15,7 +15,7 @@
 		display: block;
 		li{
 			display: inline-block;
-		    margin: 0 2rem;
+		  margin: 0 2rem;
 		}
  	}
 }
@@ -50,7 +50,6 @@ a {
  color: rgb(85,172,238);
 }
 [title="Instagram"]:hover{
- // color: rgb(124,86,65);
  color: #e4405f;
 }
 [title="Envelope"]:hover{
@@ -76,4 +75,11 @@ color: rgb(59, 89, 153);
  ul {
   width: 40%;
  }
+}
+
+// mobile
+@media only screen and (max-width: 430px) {
+	.footerLinkWrapper{
+		margin: 0 auto 9rem;
+	}
 }
