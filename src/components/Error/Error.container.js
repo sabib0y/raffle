@@ -10,7 +10,6 @@ export class Error extends React.PureComponent {
   }
 
   render() {
-    console.log('this.props', this.props);
     return (
       <div className='container-fluid appWrapper'>
         <div>

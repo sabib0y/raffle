@@ -113,7 +113,6 @@ export class App extends Component {
     this.isTimeResults(resultsStartTime, resultsEndTime, nowTime);
     this.isWinningId(siteLaunch, nowTime);
 
-    console.log('this.props', this.props);
       return (
       <div className="container-fluid appWrapper">
         {this.isTimeForm(formStartTime, formEndTime, siteLaunch, nowTime) &&

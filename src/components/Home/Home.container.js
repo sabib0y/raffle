@@ -213,7 +213,6 @@ export class Home extends React.Component {
 
     if(this.state.selectedNetwork === 'Select Mobile Network' || this.state.selectedNetwork === 'select network') {
       classSelect.selectNetwork.classList.add('errorOutline');
-      console.log('network', this.state.selectedNetwork);
       this.setState({
         errorNetworkMessage: 'Valid network required',
       })
@@ -241,7 +240,6 @@ export class Home extends React.Component {
 
     else
       if (this.state.emailAddress.length > 0 && re.test(this.state.emailAddress) === false) {
-      console.log('igbo', re.test(this.state.emailAddress))
       // classEmail.emailAddress.classList.add('errorOutline');
     }
 
@@ -318,7 +316,6 @@ export class Home extends React.Component {
 
       let classRemove = document.getElementsByClassName('form-group');
         for ( let value of classRemove) {
-          console.log(value);
           value.classList.remove('active');
         }
     }

@@ -21,7 +21,8 @@ import Footer from "./components/Footer/Footer.component";
 // Create redux store
 const loggerMiddleware = createLogger();
 const store = createStore(reducer, compose(
-  applyMiddleware(thunk, loggerMiddleware),
+  // applyMiddleware(thunk, loggerMiddleware),
+  applyMiddleware(thunk),
   window.devToolsExtension ? window.devToolsExtension() : f => f
 ));
 
