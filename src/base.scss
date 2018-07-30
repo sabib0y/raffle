@@ -60,13 +60,15 @@ span.large_text{
 
 // responsive
 // tablet
+body{
+
 @media screen and (max-width: 1060px) and (min-width: 841px){
   header {
     margin-bottom: 0rem;
   }
 }
 
-// mobile
+// medium
 @media only screen and (max-width: 1020px) {
   #logo{
     img{
@@ -80,12 +82,8 @@ span.large_text{
   }
 
   .headerText{
-    margin-bottom: 2rem;
-    font-size: 3.2rem;
-  }
-
-  .footerLinkWrapper{
-    margin-top: 4rem;
+    margin-bottom: 1rem;
+    font-size: 2.2rem;
   }
  }
-
+}
