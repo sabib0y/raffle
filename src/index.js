@@ -9,7 +9,7 @@ import App from './App.container';
 import ComingSoon from './components/ComingSoon/ComingSoon';
 import Error from './components/Error/Error.container';
 import reducer from './redux/index';
-import createLogger from 'redux-logger';
+// import createLogger from 'redux-logger';
 import './base.scss';
 import './index.css';
 import ParticleAnimation from 'react-particle-animation';
@@ -19,9 +19,10 @@ import WinningID from "./components/WinningId/WinningId.container";
 import Footer from "./components/Footer/Footer.component";
 
 // Create redux store
-const loggerMiddleware = createLogger();
+// const loggerMiddleware = createLogger();
 const store = createStore(reducer, compose(
-  applyMiddleware(thunk, loggerMiddleware),
+  // applyMiddleware(thunk, loggerMiddleware),
+  applyMiddleware(thunk),
   window.devToolsExtension ? window.devToolsExtension() : f => f
 ));
 

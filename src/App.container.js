@@ -47,8 +47,8 @@ export class App extends Component {
     return false;
   }
 
-  isIntervalPreForm(formStartTime, resultsEndTime, nextDayValue, nowTime) {
-    if(nowTime > resultsEndTime && nowTime < nextDayValue && resultsEndTime !== null) {
+  isIntervalPreForm(formStartTime, resultsEndTime, nextDayValue, nowTime, siteLaunch) {
+    if(nowTime > resultsEndTime && nowTime < nextDayValue && nowTime > siteLaunch && resultsEndTime !== null) {
       this.props.history.push('/awaiting-page');
       return true;
     }
@@ -104,7 +104,6 @@ export class App extends Component {
 
   render() {
     let nowTime = new Date();
-    let newValueTomorrow;
 
     const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch, nextDayValue } = this.props;
 
@@ -113,7 +112,6 @@ export class App extends Component {
     this.isTimeResults(resultsStartTime, resultsEndTime, nowTime);
     this.isWinningId(siteLaunch, nowTime);
 
-    console.log('this.props', this.props);
       return (
       <div className="container-fluid appWrapper">
         {this.isTimeForm(formStartTime, formEndTime, siteLaunch, nowTime) &&
@@ -127,7 +125,7 @@ export class App extends Component {
             />
           </div>
         }
-        {this.isIntervalPreForm(formStartTime, resultsEndTime, nextDayValue, nowTime) &&
+        {this.isIntervalPreForm(formStartTime, resultsEndTime, nextDayValue, nowTime, siteLaunch) &&
           <InterimPage
             textInterim='New competition entry will be available in:'
             schedule="form"

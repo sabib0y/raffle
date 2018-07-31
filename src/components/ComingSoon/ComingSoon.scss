@@ -70,16 +70,20 @@ span {
 	#timer_wrapper{
 		>span{
 			padding: 0 1.3rem;
-		    font-size: 1.3rem;
+		    font-size:1.5rem;
 		}
 
 		.dynamic_value{
-			font-size: 3.1rem;
+			font-size: 4.1rem;
 
 			&+span{
 				top: 0.5rem;
 			}
 		}
+	}
+
+	.centreText{
+		margin-top: 2rem;
 	}
 
  }
