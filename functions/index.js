@@ -45,6 +45,24 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
         mobileNumber: randomElement.user.mobileNumber
       };
 
+      admin.database().ref('setTimeForm/').once('value').then(snapshot => {
+        let formTimes = snapshot.val();
+        let timeDataToReceived = {
+          formStart: new Date(formTimes.postData.formStart),
+          formEnd: new Date(formTimes.postData.formEnd),
+          resultStart: new Date(formTimes.postData.resultStart),
+          resultEnd: new Date(formTimes.postData.resultEnd),
+        };
+
+        let postData = {
+          formStart: timeDataToReceived.formStart.setDate(timeDataToReceived.formStart.getDate() + 1),
+          formEnd: timeDataToReceived.formEnd.setDate(timeDataToReceived.formEnd.getDate() + 1),
+          resultStart: timeDataToReceived.resultStart.setDate(timeDataToReceived.resultStart.getDate() + 1),
+          resultEnd: timeDataToReceived.resultEnd.setDate(timeDataToReceived.resultEnd.getDate() + 1),
+        };
+        return admin.database().ref('setTimeForm/').set({postData});
+      });
+
       response.send(`Random Number generated ${randomizedData}, timeNow: ${timeNow}`);
       admin.database().ref('randomWinnerSetWeb/').set({postDataWeb});
       admin.database().ref('randomWinnerSet/').set({postData});
