@@ -85,7 +85,7 @@ export class InterimPage extends Component {
         formEndTime,
         resultsStartTime,
         resultsEndTime,
-        siteLaunch: new Date(siteLaunch.siteLaunch),
+        siteLaunch: new Date("2018-07-06T07:00:34+01:00"),
         nextDayValue,
       };
 
@@ -163,7 +163,13 @@ export class InterimPage extends Component {
   render () {
     let schedule, message;
     let nowTime = new Date();
-    this.checkPageLocation(this.props.siteLaunch, nowTime);
+    const { siteLaunch } = this.props;
+
+    if(siteLaunch !== undefined) {
+      console.log(siteLaunch, 'moment', siteLaunch.setDate(siteLaunch.getDate()+1));
+    }
+
+    this.checkPageLocation(siteLaunch, nowTime);
 
     if(nowTime > this.state.formEndTime && nowTime < this.state.resultsStartTime) {
       schedule = 'results';
