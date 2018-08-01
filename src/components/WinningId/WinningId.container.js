@@ -3,6 +3,7 @@ import fire from '../../fire';
 import {getTimeForm, getWinningId} from "../../redux/actions";
 import WinningCodeValidation from '../WinningCodeValidation/WinningCodeValidation.container';
 import {connect} from "react-redux";
+import moment from 'moment-timezone';
 
 export class WinningId extends React.PureComponent {
   constructor(props) {
@@ -30,7 +31,7 @@ export class WinningId extends React.PureComponent {
         let siteLaunchTime = snapshot.val();
 
         this.setState({
-          siteLaunch: new Date(siteLaunchTime.siteLaunch),
+          siteLaunch: new Date("2015-07-06T07:00:34+01:00"),
         })
       }
     });
@@ -39,12 +40,22 @@ export class WinningId extends React.PureComponent {
       if (Object.entries !== null || Object.entries !== undefined) {
         let siteForm = snapshot.val();
 
-        this.setState({
-          formStartTime: new Date(siteForm.postData.formStart),
-          formEndTime: new Date(siteForm.postData.formEnd),
-          resultStart: new Date(siteForm.postData.resultStart),
-          resultEnd: new Date(siteForm.postData.resultEnd),
-        })
+        if (siteForm !== null || siteForm !== undefined) {
+
+          let postData = {
+            formStart: new Date(siteForm.postData.formStart),
+            formEnd: new Date(siteForm.postData.formEnd),
+            resultStart: new Date(siteForm.postData.resultStart),
+            resultEnd: new Date(siteForm.postData.resultEnd),
+          };
+
+          this.setState({
+            formStartTime: new Date(postData.formStart),
+            formEndTime: new Date(postData.formEnd),
+            resultStart: new Date(postData.resultStart),
+            resultEnd: new Date(postData.resultEnd),
+          })
+        }
       }
     });
 
@@ -106,11 +117,11 @@ export class WinningId extends React.PureComponent {
     const { winningConfirmation } = this.state;
     const { mobileNumber, uniqueId, formEndTime, siteLaunch, resultStartTime, resultsEndTime  } = this.props;
 
-    if(nowTime > formEndTime && nowTime < resultStartTime && resultStartTime !== null) {
+    if(nowTime > formEndTime && nowTime < resultStartTime && resultStartTime !== undefined) {
       this.props.history.push('/');
     }
 
-    if(nowTime > formEndTime && nowTime > resultsEndTime && resultStartTime !== null) {
+    if(nowTime > formEndTime && nowTime > resultsEndTime && resultStartTime !== undefined) {
       this.props.history.push('/');
     }
 

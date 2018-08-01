@@ -23,11 +23,12 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 
   return admin.database().ref('users/').once('value').then(snapshot => {
     let receivedData = snapshot.val();
-    let vals = Object.keys(receivedData).map(key => {
-      return receivedData[key];
-    });
 
-    if (vals.length > 0) {
+
+    if (receivedData !== null) {
+      let vals = Object.keys(receivedData).map(key => {
+        return receivedData[key];
+      });
       let randomIndex = Math.floor(Math.random() * vals.length);
       let randomElement = vals[randomIndex];
       randomizedData.push(randomElement);
@@ -45,24 +46,6 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
         mobileNumber: randomElement.user.mobileNumber
       };
 
-      admin.database().ref('setTimeForm/').once('value').then(snapshot => {
-        let formTimes = snapshot.val();
-        let timeDataToReceived = {
-          formStart: new Date(formTimes.postData.formStart),
-          formEnd: new Date(formTimes.postData.formEnd),
-          resultStart: new Date(formTimes.postData.resultStart),
-          resultEnd: new Date(formTimes.postData.resultEnd),
-        };
-
-        let postData = {
-          formStart: timeDataToReceived.formStart.setDate(timeDataToReceived.formStart.getDate() + 1),
-          formEnd: timeDataToReceived.formEnd.setDate(timeDataToReceived.formEnd.getDate() + 1),
-          resultStart: timeDataToReceived.resultStart.setDate(timeDataToReceived.resultStart.getDate() + 1),
-          resultEnd: timeDataToReceived.resultEnd.setDate(timeDataToReceived.resultEnd.getDate() + 1),
-        };
-        return admin.database().ref('setTimeForm/').set({postData});
-      });
-
       response.send(`Random Number generated ${randomizedData}, timeNow: ${timeNow}`);
       admin.database().ref('randomWinnerSetWeb/').set({postDataWeb});
       admin.database().ref('randomWinnerSet/').set({postData});
@@ -76,3 +59,36 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
     }
   });
 });
+
+exports.formScheduling = functions.https.onRequest((request, response) => {
+
+
+  return admin.database().ref('setTimeForm/').once('value').then(snapshot => {
+    let siteForm = snapshot.val();
+
+    if(siteForm !== null || siteForm !== undefined) {
+
+      let postDataTest = {
+        formStart: new Date(siteForm.postData.formStart),
+        formEnd: new Date(siteForm.postData.formEnd),
+        resultStart: new Date(siteForm.postData.resultStart),
+        resultEnd: new Date(siteForm.postData.resultEnd),
+      };
+
+      let postData = {
+        formStart: moment(postDataTest.formStart.setDate(postDataTest.formStart.getDate() + 1)).format(),
+        formEnd: moment(postDataTest.formEnd.setDate(postDataTest.formEnd.getDate() + 1)).format(),
+        resultStart: moment(postDataTest.resultStart.setDate(postDataTest.resultStart.getDate() + 1)).format(),
+        resultEnd: moment(postDataTest.resultEnd.setDate(postDataTest.resultEnd.getDate() + 1)).format(),
+      };
+
+      response.send(`Scheduling set`);
+      return admin.database().ref('setTimeForm/').update({postData});
+
+    } else {
+      console.error('No Entries Found');
+      return response.send(`Form not scheduled`);
+    }
+  });
+});
+

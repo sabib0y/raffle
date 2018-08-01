@@ -9,6 +9,7 @@ import 'react-select/dist/react-select.css';
 import './Home.scss';
 import Popup from '../PopUp/PopUp.component';
 import fire from "../../fire";
+import _ from 'lodash';
 
 export class Home extends React.Component {
   constructor(props) {
@@ -63,6 +64,27 @@ export class Home extends React.Component {
     }
   }
 
+  componentDidMount() {
+    fire.database().ref('users/').once('value').then(snapshot => {
+      let receivedData = snapshot.val();
+      let collectedData = [];
+
+
+      if (receivedData !== null) {
+        let vals = Object.keys(receivedData).map(key => {
+          return receivedData[key];
+        });
+        vals.map(item => {
+          collectedData.push(item.user);
+        });
+      }
+
+      console.log('before', collectedData);
+      _.uniqWith(collectedData, _.isEqual);
+
+      console.log('after', collectedData);
+    });
+  }
   displayResults() {
     this.setState({displayResults: 'test', showResults: true})
     setTimeout(() => {
@@ -277,51 +299,19 @@ export class Home extends React.Component {
 
       // this.state.uniqueId = unidueId;
 
-      let collectedData = [];
-      let collectedNumbers = [];
-
-      fire.database().ref('users').once('value').then((snapshot) => {
-
-        const {fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId} = this.state;
-        const dataToSend = {
-          fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId
-        };
-
-        if (snapshot.exists()) {
-          if (Object.entries !== null || Object.entries !== undefined) {
-            let receivedData = Object.entries(snapshot.val());
-            receivedData.map(item => {
-              return collectedData.push(item[1]);
-            });
-            collectedData.map(user => {
-              return collectedNumbers.push(user.user.mobileNumber);
-            });
-
-            if (collectedNumbers.indexOf(this.state.mobileNumber) > -1) {
-              this.props.getNumbers({fullName, emailAddress, mobileNumber, date, uniqueId});
-              this.setState({disabled: true});
-              document.getElementById("user-form").reset();
-              this.togglePopup();
-            } else {
-              this.props.getUsers(dataToSend);
-              this.setState({disabled: true});
-              document.getElementById("user-form").reset();
-              this.togglePopup();
-            }
-          }
-        }
-        else {
-          this.props.getUsers(dataToSend);
-
-          this.setState({disabled: true});
-          document.getElementById("user-form").reset();
-        }
-      });
+      const {fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId} = this.state;
+      const dataToSend = {
+        fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId
+      };
+      this.props.getUsers(dataToSend);
+      this.setState({disabled: true});
+      document.getElementById("user-form").reset();
+      this.togglePopup();
 
       let classRemove = document.getElementsByClassName('form-group');
-        for ( let value of classRemove) {
-          value.classList.remove('active');
-        }
+      for ( let value of classRemove) {
+        value.classList.remove('active');
+      }
     }
   }
 
