@@ -335,18 +335,6 @@ export class Home extends React.Component {
     });
   }
 
-  testFunc() {
-    this.setState({showResults: !this.state.showResults});
-  }
-
-  redeemCode() {
-    this.setState({revealRedeem: true});
-  }
-
-  labelHandler(e){
-    this.setState({clickedClass: 'active'})
-  }
-
   render() {
     const options = [
       { value: 'Select Network', label: 'select network', id: 'select-network'},
