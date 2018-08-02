@@ -1,4 +1,4 @@
-@import "settings"; 
+@import "settings";
 
 :root { font-size: 10px; }
 html{
@@ -13,6 +13,10 @@ html{
     }
 }
 
+header{
+  margin-bottom: 0;
+}
+
 #particle_wrapper{
   position: fixed;
   width: 100%;
@@ -24,7 +28,7 @@ html{
     height: 100%;
     background-image: url('./images/one_pager.jpg');
     top:0;
-    left: 0;    
+    left: 0;
     position: absolute;
     opacity: 0.4;
   }
@@ -55,35 +59,4 @@ span.large_text{
   font-size: 3rem;
   font-weight: 700;
   margin: 0 0.7rem;
-}
-
-
-// responsive
-// tablet
-body{
-
-@media screen and (max-width: 1060px) and (min-width: 841px){
-  header {
-    margin-bottom: 0rem;
-  }
-}
-
-// medium
-@media only screen and (max-width: 1020px) {
-  #logo{
-    img{
-      max-width: 17rem;
-    }
-  }
-
-  header{
-    margin-bottom: 0;
-    padding-top: 20px;
-  }
-
-  .headerText{
-    margin-bottom: 1rem;
-    font-size: 2.2rem;
-  }
- }
 }

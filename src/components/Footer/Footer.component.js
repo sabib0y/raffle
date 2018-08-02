@@ -16,7 +16,7 @@ library.add(
   fab,
   faCoffee,
   faCog,
-  faSpinner, 
+  faSpinner,
   faQuoteLeft,
   faSquare,
   faCheckSquare
@@ -32,13 +32,13 @@ const Footer = () => {
           </a>
         </li>
         <li>
-          <a href="https://www.instagram.com/dailychoppinss" target="_blank" title="Twitter">
+          <a href="https://www.twitter.com/DChoppins" target="_blank" title="Twitter">
           {/* to be added in */}
             <FontAwesomeIcon icon={['fab', 'twitter']} />
           </a>
         </li>
         <li>
-          <a href="https://www.instagram.com/dailychoppinss" target="_blank" title="Instagram">
+          <a href="https://www.instagram.com/daily.choppins/?hl=en" target="_blank" title="Instagram">
             <FontAwesomeIcon icon={['fab', 'instagram']} />
           </a>
         </li>
@@ -48,6 +48,10 @@ const Footer = () => {
           </a>
         </li>
       </ul>
+      <p id="footer_text">
+        DailyChoppins holds free to enter daily raffles in Nigeria that gives out free airtime to all networks.
+        Any information submitted may be used for marketing purposes.
+      </p>
     </div>
   )
 };

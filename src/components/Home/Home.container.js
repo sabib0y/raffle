@@ -66,6 +66,54 @@ export class Home extends React.Component {
 
   componentDidMount() {
     fire.database().ref('users/').once('value').then(snapshot => {
+      let usersReceived = snapshot.val();
+
+      if (usersReceived !== null) {
+        let vals = Object.keys(usersReceived).map(key => {
+          return usersReceived[key];
+        });
+
+        fire.database().ref('setNumberOfWinners/').once('value').then(snapshot => {
+          let receivedData = snapshot.val();
+          let randomData = [];
+          let randomDataWeb = [];
+          let randomToSend = [];
+          let parseVal =  parseInt(receivedData.winners);
+
+          for (let i = 0; i < parseVal; i++) {
+            let randomIndex = Math.floor(Math.random() * vals.length);
+            let randomElement = vals[randomIndex];
+            randomData.push(randomElement);
+          }
+
+          let postData;
+
+          for(let value of randomData) {
+            randomToSend.push(value.user);
+          }
+
+          console.log('randomToSend', randomToSend);
+
+          randomToSend.map(item => {
+            postData = item;
+            console.log('winner', postData);
+
+            // Get a key for a new Post.
+            let newPostKey = fire.database().ref().child('users').push().key;
+
+            // Write the new post's data simultaneously in the posts list and the user's post list.
+            let updates = {};
+            updates[`/randomWinnerSet/${newPostKey}/winner/`] = postData;
+            fire.database().ref().update(updates);
+          });
+
+          // return fire.admin.database().ref('randomWinnerSet/').set({postData});
+        });
+      }
+    });
+
+
+    fire.database().ref('users/').once('value').then(snapshot => {
       let receivedData = snapshot.val();
       let collectedData = [];
 
@@ -323,18 +371,6 @@ export class Home extends React.Component {
       emailAddress: '',
       selectedNetwork: 'Select Mobile Network'
     });
-  }
-
-  testFunc() {
-    this.setState({showResults: !this.state.showResults});
-  }
-
-  redeemCode() {
-    this.setState({revealRedeem: true});
-  }
-
-  labelHandler(e){
-    this.setState({clickedClass: 'active'})
   }
 
   render() {

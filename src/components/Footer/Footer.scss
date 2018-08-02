@@ -10,7 +10,7 @@
 		display: block;
 		li{
 			display: inline-block;
-		    margin: 0 2rem;
+		  margin: 0 2rem;
 		}
  	}
 }
@@ -45,7 +45,6 @@ a {
  color: rgb(85,172,238);
 }
 [title="Instagram"]:hover{
- // color: rgb(124,86,65);
  color: #e4405f;
 }
 [title="Envelope"]:hover{
@@ -61,6 +60,14 @@ color: rgb(59, 89, 153);
  text-align: center;
 }
 
+#footer_text{
+	font-size: 1.5rem;
+	text-align: center;
+	max-width: 69rem;
+	padding: 0 1rem;
+	margin: 3rem auto 0;
+}
+
 @include breakpoint(tablet) {
  ul {
   width: 60%;
@@ -71,4 +78,11 @@ color: rgb(59, 89, 153);
  ul {
   width: 40%;
  }
+}
+
+// mobile
+@media only screen and (max-width: 430px) {
+	.footerLinkWrapper{
+		margin: 0 auto 9rem;
+	}
 }
