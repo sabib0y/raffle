@@ -1,23 +1,15 @@
 const functions = require('firebase-functions');
 const moment = require('moment-timezone');
 const admin = require('firebase-admin');
+const Immutable = require('immutable');
 admin.initializeApp(functions.config().firebase);
 
 // // Create and Deploy Your First Cloud Functions
 // https://firebase.google.com/docs/functions/write-firebase-functions
 //
-exports.helloWorld = functions.https.onRequest((request, response) => {
-  const test = true;
-  // fromNow
-  const produceResults = {
-    formEnd: '15:00:00',
-    resultsStart: '20:00:00',
-    newTime: '14:12:00'
-  };
+exports.dataBaseCleanUp = functions.https.onRequest((request, response) => {
   let timeNow = moment().tz("Europe/London").format('HH:MM:SS');
 
-  let randomizedData = [];
-  let winnerData = [];
   let todayDate = moment().tz("Europe/London").format();
   todayDate = todayDate.split('T')[0];
 
@@ -29,39 +21,75 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
       let vals = Object.keys(receivedData).map(key => {
         return receivedData[key];
       });
-      let randomIndex = Math.floor(Math.random() * vals.length);
-      let randomElement = vals[randomIndex];
-      randomizedData.push(randomElement);
-      const postData = {
-        date: randomElement.user.date,
-        emailAddress: randomElement.user.emailAddress,
-        fullName: randomElement.user.fullName,
-        mobileNumber: randomElement.user.mobileNumber,
-        selectedNetwork: randomElement.user.selectedNetwork,
-        uniqueId: randomElement.user.uniqueId,
-        winningCodeConfirmation: randomElement.user.winningCodeConfirmation
-      };
-      const postDataWeb = {
-        uniqueId: randomElement.user.uniqueId,
-        mobileNumber: randomElement.user.mobileNumber
-      };
-
-      response.send(`Random Number generated ${randomizedData}, timeNow: ${timeNow}`);
-      admin.database().ref('randomWinnerSetWeb/').set({postDataWeb});
-      admin.database().ref('randomWinnerSet/').set({postData});
+      response.send(`Database Cleaned, at: ${timeNow}`);
       admin.database().ref(`usersBackup/${todayDate}`).set({receivedData});
       admin.database().ref('usersAll/').update({vals});
       return admin.database().ref(`users`).remove();
 
     } else {
-      console.error('No Entries Found', randomizedData);
-     return response.send(`No Number generated ${randomizedData}, timeNow: ${timeNow}`);
+     return response.send(`Database Not Cleaned at: ${timeNow}`);
+    }
+  });
+});
+
+exports.winnerGenerator = functions.https.onRequest((request, response) => {
+  return admin.database().ref('users/').once('value').then(snapshot => {
+    let usersReceived = snapshot.val();
+
+    if (usersReceived !== null) {
+      let vals = Object.keys(usersReceived).map(key => {
+        return usersReceived[key];
+      });
+
+     return admin.database().ref('setNumberOfWinners/').once('value').then(snapshot => {
+        let receivedData = snapshot.val();
+        let randomData = [];
+        let randomToSend = [];
+        let parseVal =  parseInt(receivedData.winners);
+        let postData, postDataWeb, dataState;
+
+        for (let i = 0; i < parseVal; i++) {
+          let randomIndex = Math.floor(Math.random() * vals.length);
+          let randomElement = vals[randomIndex];
+          randomData.push(randomElement);
+        }
+
+        for (let value of randomData) {
+          randomToSend.push(value.user);
+        }
+
+        return randomToSend.map(item => {
+          postData = item;
+          dataState = Immutable.fromJS(item);
+          postDataWeb = {
+            mobileNumber: dataState.get('mobileNumber'),
+            selectedNetwork: dataState.get('selectedNetwork'),
+            uniqueId: dataState.get('uniqueId'),
+            winningCodeConfirmation: dataState.get('winningCodeConfirmation')
+          };
+
+          // Get a key for a new Post.
+          let newPostKey = admin.database().ref().child('users').push().key;
+
+          // Write the new post's data simultaneously in the posts list and the user's post list.
+          let updates = {};
+          let updatesWeb = {};
+          updates[`/randomWinnerSet/${newPostKey}/winner/`] = postData;
+          updatesWeb[`/randomWinnerSetWebNew/${newPostKey}/winner/`] = postDataWeb;
+          admin.database().ref().update(updates);
+          admin.database().ref().update(updatesWeb);
+
+          return response.send(`Random Winners Set`);
+        });
+      });
+    }
+    else {
+     return response.send(`Random Winners Not Set`);
     }
   });
 });
 
 exports.formScheduling = functions.https.onRequest((request, response) => {
-
 
   return admin.database().ref('setTimeForm/').once('value').then(snapshot => {
     let siteForm = snapshot.val();

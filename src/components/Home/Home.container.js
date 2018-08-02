@@ -10,6 +10,7 @@ import './Home.scss';
 import Popup from '../PopUp/PopUp.component';
 import fire from "../../fire";
 import _ from 'lodash';
+import Immutable from 'immutable';
 
 export class Home extends React.Component {
   constructor(props) {
@@ -65,74 +66,27 @@ export class Home extends React.Component {
   }
 
   componentDidMount() {
-    fire.database().ref('users/').once('value').then(snapshot => {
-      let usersReceived = snapshot.val();
-
-      if (usersReceived !== null) {
-        let vals = Object.keys(usersReceived).map(key => {
-          return usersReceived[key];
-        });
-
-        fire.database().ref('setNumberOfWinners/').once('value').then(snapshot => {
-          let receivedData = snapshot.val();
-          let randomData = [];
-          let randomDataWeb = [];
-          let randomToSend = [];
-          let parseVal =  parseInt(receivedData.winners);
-
-          for (let i = 0; i < parseVal; i++) {
-            let randomIndex = Math.floor(Math.random() * vals.length);
-            let randomElement = vals[randomIndex];
-            randomData.push(randomElement);
-          }
-
-          let postData;
-
-          for(let value of randomData) {
-            randomToSend.push(value.user);
-          }
-
-          console.log('randomToSend', randomToSend);
-
-          randomToSend.map(item => {
-            postData = item;
-            console.log('winner', postData);
-
-            // Get a key for a new Post.
-            let newPostKey = fire.database().ref().child('users').push().key;
-
-            // Write the new post's data simultaneously in the posts list and the user's post list.
-            let updates = {};
-            updates[`/randomWinnerSet/${newPostKey}/winner/`] = postData;
-            fire.database().ref().update(updates);
-          });
-
-          // return fire.admin.database().ref('randomWinnerSet/').set({postData});
-        });
-      }
-    });
-
-
-    fire.database().ref('users/').once('value').then(snapshot => {
-      let receivedData = snapshot.val();
-      let collectedData = [];
-
-
-      if (receivedData !== null) {
-        let vals = Object.keys(receivedData).map(key => {
-          return receivedData[key];
-        });
-        vals.map(item => {
-          collectedData.push(item.user);
-        });
-      }
-
-      console.log('before', collectedData);
-      _.uniqWith(collectedData, _.isEqual);
-
-      console.log('after', collectedData);
-    });
+    // fire.database().ref('users/').once('value').then(snapshot => {
+    //   let receivedData = snapshot.val();
+    //   let collectedData = [];
+    //
+    //   if (receivedData !== null) {
+    //     let vals = Object.keys(receivedData).map(key => {
+    //       return receivedData[key];
+    //     });
+    //     vals.map(item => {
+    //       collectedData.push(item.user);
+    //     });
+    //   }
+    //
+    //   console.log('before', collectedData);
+    //   _.uniqWith(collectedData, _.isEqual);
+    //
+    //   console.log('after', collectedData);
+    // });
   }
+
+
   displayResults() {
     this.setState({displayResults: 'test', showResults: true})
     setTimeout(() => {
@@ -337,15 +291,15 @@ export class Home extends React.Component {
       newDate = newDate.format();
 
       const unidueId = uniqid();
-      this.setState({
-        id: Math.floor(Math.random() * Math.floor(100000)),
-        date: newDate,
-        uniqueId: unidueId
-      });
-      // this.state.id = Math.floor(Math.random() * Math.floor(100000));
-      // this.state.date = newDate;
+      // this.setState({
+      //   id: Math.floor(Math.random() * Math.floor(100000)),
+      //   date: newDate,
+      //   uniqueId: unidueId
+      // });
+      this.state.id = Math.floor(Math.random() * Math.floor(100000));
+      this.state.date = newDate;
 
-      // this.state.uniqueId = unidueId;
+      this.state.uniqueId = unidueId;
 
       const {fullName, emailAddress, selectedNetwork, mobileNumber, date, uniqueId} = this.state;
       const dataToSend = {
