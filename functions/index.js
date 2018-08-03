@@ -69,13 +69,14 @@ exports.winnerGenerator = functions.https.onRequest((request, response) => {
           };
 
           // Get a key for a new Post.
-          let newPostKey = admin.database().ref().child('users').push().key;
+          let newPostKeySet = admin.database().ref().child('randomWinnerSet').push().key;
+          let newPostKeyNew = admin.database().ref().child('randomWinnerSetWebNew').push().key;
 
           // Write the new post's data simultaneously in the posts list and the user's post list.
           let updates = {};
           let updatesWeb = {};
-          updates[`/randomWinnerSet/${newPostKey}/winner/`] = postData;
-          updatesWeb[`/randomWinnerSetWebNew/${newPostKey}/winner/`] = postDataWeb;
+          updates[`/randomWinnerSet/${newPostKeySet}/winner/`] = postData;
+          updatesWeb[`/randomWinnerSetWebNew/${newPostKeyNew}/winner/`] = postDataWeb;
           admin.database().ref().update(updates);
           admin.database().ref().update(updatesWeb);
 
