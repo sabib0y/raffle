@@ -20,11 +20,31 @@ export class WinningId extends React.PureComponent {
       siteLaunch: null,
       formStartTime: null,
       resultEnd: null,
-      formEndTime: null
+      formEndTime: null,
+      won: false
     }
   }
 
   componentWillMount(){
+
+    const { formEndTime, resultStartTime, resultsEndTime } = this.props;
+    let nowTime = new Date();
+
+    if (nowTime >= resultStartTime && nowTime <= resultStartTime && resultsEndTime !== null) {
+      this.props.history.push('/claim-winnings');
+    }
+
+    if(nowTime > formEndTime && nowTime < resultStartTime && resultStartTime !== undefined) {
+      this.props.history.push('/');
+    }
+
+    if(nowTime > formEndTime && nowTime > resultsEndTime && resultStartTime !== undefined) {
+      this.props.history.push('/');
+    }
+
+    if(nowTime < resultStartTime) {
+      this.props.history.push('/')
+    }
 
     fire.database().ref('setSiteLaunch/').once('value').then((snapshot) => {
       if (Object.entries !== null || Object.entries !== undefined) {
@@ -92,6 +112,9 @@ export class WinningId extends React.PureComponent {
 
   }
 
+  componentDidMount() {
+
+  }
   componentWillUnmount() {
     this.setState({
       receivedMobileNumber: null,
@@ -108,6 +131,9 @@ export class WinningId extends React.PureComponent {
     if(event.winningCodeConfirmation) {
       this.setState({ winningConfirmation: true })
     }
+    if(event.won) {
+      this.setState({ won: true })
+    }
   }
 
   isWinningId(siteLaunch, nowTime) {
@@ -123,6 +149,14 @@ export class WinningId extends React.PureComponent {
 
   }
 
+  // isTimeResults(resultStartTime, resultsEndTime, nowTime) {
+  //   if (nowTime >= resultStartTime && nowTime <= resultStartTime && resultsEndTime !== null) {
+  //     this.props.history.push('/claim-winnings');
+  //       return true;
+  //   }
+  //   return false;
+  // }
+
   render() {
 
     console.log('collectedData', this.state.uniqueId);
@@ -131,12 +165,20 @@ export class WinningId extends React.PureComponent {
     const { winningConfirmation } = this.state;
     const { mobileNumber, uniqueId, formEndTime, siteLaunch, resultStartTime, resultsEndTime, collectedData  } = this.props;
 
+    if (nowTime >= resultStartTime && nowTime <= resultStartTime && resultsEndTime !== null) {
+      this.props.history.push('/claim-winnings');
+    }
+
     if(nowTime > formEndTime && nowTime < resultStartTime && resultStartTime !== undefined) {
       this.props.history.push('/');
     }
 
     if(nowTime > formEndTime && nowTime > resultsEndTime && resultStartTime !== undefined) {
       this.props.history.push('/');
+    }
+
+    if(nowTime < resultStartTime) {
+      this.props.history.push('/')
     }
 
     let collectedItems = [];
@@ -156,11 +198,17 @@ export class WinningId extends React.PureComponent {
     // }
 
     this.isWinningId(siteLaunch, nowTime);
+    // this.isTimeResults(resultStartTime, resultsEndTime, nowTime);
 
     return (
       <div className="winning_validation draw_content_container">
         <div>
-        <h1 className="headerText">Redeem voucher!</h1>
+          {this.state.won === false &&
+          <h1 className="headerText">Redeem voucher!</h1>
+          }
+          {this.state.won === true &&
+          <h1 className="headerText">Redeem another?</h1>
+          }
         </div>
         {winningConfirmation === false &&
         <div>

@@ -55,6 +55,10 @@ h1,h2,h3,h4{
   @include btn;
 }
 
+.custom-button-redeem{
+  @include btn;
+}
+
 span.large_text{
   font-size: 3rem;
   font-weight: 700;

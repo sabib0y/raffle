@@ -8,9 +8,6 @@ import { getUsers, getNumbers } from "../../redux/actions";
 import 'react-select/dist/react-select.css';
 import './Home.scss';
 import Popup from '../PopUp/PopUp.component';
-import fire from "../../fire";
-import _ from 'lodash';
-import Immutable from 'immutable';
 
 export class Home extends React.Component {
   constructor(props) {
