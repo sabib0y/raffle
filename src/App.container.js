@@ -94,7 +94,7 @@ export class App extends Component {
           formEndTime: new Date(receivedDataTime.postData.formEnd),
           resultsStartTime: new Date(receivedDataTime.postData.resultStart),
           resultsEndTime: new Date(receivedDataTime.postData.resultEnd),
-          siteLaunch: new Date("2018-07-06T07:00:34+01:00"),
+          siteLaunch: new Date("2014-07-06T07:00:34+01:00"),
           nextDayValue: new Date(nextDayValue),
         };
         this.props.getTimeForm(dataToSend)

@@ -48,6 +48,10 @@ const Footer = () => {
           </a>
         </li>
       </ul>
+      <p id="footer_text">
+        DailyChoppins holds free to enter daily raffles in Nigeria that gives out free airtime to all networks.
+        Any information submitted may be used for marketing purposes.
+      </p>
     </div>
   )
 };

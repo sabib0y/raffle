@@ -3,6 +3,7 @@ import fire from '../../fire';
 import {getTimeForm, getWinningId} from "../../redux/actions";
 import WinningCodeValidation from '../WinningCodeValidation/WinningCodeValidation.container';
 import {connect} from "react-redux";
+import moment from 'moment-timezone';
 
 export class WinningId extends React.PureComponent {
   constructor(props) {
@@ -10,7 +11,7 @@ export class WinningId extends React.PureComponent {
     this.state = {
       randomizedData: null,
       uniqueCodeSplit: '',
-      uniqueId: null,
+      uniqueId: [],
       revealRedeem: false,
       receivedData: null,
       receivedMobileNumber: null,
@@ -30,7 +31,7 @@ export class WinningId extends React.PureComponent {
         let siteLaunchTime = snapshot.val();
 
         this.setState({
-          siteLaunch: new Date(siteLaunchTime.siteLaunch),
+          siteLaunch: new Date("2015-07-06T07:00:34+01:00"),
         })
       }
     });
@@ -39,22 +40,39 @@ export class WinningId extends React.PureComponent {
       if (Object.entries !== null || Object.entries !== undefined) {
         let siteForm = snapshot.val();
 
-        this.setState({
-          formStartTime: new Date(siteForm.postData.formStart),
-          formEndTime: new Date(siteForm.postData.formEnd),
-          resultStart: new Date(siteForm.postData.resultStart),
-          resultEnd: new Date(siteForm.postData.resultEnd),
-        })
+        if (siteForm !== null || siteForm !== undefined) {
+
+          let postData = {
+            formStart: new Date(siteForm.postData.formStart),
+            formEnd: new Date(siteForm.postData.formEnd),
+            resultStart: new Date(siteForm.postData.resultStart),
+            resultEnd: new Date(siteForm.postData.resultEnd),
+          };
+
+          this.setState({
+            formStartTime: new Date(postData.formStart),
+            formEndTime: new Date(postData.formEnd),
+            resultStart: new Date(postData.resultStart),
+            resultEnd: new Date(postData.resultEnd),
+          })
+        }
       }
     });
 
-    fire.database().ref('randomWinnerSetWeb/').once('value').then((snapshot) => {
+    fire.database().ref('randomWinnerSetWebNew/').once('value').then((snapshot) => {
       if (Object.entries !== null || Object.entries !== undefined) {
         let receivedData = snapshot.val();
+        let collectedData = [];
+
+        if (receivedData !== null) {
+          let vals = Object.keys(receivedData).map(key => {
+            return receivedData[key];
+          });
+          collectedData.push(vals);
+        }
 
         const dataToPost = {
-          mobileNumber: receivedData.postDataWeb.mobileNumber,
-          uniqueId: receivedData.postDataWeb.uniqueId,
+          collectedData: collectedData[0],
           formStartTime: this.state.formStartTime,
           resultStartTime: this.state.resultStart,
           siteLaunch: this.state.siteLaunch,
@@ -64,10 +82,10 @@ export class WinningId extends React.PureComponent {
 
         this.props.getWinningId(dataToPost);
 
-        this.setState({
-          receivedMobileNumber: receivedData.postDataWeb.mobileNumber,
-          receivedCode: receivedData.postDataWeb.uniqueId,
-        })
+        // this.setState({
+        //   receivedMobileNumber: receivedData.postDataWeb.mobileNumber,
+        //   receivedCode: receivedData.postDataWeb.uniqueId,
+        // })
       }
     });
 
@@ -100,24 +118,43 @@ export class WinningId extends React.PureComponent {
     return false;
   };
 
+  getWinningCodes() {
+    const { collectedData } = this.props;
+
+  }
+
   render() {
+
+    console.log('collectedData', this.state.uniqueId);
 
     let nowTime = new Date();
     const { winningConfirmation } = this.state;
-    const { mobileNumber, uniqueId, formEndTime, siteLaunch, resultStartTime, resultsEndTime  } = this.props;
+    const { mobileNumber, uniqueId, formEndTime, siteLaunch, resultStartTime, resultsEndTime, collectedData  } = this.props;
 
-    if(nowTime > formEndTime && nowTime < resultStartTime && resultStartTime !== null) {
+    if(nowTime > formEndTime && nowTime < resultStartTime && resultStartTime !== undefined) {
       this.props.history.push('/');
     }
 
-    if(nowTime > formEndTime && nowTime > resultsEndTime && resultStartTime !== null) {
+    if(nowTime > formEndTime && nowTime > resultsEndTime && resultStartTime !== undefined) {
       this.props.history.push('/');
     }
 
-    let uniqueCodeSplit;
-    if(this.state.uniqueId !== null) {
-      uniqueCodeSplit = uniqueId.replace(/(\w{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');
+    let collectedItems = [];
+    let collectedNumbers = [];
+
+    if(collectedData !== undefined) {
+      collectedData.map(item => {
+        collectedItems.push(item.winner.uniqueId);
+        collectedNumbers.push(item.winner.mobileNumber);
+      })
     }
+   console.log('collectedItems', collectedItems);
+
+    // let uniqueCodeSplit;
+    // if(this.state.uniqueId.length > 0) {
+    //   uniqueCodeSplit = uniqueId.replace(/(\w{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');
+    // }
+
     this.isWinningId(siteLaunch, nowTime);
 
     return (
@@ -128,8 +165,23 @@ export class WinningId extends React.PureComponent {
         {winningConfirmation === false &&
         <div>
           <div className="winningId">
-            the winning ID is <span>{uniqueCodeSplit} </span>
-            <p>** <i>test purposes: copy phone number</i> {mobileNumber} **</p>
+            the winning ID is
+            {collectedItems.map((item, i) => {
+              return (
+                <div
+                  key={i}
+                >{item}</div>
+              )
+            })}
+            <div>** <i>test purposes: copy phone number</i>
+              {collectedNumbers.map((item, i) => {
+                return (
+                  <div
+                    key={i}
+                  >{item}</div>
+                )
+              })}
+              **</div>
           </div>
           <div>
             Have a winning code?
@@ -142,9 +194,10 @@ export class WinningId extends React.PureComponent {
         }
         {this.state.revealRedeem &&
         <WinningCodeValidation
-          uniqueId={uniqueId}
-          receivedCode={uniqueId}
-          receivedMobileNumber={mobileNumber}
+          receivedData={this.props.collectedData}
+          uniqueId={collectedItems}
+          receivedCode={collectedItems}
+          receivedMobileNumber={collectedNumbers}
           handleSubmission={event => this.handleSubmission(event)}
         />
         }
@@ -155,8 +208,7 @@ export class WinningId extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    mobileNumber: state.get('reducer').mobileNumber,
-    uniqueId: state.get('reducer').uniqueId,
+    collectedData: state.get('reducer').collectedData,
     formStartTime: state.get('reducer').formStartTime,
     formEndTime: state.get('reducer').formEndTime,
     siteLaunch: state.get('reducer').siteLaunch,

@@ -33,7 +33,8 @@ const initialState = Immutable.fromJS({
     formEndTime: null,
     resultsStartTime: null,
     resultsEndTime: null,
-    siteLaunch: null
+    siteLaunch: null,
+    collectedData: [],
   }
 });
 
@@ -78,9 +79,12 @@ const reducer = (state = initialState, action) => {
   }
 
   if (action.type === SET_WINNING_ID) {
+    let collectedData = [];
+    action.winningId.collectedData.map(item => {
+     collectedData.push(item)
+    });
     return state
-      .set('mobileNumber', action.winningId.mobileNumber)
-      .set('uniqueId', action.winningId.uniqueId)
+      .set('collectedData', collectedData)
       .set('siteLaunch', action.winningId.siteLaunch)
       .set('formStartTime', action.winningId.formStartTime)
       .set('resultStartTime', action.winningId.resultStartTime)
@@ -112,11 +116,16 @@ const reducer = (state = initialState, action) => {
 
   if (action.type === SET_CODE_CONFIRMATION) {
     const postData = {
-      winnerConfirmed: action.winningCodeConfirmation.winningCodeConfirmation,
+      mobileNumber: action.winningCodeConfirmation.mobileNumber,
+      selectedNetwork: action.winningCodeConfirmation.selectedNetwork,
+      uniqueId: action.winningCodeConfirmation.uniqueId,
+      winningCodeConfirmation: action.winningCodeConfirmation.winningCodeConfirmation,
     };
 
-    fire.database().ref('confirmedWinner/').set({postData});
     return state
+      .set('mobileNumber', action.winningCodeConfirmation.mobileNumber)
+      .set('selectedNetwork', action.winningCodeConfirmation.selectedNetwork)
+      .set('uniqueId', action.winningCodeConfirmation.uniqueId)
       .set('winningCodeConfirmation', action.winningCodeConfirmation.winningCodeConfirmation)
       .toJS()
   }
