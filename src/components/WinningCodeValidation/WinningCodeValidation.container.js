@@ -2,6 +2,7 @@ import React from 'react';
 import './WinningCodeValidation.scss';
 import {getWinningCode, getWinningCodeConfirmation} from "../../redux/actions";
 import {connect} from "react-redux";
+import fire from '../../fire';
 import Popup from '../PopUp/PopUp.component';
 
 export class WinningCodeValidation extends React.Component {
@@ -11,7 +12,10 @@ export class WinningCodeValidation extends React.Component {
       code: null,
       matchMessage: 'Congratulations!',
       winningCodeConfirmation: false,
-      showPopup: false
+      showPopup: false,
+      message: null,
+      error: null,
+      outline: false
     }
   }
 
@@ -23,19 +27,90 @@ export class WinningCodeValidation extends React.Component {
 
   handleSubmitCode(e) {
     e.preventDefault();
-    if(this.state.code !== this.props.receivedMobileNumber) {
-      const postData = {
-        winningCodeConfirmation: false,
-      };
-      this.props.getWinningCodeConfirmation(postData);
-      this.togglePopup();
-    } else {
-      this.setState({ winningCodeConfirmation: true });
-      const postData = {
-        winningCodeConfirmation: true
-      };
-      this.props.handleSubmission({ winningCodeConfirmation: true });
-      this.props.getWinningCodeConfirmation(postData);
+    const { code } = this.state;
+    const { receivedData } = this.props;
+    let collectedNumbersArray = [];
+
+    receivedData.map(item => {
+      if(code === item.winner.mobileNumber) {
+        const winner = {
+          mobileNumber: item.winner.mobileNumber,
+          selectedNetwork: item.winner.selectedNetwork,
+          uniqueId: item.winner.uniqueId,
+          winningCodeConfirmation: true
+        };
+
+        let newPostKey = fire.database().ref().child('confirmedWinnerList').push().key;
+
+        // Write the new post's data simultaneously in the posts list and the user's post list.
+        let updates = {};
+        updates[`/confirmedWinnerList/${newPostKey}/confirmedWinner/`] = winner;
+
+        fire.database().ref('confirmedWinnerList/').once('value').then((snapshot) => {
+          let receivedDataTime = snapshot.val();
+
+          if(receivedDataTime !== null) {
+            let vals = Object.keys(receivedDataTime).map(key => {
+              return receivedDataTime[key];
+            });
+
+            for(let value of vals) {
+              collectedNumbersArray.push(value.confirmedWinner.mobileNumber);
+            }
+
+            let exists = collectedNumbersArray.some(item => item === code);
+
+            if(!exists) {
+              this.setState({
+                winningCodeConfirmation: true
+              });
+              fire.database().ref().update(updates);
+              this.props.handleSubmission({
+                winningCodeConfirmation: true,
+                winner: true
+              });
+              this.props.getWinningCodeConfirmation(winner);
+              this.togglePopup();
+            } else {
+              this.setState({
+                message: 'Sorry, it seems like the winning code has already been redeemed.'
+              });
+              this.togglePopup();
+            }
+          } else {
+            this.setState({
+              winningCodeConfirmation: true
+            });
+            fire.database().ref().update(updates);
+            this.props.handleSubmission({
+              winningCodeConfirmation: true,
+              winner: true
+            });
+            this.props.getWinningCodeConfirmation(winner);
+            this.togglePopup();
+          }
+        });
+      }
+
+      if (code === null || code === "") {
+        this.setState({
+          error: 'Enter valid number.',
+          outline: true
+        });
+      }
+      else {
+        this.setState({
+          error: '',
+          outline: false
+        })
+      }
+    });
+  }
+
+  componentDidMount() {
+    const { winningCodeConfirmation } = this.props;
+    if (winningCodeConfirmation === true ) {
+      this.props.handleSubmission({ winningCodeConfirmation });
       this.togglePopup();
     }
   }
@@ -49,10 +124,18 @@ export class WinningCodeValidation extends React.Component {
   render() {
     let message;
 
-    if(this.state.code !== this.props.receivedMobileNumber) {
-      message = `Sorry ..not a winner blah blah`;
-    } else {
+    if(this.props.winningCodeConfirmation === false) {
+      message = `Unlucky, you do not hold a winning number this time.`;
+    }
+    if(this.props.winningCodeConfirmation === true) {
       message = `Congratulations! send you your prize blah blah`;
+    }
+
+    if(this.state.message !== null){
+      message = this.state.message;
+    }
+    if(this.state.message !== null){
+      message = this.state.message;
     }
 
     return (
@@ -71,11 +154,12 @@ export class WinningCodeValidation extends React.Component {
               <div className="form-group">
                 <input
                   type="text"
-                  className="form-control codeValidate"
+                  className={ this.state.outline ? 'outline' : 'noError' }
                   placeholder="validate code"
                   name="code"
                   onChange={event => this.handleSubmit(event)}
                 />
+                <span className="errorEmail">{this.state.error}</span>
                 <button
                   className="btn btn-primary codeValidate"
                   type="button"
@@ -100,7 +184,10 @@ export class WinningCodeValidation extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.toJS()
+    mobileNumber: state.get('reducer').mobileNumber,
+    selectedNetwork: state.get('reducer').selectedNetwork,
+    uniqueId: state.get('reducer').uniqueId,
+    winningCodeConfirmation: state.get('reducer').winningCodeConfirmation,
   };
 };
 
