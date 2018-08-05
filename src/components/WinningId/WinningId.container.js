@@ -212,6 +212,7 @@ export class WinningId extends React.PureComponent {
         <div>
           <div className="winningId">
             Today’s winning codes are:
+            <div className="winning_codes">
             {collectedItems.map((item, i) => {
               return (
                 <div
@@ -219,6 +220,7 @@ export class WinningId extends React.PureComponent {
                 >{item}</div>
               )
             })}
+            </div>
             <div>** <i>test purposes: copy phone number</i>
               {collectedNumbers.map((item, i) => {
                 return (
