@@ -143,26 +143,12 @@ export class WinningId extends React.PureComponent {
     return false;
   };
 
-  getWinningCodes() {
-    const { collectedData } = this.props;
-
-  }
-
-  // isTimeResults(resultStartTime, resultsEndTime, nowTime) {
-  //   if (nowTime >= resultStartTime && nowTime <= resultStartTime && resultsEndTime !== null) {
-  //     this.props.history.push('/claim-winnings');
-  //       return true;
-  //   }
-  //   return false;
-  // }
-
   render() {
 
     console.log('collectedData', this.state.uniqueId);
 
     let nowTime = new Date();
-    const { winningConfirmation } = this.state;
-    const { mobileNumber, uniqueId, formEndTime, siteLaunch, resultStartTime, resultsEndTime, collectedData  } = this.props;
+    const { formEndTime, siteLaunch, resultStartTime, resultsEndTime, collectedData  } = this.props;
 
     if (nowTime >= resultStartTime && nowTime <= resultStartTime && resultsEndTime !== null) {
       this.props.history.push('/claim-winnings');
@@ -196,7 +182,6 @@ export class WinningId extends React.PureComponent {
     // }
 
     this.isWinningId(siteLaunch, nowTime);
-    // this.isTimeResults(resultStartTime, resultsEndTime, nowTime);
 
     return (
       <div className="winning_validation draw_content_container">
@@ -208,7 +193,6 @@ export class WinningId extends React.PureComponent {
           <h1 className="headerText">Redeem another?</h1>
           }
         </div>
-        {/*{winningConfirmation === false &&*/}
         <div>
           <div className="winningId">
             Today’s winning codes are:
@@ -221,15 +205,6 @@ export class WinningId extends React.PureComponent {
               )
             })}
             </div>
-            {/*<div>** <i>test purposes: copy phone number</i>*/}
-              {/*{collectedNumbers.map((item, i) => {*/}
-                {/*return (*/}
-                  {/*<div*/}
-                    {/*key={i}*/}
-                  {/*>{item}</div>*/}
-                {/*)*/}
-              {/*})}*/}
-              {/***</div>*/}
           </div>
           {!this.state.revealRedeem &&
             <div id="claim_teaser">
@@ -245,7 +220,6 @@ export class WinningId extends React.PureComponent {
             </div>
           }
         </div>
-        {/*}*/}
         {this.state.revealRedeem &&
         <WinningCodeValidation
           receivedData={this.props.collectedData}

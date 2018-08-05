@@ -342,7 +342,7 @@ export class Home extends React.Component {
         <p className="uniqueCodePopUpDisclaimer"><i>By closing, you confirm that you have copied your unique code and saved it.</i></p>
         </div>
       </div>
-    )
+    );
 
     return (
       <div>
