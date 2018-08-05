@@ -36,8 +36,6 @@ export class WinningCodeValidation extends React.Component {
 
       event.target.parentNode.classList.remove('active');
     }
-
-    console.log('formGroupClass', formGroupClass, event.target.value.length);
   }
 
   handleSubmitCode(e) {
