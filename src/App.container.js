@@ -104,11 +104,11 @@ export class App extends Component {
   }
 
   render() {
-    let nowTime = new Date();
-
+    let nowTime = moment();
 
     const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch, nextDayValue } = this.props;
 
+    console.log('result start..', formStartTime)
     // this.isTimeForm(formStartTime, formEndTime, nowTime);
     this.isErrorLaunch(formStartTime, siteLaunch, nowTime);
     this.isTimeResults(resultsStartTime, resultsEndTime, nowTime);
@@ -116,31 +116,40 @@ export class App extends Component {
 
       return (
       <div className="container-fluid appWrapper">
-        {this.isTimeForm(formStartTime, formEndTime, siteLaunch, nowTime) &&
-        <Home/>
-        }
-        {this.isTimeResults(resultsStartTime, resultsEndTime, nowTime, siteLaunch) &&
-          <div className="winning_validation draw_content_container">
-            <WinningID
-              id={this.props.id}
-              passedProps={this.props}
+        {nowTime < resultsEndTime &&
+          <div>
+            {this.isTimeForm(formStartTime, formEndTime, siteLaunch, nowTime) &&
+            <Home/>
+            }
+            {this.isTimeResults(resultsStartTime, resultsEndTime, nowTime, siteLaunch) &&
+            <div className="winning_validation draw_content_container">
+              <WinningID
+                id={this.props.id}
+                passedProps={this.props}
+              />
+            </div>
+            }
+            {this.isIntervalPreForm(formStartTime, resultsEndTime, nextDayValue, nowTime, siteLaunch) &&
+            <InterimPage
+              textInterim='New competition entry will be available in:'
+              schedule="form"
+              siteLaunch={siteLaunch}
+              nextDayValue={nextDayValue}
             />
+            }
+            {this.isIntervalPreResults(formEndTime, resultsStartTime, nowTime, siteLaunch) &&
+            <InterimPage
+              textInterim='Results will be published in:'
+              schedule="results"
+              siteLaunch={siteLaunch}
+            />
+            }
           </div>
         }
-        {this.isIntervalPreForm(formStartTime, resultsEndTime, nextDayValue, nowTime, siteLaunch) &&
-          <InterimPage
-            textInterim='New competition entry will be available in:'
-            schedule="form"
-            siteLaunch={siteLaunch}
-            nextDayValue={nextDayValue}
-          />
-        }
-         {this.isIntervalPreResults(formEndTime, resultsStartTime, nowTime, siteLaunch) &&
-          <InterimPage
-            textInterim='Results will be published in:'
-            schedule="results"
-            siteLaunch={siteLaunch}
-          />
+        {nowTime > resultsEndTime &&
+          <div>
+            Thank you for taking part. Competition will resume at 7am tomorrow
+          </div>
         }
       </div>
     );

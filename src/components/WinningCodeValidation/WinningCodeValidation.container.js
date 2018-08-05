@@ -33,7 +33,6 @@ export class WinningCodeValidation extends React.Component {
     if(event.target.value.length > 0) {
       event.target.parentNode.classList.add('active');
     } else {
-
       event.target.parentNode.classList.remove('active');
     }
   }
