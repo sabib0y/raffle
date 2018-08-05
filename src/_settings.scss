@@ -66,12 +66,15 @@ $label_colour: #9f9f9f;
     height: 100%;
     border: 2px solid black;
     font-size: 2.1rem;
+    text-align: left;
+    padding: 0.5rem 1rem;
 }
 
 @mixin smart_row{
   position: relative;
   height: 5rem;
   margin-bottom: 2rem;
+  text-align: left;
 
   label{
     position: absolute;

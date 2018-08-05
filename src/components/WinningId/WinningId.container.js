@@ -1,4 +1,5 @@
 import React from 'react';
+import './WinningId.scss';
 import fire from '../../fire';
 import {getTimeForm, getWinningId} from "../../redux/actions";
 import WinningCodeValidation from '../WinningCodeValidation/WinningCodeValidation.container';
@@ -213,7 +214,7 @@ export class WinningId extends React.PureComponent {
         {winningConfirmation === false &&
         <div>
           <div className="winningId">
-            the winning ID is
+            Today’s winning codes are:
             {collectedItems.map((item, i) => {
               return (
                 <div
@@ -231,7 +232,7 @@ export class WinningId extends React.PureComponent {
               })}
               **</div>
           </div>
-          <div>
+          <div id="claim_teaser">
             Have a winning code?
             <a
               onClick={(e) => this.redeemCode(e)}

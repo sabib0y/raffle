@@ -146,7 +146,7 @@ export class ComingSoon extends React.Component {
       <div className='container-fluid appWrapper'>
         <div>
           <h2 id="teaser_text"><span>For the first 7 days</span>we will be giving away 5 ₦500 airtime vouchers every day! <span className="large_text">Don’t miss out!!</span></h2>
-          <h3 className="headerText">Dailychoppins comes to life in...</h3>
+          <h3 className="coming_soon_header">Dailychoppins comes to life in...</h3>
         </div>
         <div className="centreText">
           {this.state.testData.length > 0 &&

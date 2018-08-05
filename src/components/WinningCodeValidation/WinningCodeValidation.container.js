@@ -278,6 +278,7 @@ export class WinningCodeValidation extends React.Component {
           <form action="" id="user-form" noValidate="noValidate">
             <fieldset>
               <div className="form-group">
+                <label>Validate code</label>
                 <input
                   type="text"
                   className={ this.state.outline ? 'outline' : 'noError' }
@@ -286,15 +287,15 @@ export class WinningCodeValidation extends React.Component {
                   onChange={event => this.handleSubmit(event)}
                 />
                 <span className="errorEmail">{this.state.error}</span>
-                <button
-                  className="btn btn-primary custom-button"
-                  type="button"
-                  onClick={e => this.handleSubmitCode(e)}
-                >
-                  redeem code
-                </button>
               </div>
             </fieldset>
+            <button
+              className="btn btn-primary custom-button"
+              type="button"
+              onClick={e => this.handleSubmitCode(e)}
+            >
+              redeem code
+            </button>
           </form>
         }
         {this.state.winningCodeConfirmation === true &&

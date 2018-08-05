@@ -76,13 +76,7 @@ export class InterimPage extends Component {
       }
     });
 
-    fire.database().ref('users/').once('value').then(snapshot => {
-      let receivedData = snapshot.val();
-      console.log(receivedData);
-    });
-
-
-      fire.database().ref('setSiteLaunch/').once('value').then((snapshot) => {
+    fire.database().ref('setSiteLaunch/').once('value').then((snapshot) => {
       let siteLaunch = snapshot.val();
       const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, nextDayValue } = this.state;
 
@@ -91,7 +85,8 @@ export class InterimPage extends Component {
         formEndTime,
         resultsStartTime,
         resultsEndTime,
-        siteLaunch: new Date("2015-07-06T07:00:34+01:00"),
+        // siteLaunch: new Date(siteLaunch.siteLaunch),
+        siteLaunch: new Date("2018-07-06T07:00:34+01:00"),
         nextDayValue,
       };
 
@@ -171,9 +166,9 @@ export class InterimPage extends Component {
     let nowTime = new Date();
     const { siteLaunch } = this.props;
 
-    // if(siteLaunch !== undefined) {
-    //   console.log(siteLaunch, 'moment', siteLaunch.setDate(siteLaunch.getDate()+1));
-    // }
+    if(siteLaunch !== undefined) {
+      console.log(siteLaunch, 'moment', siteLaunch.setDate(siteLaunch.getDate()+1));
+    }
 
     this.checkPageLocation(siteLaunch, nowTime);
 
