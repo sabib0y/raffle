@@ -251,10 +251,11 @@ export class WinningCodeValidation extends React.Component {
     let message;
 
     if(this.props.winningCodeConfirmation === false) {
-      message = `Unlucky, you do not hold a winning number this time.`;
+      message = `Sorry, looks like you are not our lucky winner this time.`;
     }
     if(this.props.winningCodeConfirmation === true) {
-      // message = `Congratulations! send you your prize blah blah`;
+      message = `Congratulations! Your code has been redeemed! 
+                  We'll send you your winnings shortly.`;
     }
 
     if(this.state.message !== null){

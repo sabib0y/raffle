@@ -221,23 +221,27 @@ export class WinningId extends React.PureComponent {
               )
             })}
             </div>
-            <div>** <i>test purposes: copy phone number</i>
-              {collectedNumbers.map((item, i) => {
-                return (
-                  <div
-                    key={i}
-                  >{item}</div>
-                )
-              })}
-              **</div>
+            {/*<div>** <i>test purposes: copy phone number</i>*/}
+              {/*{collectedNumbers.map((item, i) => {*/}
+                {/*return (*/}
+                  {/*<div*/}
+                    {/*key={i}*/}
+                  {/*>{item}</div>*/}
+                {/*)*/}
+              {/*})}*/}
+              {/***</div>*/}
           </div>
           {!this.state.revealRedeem &&
             <div id="claim_teaser">
-              Have a winning code?
-              <a
-                onClick={(e) => this.redeemCode(e)}
-              >click to redeem code
-              </a>
+              <p>
+                Have a winning code?
+              </p>
+              <p>
+                <a
+                  onClick={(e) => this.redeemCode(e)}
+                >click here to redeem code
+                </a>
+              </p>
             </div>
           }
         </div>
