@@ -47,8 +47,8 @@ export class App extends Component {
     return false;
   }
 
-  isIntervalPreForm(formStartTime, resultsEndTime, nextDayValue, nowTime, siteLaunch) {
-    if(nowTime > resultsEndTime && nowTime < nextDayValue && nowTime > siteLaunch && resultsEndTime !== null) {
+  isIntervalPreForm(formStartTime, resultsEndTime, nowTime, siteLaunch) {
+    if(nowTime > resultsEndTime && nowTime > siteLaunch && resultsEndTime !== null) {
       this.props.history.push('/awaiting-page');
       return true;
     }
@@ -83,12 +83,6 @@ export class App extends Component {
       fire.database().ref('setSiteLaunch/').once('value').then((snapshot) => {
         let siteLaunchTime = snapshot.val();
 
-        let nextDayValue = moment();
-        nextDayValue = nextDayValue.add(1, 'days').format();
-        nextDayValue = nextDayValue.split('T')[0];
-        nextDayValue = `${nextDayValue}T00:00:01Z`;
-        nextDayValue = moment(nextDayValue).format();
-
         const dataToSend = {
           formStartTime: new Date(receivedDataTime.postData.formStart),
           formEndTime: new Date(receivedDataTime.postData.formEnd),
@@ -96,7 +90,6 @@ export class App extends Component {
           resultsEndTime: new Date(receivedDataTime.postData.resultEnd),
           siteLaunch: new Date("2015-08-06T07:00:34+01:00"),
           // siteLaunch: new Date(siteLaunchTime.siteLaunch),
-          nextDayValue: new Date(nextDayValue),
         };
         this.props.getTimeForm(dataToSend)
       });
@@ -106,7 +99,7 @@ export class App extends Component {
   render() {
     let nowTime = moment();
 
-    const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch, nextDayValue } = this.props;
+    const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch } = this.props;
 
     console.log('result start..', formStartTime)
     // this.isTimeForm(formStartTime, formEndTime, nowTime);
@@ -129,12 +122,11 @@ export class App extends Component {
               />
             </div>
             }
-            {this.isIntervalPreForm(formStartTime, resultsEndTime, nextDayValue, nowTime, siteLaunch) &&
+            {this.isIntervalPreForm(formStartTime, resultsEndTime, nowTime, siteLaunch) &&
             <InterimPage
               textInterim='New competition entry will be available in:'
               schedule="form"
               siteLaunch={siteLaunch}
-              nextDayValue={nextDayValue}
             />
             }
             {this.isIntervalPreResults(formEndTime, resultsStartTime, nowTime, siteLaunch) &&
@@ -163,7 +155,6 @@ const mapStateToProps = (state) => {
     formEndTime: state.get('reducer').formEndTime,
     resultsStartTime: state.get('reducer').resultsStartTime,
     siteLaunch: state.get('reducer').siteLaunch,
-    nextDayValue: state.get('reducer').nextDayValue,
   };
 };
 

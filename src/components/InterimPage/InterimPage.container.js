@@ -26,7 +26,6 @@ export class InterimPage extends Component {
       timeNow: new Date(),
       testData: '',
       testTime: '',
-      nextDayValue: null
     }
   }
 
@@ -51,19 +50,11 @@ export class InterimPage extends Component {
     fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
       let receivedDataTime = snapshot.val();
 
-      let nextDayValue = moment();
-      nextDayValue = nextDayValue.add(1, 'days').format();
-      nextDayValue = nextDayValue.split('T')[0];
-      nextDayValue = `${nextDayValue}T00:00:01Z`;
-      nextDayValue = moment(nextDayValue).format();
-
-
       this.setState({
         formStartTime: new Date(receivedDataTime.postData.formStart),
         formEndTime: new Date(receivedDataTime.postData.formEnd),
         resultsStartTime: new Date(receivedDataTime.postData.resultStart),
         resultsEndTime: new Date(receivedDataTime.postData.resultEnd),
-        nextDayValue: new Date(nextDayValue),
       });
       const { formStartTime, resultsEndTime, formEndTime, resultsStartTime } = this.state;
       let nowTime = new Date();
@@ -78,7 +69,7 @@ export class InterimPage extends Component {
 
     fire.database().ref('setSiteLaunch/').once('value').then((snapshot) => {
       let siteLaunch = snapshot.val();
-      const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, nextDayValue } = this.state;
+      const { formStartTime, resultsEndTime, formEndTime, resultsStartTime } = this.state;
 
       const dataToPost = {
         formStartTime,
@@ -87,7 +78,6 @@ export class InterimPage extends Component {
         resultsEndTime,
         // siteLaunch: new Date(siteLaunch.siteLaunch),
         siteLaunch: new Date("2018-07-06T07:00:34+01:00"),
-        nextDayValue,
       };
 
 
@@ -101,11 +91,6 @@ export class InterimPage extends Component {
           if(resultsStartTime > newDateToTest) {
             testTime = resultsStartTime - newDateToTest;
           }
-
-          if(newDateToTest > resultsStartTime && newDateToTest > formStartTime) {
-            testTime = nextDayValue - newDateToTest;
-          }
-
 
           let duration = moment.duration(testTime, 'milliseconds');
 
@@ -182,12 +167,12 @@ export class InterimPage extends Component {
       message = 'Form will be displayed in:'
     }
 
-    if(nowTime > this.state.formStartTime && nowTime > this.state.resultsEndTime && this.state.nextDayValue > this.state.formStartTime) {
+    if(nowTime > this.state.formStartTime && nowTime > this.state.resultsEndTime ) {
       schedule = 'form';
       message = 'Form will be displayed in:'
     }
 
-    if(nowTime > this.props.resultEndTime && nowTime < this.props.nextDayValue) {
+    if(nowTime > this.props.resultEndTime) {
       schedule = 'form';
       message = 'Form will be displayed in:'
     }
@@ -256,7 +241,6 @@ const mapStateToProps = (state) => {
     siteLaunch: state.get('reducer').siteLaunch,
     resultStartTime: state.get('reducer').resultStartTime,
     resultEndTime: state.get('reducer').resultEndTime,
-    nextDayValue: state.get('reducer').nextDayValue,
   };
 };
 

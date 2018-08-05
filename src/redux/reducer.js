@@ -108,7 +108,6 @@ const reducer = (state = initialState, action) => {
        .set('resultsStartTime', action.formTime.resultsStartTime)
        .set('resultsEndTime', action.formTime.resultsEndTime)
        .set('siteLaunch', action.formTime.siteLaunch)
-       .set('nextDayValue', action.formTime.nextDayValue)
        .toJS()
   }
 

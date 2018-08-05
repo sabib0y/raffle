@@ -67,7 +67,9 @@ ReactDOM.render(
         <Route path='/awaiting-page' component={InterimPage} />
         <Route path='/claim-winnings' component={WinningID} />
         <Route path='/coming-soon' component={ComingSoon} />
-        <Route path='/error' component={Error} />
+        {/*<Route component={Error} />*/}
+
+
         <Footer />
       </div>
       </div>
