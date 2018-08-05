@@ -278,7 +278,7 @@ export class WinningCodeValidation extends React.Component {
           <form action="" id="user-form" noValidate="noValidate">
             <fieldset>
               <div className="form-group">
-                <label>Validate code</label>
+                <label>Enter your number here</label>
                 <input
                   type="text"
                   className={ this.state.outline ? 'outline' : 'noError' }
