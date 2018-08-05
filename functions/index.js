@@ -41,7 +41,7 @@ exports.dataBaseCleanUp = functions.https.onRequest((request, response) => {
       return admin.database().ref(`users`).remove();
 
     } else {
-     return response.send(`Database Not Cleaned at: ${timeNow}`);
+      return response.send(`Database Not Cleaned at: ${timeNow}`);
     }
   });
 });
@@ -55,7 +55,7 @@ exports.winnerGenerator = functions.https.onRequest((request, response) => {
       let valsNew = Object.keys(receivedDataTime).map(key => {
         return receivedDataTime[key];
       });
-      for(let value of valsNew) {
+      for (let value of valsNew) {
         newArray.push(value.user)
       }
 
@@ -66,9 +66,10 @@ exports.winnerGenerator = functions.https.onRequest((request, response) => {
       for (let value of uniq) {
         newDataToStore.push(value)
       }
-     return admin.database().ref('setNumberOfWinners/').once('value').then(snapshot => {
+      return admin.database().ref('setNumberOfWinners/').once('value').then(snapshot => {
         let receivedData = snapshot.val();
 
+        /* eslint-disable promise/always-return */
         if (receivedData !== null) {
           let randomData = [];
           let winners = [];
@@ -94,8 +95,8 @@ exports.winnerGenerator = functions.https.onRequest((request, response) => {
             winners.push(value);
           }
 
-          winners.map(value => {
-            postData = value;
+          uniqRandom.forEach(value => {
+            postData = value.user;
             const postDataWeb = {
               fullName: value.user.fullName,
               emailAddress: value.user.emailAddress,
@@ -105,25 +106,29 @@ exports.winnerGenerator = functions.https.onRequest((request, response) => {
               winningCodeConfirmation: value.user.winningCodeConfirmation
             };
 
-            let newPostKeySet = fire.database().ref().child('allWinningNumbers').push().key;
-            let newPostKeyNew = fire.database().ref().child('winningNumbers').push().key;
+            let newPostKeySet = admin.database().ref().child('allWinningNumbers').push().key;
+            let newPostKeyNew = admin.database().ref().child('winningNumbers').push().key;
 
             // Write the new post's data simultaneously in the posts list and the user's post list.
             let updates = {};
             let updatesWeb = {};
-            updates[`/allWinningNumbers/${timeNow}/${newPostKeySet}/`] = postDataWeb;
-            updatesWeb[`/dailyWinningNumbers/${newPostKeyNew}/winner/`] = postDataWeb;
-            response.send('Random numbers generated....');
+            updates[`/allWinningNumbers/${timeNow}/winners/`] = uniqRandom;
+            updatesWeb[`/dailyWinningNumbers/winners/`] = uniqRandom;
+            response.send('Random numbers generated....D');
             admin.database().ref().update(updates);
             return admin.database().ref().update(updatesWeb);
           });
         }
         else {
-         return response.send('SetNumberOfWinners database is null....')
+          return response.send('SetNumberOfWinners database is null....')
         }
+
+        /* eslint-disable promise/always-return */
+
+
       });
     } else {
-     return response.send('users database is null....')
+      return response.send('users database is null....')
     }
   });
 });
@@ -133,7 +138,7 @@ exports.formScheduling = functions.https.onRequest((request, response) => {
   return admin.database().ref('setTimeForm/').once('value').then(snapshot => {
     let siteForm = snapshot.val();
 
-    if(siteForm !== null || siteForm !== undefined) {
+    if (siteForm !== null || siteForm !== undefined) {
 
       let postDataTest = {
         formStart: new Date(siteForm.postData.formStart),
