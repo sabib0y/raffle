@@ -37,11 +37,11 @@ export class WinningCodeValidation extends React.Component {
     let winner = {};
 
     receivedData.map(item => {
-      if(code === item.winner.mobileNumber) {
+      if(code === item.user.mobileNumber) {
         winner = {
-          mobileNumber: item.winner.mobileNumber,
-          selectedNetwork: item.winner.selectedNetwork,
-          uniqueId: item.winner.uniqueId,
+          mobileNumber: item.user.mobileNumber,
+          selectedNetwork: item.user.selectedNetwork,
+          uniqueId: item.user.uniqueId,
           winningCodeConfirmation: true
         };
       }
@@ -70,9 +70,9 @@ export class WinningCodeValidation extends React.Component {
           let exists = collectedNumbersArray.some(item => item === code);
 
           if (!exists) {
-            // console.log('does not exist')
+            console.log('does not exist')
             this.setState({
-              // winningCodeConfirmation: false,
+              winningCodeConfirmation: false,
             });
             this.togglePopup();
             this.props.handleSubmission({
@@ -94,7 +94,7 @@ export class WinningCodeValidation extends React.Component {
           }
         }
         else {
-          // console.log('empty database');
+          console.log('empty database');
           this.setState({
             winningCodeConfirmation: false
           });
