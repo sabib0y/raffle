@@ -114,14 +114,11 @@ export class WinningId extends React.PureComponent {
 
   }
 
-  componentDidMount() {
-
-  }
   componentWillUnmount() {
-    this.setState({
-      receivedMobileNumber: null,
-      receivedCode: null,
-    });
+    // this.setState({
+    //   receivedMobileNumber: null,
+    //   receivedCode: null,
+    // });
   }
 
   redeemCode(e) {
@@ -192,7 +189,6 @@ export class WinningId extends React.PureComponent {
         collectedNumbers.push(item.user.mobileNumber);
       })
     }
-   console.log('collectedItems', collectedItems);
 
     // let uniqueCodeSplit;
     // if(this.state.uniqueId.length > 0) {
@@ -212,7 +208,7 @@ export class WinningId extends React.PureComponent {
           <h1 className="headerText">Redeem another?</h1>
           }
         </div>
-        {winningConfirmation === false &&
+        {/*{winningConfirmation === false &&*/}
         <div>
           <div className="winningId">
             Today’s winning codes are:
@@ -233,15 +229,17 @@ export class WinningId extends React.PureComponent {
               })}
               **</div>
           </div>
-          <div id="claim_teaser">
-            Have a winning code?
-            <a
-              onClick={(e) => this.redeemCode(e)}
-            >click to redeem code
-            </a>
-          </div>
+          {!this.state.revealRedeem &&
+            <div id="claim_teaser">
+              Have a winning code?
+              <a
+                onClick={(e) => this.redeemCode(e)}
+              >click to redeem code
+              </a>
+            </div>
+          }
         </div>
-        }
+        {/*}*/}
         {this.state.revealRedeem &&
         <WinningCodeValidation
           receivedData={this.props.collectedData}

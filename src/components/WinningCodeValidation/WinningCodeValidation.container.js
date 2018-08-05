@@ -254,7 +254,7 @@ export class WinningCodeValidation extends React.Component {
       message = `Unlucky, you do not hold a winning number this time.`;
     }
     if(this.props.winningCodeConfirmation === true) {
-      message = `Congratulations! send you your prize blah blah`;
+      // message = `Congratulations! send you your prize blah blah`;
     }
 
     if(this.state.message !== null){
@@ -275,7 +275,7 @@ export class WinningCodeValidation extends React.Component {
           : null
         }
         {this.state.winningCodeConfirmation === false &&
-          <form action="" id="user-form" noValidate="noValidate">
+          <form action="" id="user-form" noValidate="noValidate" onSubmit={e => this.handleSubmitCode(e)}>
             <fieldset>
               <div className="form-group">
                 <label>Validate code</label>
@@ -291,8 +291,7 @@ export class WinningCodeValidation extends React.Component {
             </fieldset>
             <button
               className="btn btn-primary custom-button"
-              type="button"
-              onClick={e => this.handleSubmitCode(e)}
+              type="submit"
             >
               redeem code
             </button>
