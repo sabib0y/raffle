@@ -80,9 +80,10 @@ export class WinningId extends React.PureComponent {
       }
     });
 
-    fire.database().ref('randomWinnerSetWebNew/').once('value').then((snapshot) => {
+    fire.database().ref('dailyWinningNumbers/').once('value').then((snapshot) => {
       if (Object.entries !== null || Object.entries !== undefined) {
         let receivedData = snapshot.val();
+        receivedData = receivedData.winners;
         let collectedData = [];
 
         if (receivedData !== null) {
@@ -187,8 +188,8 @@ export class WinningId extends React.PureComponent {
 
     if(collectedData !== undefined) {
       collectedData.map(item => {
-        collectedItems.push(item.winner.uniqueId);
-        collectedNumbers.push(item.winner.mobileNumber);
+        collectedItems.push(item.user.uniqueId);
+        collectedNumbers.push(item.user.mobileNumber);
       })
     }
    console.log('collectedItems', collectedItems);
