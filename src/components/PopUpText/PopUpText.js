@@ -49,7 +49,7 @@ export class PopUpText extends Component {
       config: {
         titleBar: {
           enable: true,
-          text: `Wcce'll be in touch via email or mobile number 
+          text: `We'll be in touch via email or mobile number 
                 if you're our lucky winner!!!`,
           header:  `Thanks for taking part!!`
 

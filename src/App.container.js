@@ -139,8 +139,9 @@ export class App extends Component {
           </div>
         }
         {nowTime > resultsEndTime &&
-          <div>
-            Thank you for taking part. Competition will resume at 7am tomorrow
+          <div className="thank_you_wrapper">
+            <h1 className="headerText">Thank you for taking part</h1>
+            <div>Competition will resume at: <span>7am </span>tomorrow</div>
           </div>
         }
       </div>
