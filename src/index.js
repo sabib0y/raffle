@@ -40,9 +40,9 @@ ReactDOM.render(
         particleSpeed ={0.5}
         interactive={false}
         background = {{
-          r: 56, 
-          g: 32, 
-          b: 166, 
+          r: 56,
+          g: 32,
+          b: 166,
           a: 1
         }}
         style={{
@@ -54,11 +54,11 @@ ReactDOM.render(
       </div>
       <div id="overall_wrapper">
         <header>
-          <Link to="/" id="logo">
+          <div id="logo">
             <img
               src={ImageLocal}
               alt="dailychoppins logo"/>
-          </Link>
+          </div>
           {/*<div>*/}
             {/*<h1 className="headerText">Welcome to Dailychoppins!</h1>*/}
           {/*</div>*/}
