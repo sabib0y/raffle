@@ -148,7 +148,7 @@ export class App extends Component {
         }
         {nowTime > resultsEndTime &&
           <div>
-            Thank you for taking part. Competition will resume at 7am tomorrow
+            Thank you for taking part. Competition will resume at ${formStartTime} tomorrow
           </div>
         }
       </div>
