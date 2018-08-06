@@ -107,16 +107,27 @@ export class InterimPage extends Component {
         siteLaunch: new Date(siteLaunch.siteLaunch),
       };
 
+      console.log('moment().tz(\'Africa/Lagos\');', moment().tz('Africa/Lagos')),
 
       this.timerHandle = setInterval(() => {
         const { timeNow, resultsStartTime } = this.state;
-        let newDateToTest = new Date();
+        let newDateToTest = moment().tz('Africa/Lagos').format();
+        newDateToTest = new Date(newDateToTest);
 
+        let timeToTestInterval;
+
+        if(timeNow < formStartTime) {
+          timeToTestInterval = formStartTime
+        }
+        if(timeNow > formStartTime && timeNow < resultsStartTime){
+          timeToTestInterval = resultsStartTime
+        }
         /*eslint no-mixed-operators:*/
-        if(resultsStartTime > newDateToTest || newDateToTest > resultsStartTime && newDateToTest > formStartTime) {
+
+
           let testTime;
-          if(resultsStartTime > newDateToTest) {
-            testTime = resultsStartTime - newDateToTest;
+          if(timeToTestInterval > newDateToTest) {
+            testTime = timeToTestInterval - newDateToTest;
           }
 
           let duration = moment.duration(testTime, 'milliseconds');
@@ -147,28 +158,10 @@ export class InterimPage extends Component {
               dateNow: timeNow,
             });
           }
-
-        }
-        else {
-          clearInterval(this.timerHandle);
-          this.timerHandle = 0;
-          // this.props.history.push('/');
-        }
       }, 1000);
       this.props.getTimeForm(dataToPost)
     });
   };
-
-  componentWillMount() {
-
-    // let nowTime = new Date();
-    // const { formStartTime, resultsEndTime } = this.props;
-    // let new_date = moment(formStartTime).subtract(7, 'hours').format();
-    // new_date = new Date(new_date);
-    //
-    // this.isPostComp(nowTime, resultsEndTime);
-
-  }
 
   componentWillUnmount() {
     clearInterval(this.timerHandle);
