@@ -36,11 +36,15 @@ exports.dataBaseCleanUp = functions.https.onRequest((request, response) => {
       response.send(`Database Cleaned, at: ${timeNow}`);
       admin.database().ref(`usersBackup/${todayDate}`).set({receivedData});
       admin.database().ref('usersAll/').update({vals});
-      admin.database().ref(`randomWinnerSet`).remove();
-      admin.database().ref(`randomWinnerSetWebNew`).remove();
+      admin.database().ref(`allWinnersNoDuplicate`).remove();
+      admin.database().ref(`confirmedWinnerList`).remove();
+      admin.database().ref(`dailyWinningNumbers`).remove();
       return admin.database().ref(`users`).remove();
 
     } else {
+      admin.database().ref(`allWinnersNoDuplicate`).remove();
+      admin.database().ref(`confirmedWinnerList`).remove();
+      admin.database().ref(`dailyWinningNumbers`).remove();
       return response.send(`Database Not Cleaned at: ${timeNow}`);
     }
   });
@@ -148,10 +152,10 @@ exports.formScheduling = functions.https.onRequest((request, response) => {
       };
 
       let postData = {
-        formStart: moment(postDataTest.formStart.setDate(postDataTest.formStart.getDate() + 1)).format(),
-        formEnd: moment(postDataTest.formEnd.setDate(postDataTest.formEnd.getDate() + 1)).format(),
-        resultStart: moment(postDataTest.resultStart.setDate(postDataTest.resultStart.getDate() + 1)).format(),
-        resultEnd: moment(postDataTest.resultEnd.setDate(postDataTest.resultEnd.getDate() + 1)).format(),
+        formStart: moment(postDataTest.formStart.setDate(postDataTest.formStart.getDate() + 1)).tz('Africa/Lagos').format(),
+        formEnd: moment(postDataTest.formEnd.setDate(postDataTest.formEnd.getDate() + 1)).tz('Africa/Lagos').format(),
+        resultStart: moment(postDataTest.resultStart.setDate(postDataTest.resultStart.getDate() + 1)).tz('Africa/Lagos').format(),
+        resultEnd: moment(postDataTest.resultEnd.setDate(postDataTest.resultEnd.getDate() + 1)).tz('Africa/Lagos').format(),
       };
 
       response.send(`Scheduling set`);

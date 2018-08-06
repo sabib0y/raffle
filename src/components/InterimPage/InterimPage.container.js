@@ -184,10 +184,6 @@ export class InterimPage extends Component {
   };
 
   isPreFormCountDown(nowTime, new_date, formStartTime, resultsEndTime) {
-    if(nowTime > new_date && nowTime < formStartTime && formStartTime !== null) {
-      this.props.history.push('/');
-    }
-
     if(nowTime < formStartTime && nowTime < new_date) {
       this.setState({
         thankYouMessage: true
@@ -239,6 +235,10 @@ export class InterimPage extends Component {
 
     this.isPreFormCountDown(nowTime, new_date, formStartTime, resultsEndTime);
     // this.isPostComp(nowTime, resultsEndTime);
+    if(nowTime > new_date && nowTime < formStartTime && formStartTime !== null) {
+      schedule = 'form';
+      message = 'Form will be displayed in:'
+    }
 
     return (
       <div className="containerWrapper">
