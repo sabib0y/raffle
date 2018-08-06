@@ -85,7 +85,6 @@ export class App extends Component {
 
 
   isPreFormCountDown(nowTime, new_date, formStartTime, resultsEndTime) {
-    debugger;
     if(nowTime > new_date && nowTime < formStartTime && formStartTime !== null) {
       this.props.history.push('/awaiting-page');
     }
@@ -149,7 +148,6 @@ export class App extends Component {
     this.isTimeResults(resultsStartTime, resultsEndTime, nowTime);
     // this.isWinningId(siteLaunch, nowTime);
     this.isPreFormCountDown(nowTime, new_date, formStartTime, resultsEndTime);
-    debugger;
 
       return (
       <div className="container-fluid appWrapper">

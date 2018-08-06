@@ -54,7 +54,7 @@ export class InterimPage extends Component {
     let new_date = moment(formStartTime).subtract(7, 'hours').format();
     new_date = new Date(new_date);
 
-    this.isPostComp(nowTime, resultsEndTime);
+    // this.isPostComp(nowTime, resultsEndTime);
 
     fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
       let receivedDataTime = snapshot.val();
@@ -88,6 +88,11 @@ export class InterimPage extends Component {
       if(nowTime > resultsStartTime && nowTime < resultsEndTime) {
         this.props.history.push('/');
       }
+
+      if(nowTime > resultsEndTime && resultsEndTime !== null) {
+        this.props.history.push('/')
+      }
+
     });
 
     fire.database().ref('setSiteLaunch/').once('value').then((snapshot) => {
@@ -172,14 +177,13 @@ export class InterimPage extends Component {
 
   checkPageLocation(siteLaunch, nowTime) {
     if(nowTime > siteLaunch){
-      this.props.history.push('/coming-soon');
+      // this.props.history.push('/coming-soon');
       return true;
     }
     return false;
   };
 
   isPreFormCountDown(nowTime, new_date, formStartTime, resultsEndTime) {
-    debugger;
     if(nowTime > new_date && nowTime < formStartTime && formStartTime !== null) {
       this.props.history.push('/');
     }
@@ -191,22 +195,21 @@ export class InterimPage extends Component {
     }
   }
 
-  isPostComp(nowTime, resultsEndTime){
-    // if(nowTime > resultsEndTime && resultsEndTime !== null) {
-    //   this.props.history.push('/')
-    // }
-    // return false;
-  }
+  // isPostComp(nowTime, resultsEndTime){
+  //   if(nowTime > resultsEndTime && resultsEndTime !== null) {
+  //     this.props.history.push('/')
+  //   }
+  //   return false;
+  // }
 
   render () {
-    // console.log('proooops', this.props)
     let schedule, message;
     let nowTime = new Date();
     const { siteLaunch } = this.props;
 
-    if(siteLaunch !== undefined) {
-      console.log(siteLaunch, 'moment', siteLaunch.setDate(siteLaunch.getDate()+1));
-    }
+    // if(siteLaunch !== undefined) {
+    //   console.log(siteLaunch, 'moment', siteLaunch.setDate(siteLaunch.getDate()+1));
+    // }
 
     this.checkPageLocation(siteLaunch, nowTime);
 
@@ -235,9 +238,7 @@ export class InterimPage extends Component {
     new_date = new Date(new_date);
 
     this.isPreFormCountDown(nowTime, new_date, formStartTime, resultsEndTime);
-    this.isPostComp(nowTime, resultsEndTime);
-
-    console.log('props', this.props)
+    // this.isPostComp(nowTime, resultsEndTime);
 
     return (
       <div className="containerWrapper">
