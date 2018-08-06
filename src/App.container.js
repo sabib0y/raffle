@@ -41,7 +41,7 @@ export class App extends Component {
   }
 
   isIntervalPreResults(formEndTime, resultsStartTime, nowTime, siteLaunch) {
-    if(nowTime > formEndTime && nowTime < resultsStartTime && formEndTime !== null && nowTime > siteLaunch) {
+    if(nowTime > formEndTime && nowTime < resultsStartTime && formEndTime !== null && nowTime) {
       this.props.history.push('/awaiting-page');
       return true;
     }
@@ -132,21 +132,15 @@ export class App extends Component {
     const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch } = this.props;
     // let formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch ;
     //
-    // formStartTime = new Date("2018-08-06T07:50:31+01:00");
+    // formStartTime = new Date("2018-08-06T06:50:31+01:00");
     // resultsEndTime = new Date("2018-08-06T20:00:31+01:00");
-    // formEndTime = new Date("2018-08-06T10:00:31+01:00");
-    // resultsStartTime = new Date("2018-08-06T11:00:31+01:00");
-    // siteLaunch = new Date("2018-08-05T20:00:31+01:00");
+    // formEndTime = new Date("2018-08-06T13:00:31+01:00");
+    // resultsStartTime = new Date("2018-08-06T19:00:31+01:00");
 
     // console.log('before', formStartTime)
     let new_date = moment(formStartTime).subtract(7, 'hours').format();
     new_date = new Date(new_date);
 
-    // console.log('after', new_date, 'ghdgdgdgdgd', moment().tz("Africa/Lagos").format());
-
-
-
-    // this.isTimeForm(formStartTime, formEndTime, nowTime);
     this.isErrorLaunch(formStartTime, siteLaunch, nowTime);
     this.isTimeResults(resultsStartTime, resultsEndTime, nowTime);
     // this.isWinningId(siteLaunch, nowTime);

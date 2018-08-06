@@ -61,10 +61,10 @@ export class InterimPage extends Component {
       /* @TODO time?
       * */
       // this.setState({
-      //   formStartTime: new Date("2018-08-06T23:50:31+01:00"),
-      //   resultsEndTime: new Date("2018-08-07T20:00:31+01:00"),
-      //   formEndTime: new Date("2018-08-07T02:00:31+01:00"),
-      //   resultsStartTime: new Date("2018-08-07T10:00:31+01:00"),
+      //   formStartTime: new Date("2018-08-06T06:50:31+01:00"),
+      //   resultsEndTime: new Date("2018-08-06T20:00:31+01:00"),
+      //   formEndTime: new Date("2018-08-06T13:00:31+01:00"),
+      //   resultsStartTime: new Date("2018-08-06T19:00:31+01:00"),
       // });
 
       const { formStartTime, resultsEndTime, formEndTime, resultsStartTime } = this.state;
@@ -144,7 +144,6 @@ export class InterimPage extends Component {
       }, 1000);
       this.props.getTimeForm(dataToPost)
     });
-
   };
 
   componentWillUnmount() {
@@ -220,9 +219,9 @@ export class InterimPage extends Component {
         }
         {schedule === 'results' &&
           <div>
-            <div>
-              <h1 className="headerText">Welcome to Dailychoppins!</h1>
-            </div>
+            {/*<div>*/}
+              {/*<h1 className="headerText">Welcome to Dailychoppins!</h1>*/}
+            {/*</div>*/}
             <div>{message}</div>
             {this.state.testData.length > 0 &&
               <div id="timer_wrapper">
