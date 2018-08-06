@@ -242,7 +242,7 @@ export class InterimPage extends Component {
 
     return (
       <div className="containerWrapper">
-        <p>{this.props.textInterim}</p>
+        <p>{this.props.textInterim ? this.props.textInterim : message }</p>
         {schedule === 'form' &&
           <div>
             {/*<div>*/}
