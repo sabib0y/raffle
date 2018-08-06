@@ -53,6 +53,13 @@ $label_colour: #9f9f9f;
   }
 }
 
+//animations
+@mixin transition{
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
 //Forms
 @mixin form_width{
   background: white;
@@ -86,11 +93,13 @@ $label_colour: #9f9f9f;
     color: $label_colour;
     padding: 1rem;
     height: 100%;
+    @include transition;
   }
 
   input{
     @include input_field;
-      @include placeholder {
+    @include transition;
+    @include placeholder {
         color: transparent;
       }
   }
@@ -98,7 +107,12 @@ $label_colour: #9f9f9f;
   &.active{
     label{
       font-size: 1.3rem;
-      top: -10px;
+      height: auto;
+      padding-top: 0.3rem;
+    }
+
+    input{
+      padding-top: 1.7rem;
     }
   }
 }

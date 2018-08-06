@@ -143,8 +143,8 @@ export class WinningCodeValidation extends React.Component {
       popUpInfo = (
         <div>
           <p className="popUpHeaderText">Congrats!</p>
-          <p className="uniqueCodePopUp">Your code has been redeemed!</p>
-          <div className="uniqueCodePopUpText">We'll send you your winnings shortly</div>
+          <p className="uniqueCodePopUp">You have won ₦500 airtime!!</p>
+          <div className="uniqueCodePopUpText">Your phone will be credited shortly.</div>
         </div>
       );
     }
@@ -163,8 +163,8 @@ export class WinningCodeValidation extends React.Component {
       popUpInfo = (
         <div>
           <p className="popUpHeaderText">Unlucky... :(</p>
-          <p className="uniqueCodePopUp">You do not hold a winning number this time</p>
-          <div className="uniqueCodePopUpText">Thank you for participating</div>
+          <p className="uniqueCodePopUp">You do not hold a winning number today.</p>
+          <div className="uniqueCodePopUpText">Please try again tomorrow.</div>
         </div>
       );
     }
@@ -183,7 +183,7 @@ export class WinningCodeValidation extends React.Component {
           <form action="" id="user-form" noValidate="noValidate" onSubmit={e => this.handleSubmitCode(e)}>
             <fieldset>
               <div className="form-group">
-                <label>Enter your number here</label>
+                <label>Enter your mobile number here</label>
                 <input
                   type="text"
                   className={ this.state.outline ? 'outline' : 'noError' }

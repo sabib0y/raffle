@@ -63,6 +63,15 @@ export class App extends Component {
     return false
   }
 
+  /*
+  * @TODO fix isPreFormCountDown
+  * */
+  isPreFormCountDown(nowTime, new_date, formStartTime) {
+    if(nowTime > new_date && nowTime < formStartTime && formStartTime !== null) {
+      this.props.history.push('/awaiting-page');
+    }
+  }
+
   isWinningId(siteLaunch, nowTime) {
     if(nowTime < siteLaunch){
       this.props.history.push('/coming-soon');
@@ -101,11 +110,18 @@ export class App extends Component {
 
     const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch } = this.props;
 
-    console.log('result start..', formStartTime)
+    console.log('before', formStartTime)
+    let new_date = moment(formStartTime).subtract(7, 'hours').format();
+
+    console.log('after', new_date, 'ghdgdgdgdgd', moment().tz("Africa/Lagos").format());
+
+
+
     // this.isTimeForm(formStartTime, formEndTime, nowTime);
     this.isErrorLaunch(formStartTime, siteLaunch, nowTime);
     this.isTimeResults(resultsStartTime, resultsEndTime, nowTime);
     this.isWinningId(siteLaunch, nowTime);
+    this.isPreFormCountDown(nowTime, new_date, formStartTime);
 
       return (
       <div className="container-fluid appWrapper">
@@ -141,7 +157,7 @@ export class App extends Component {
         {nowTime > resultsEndTime &&
           <div className="thank_you_wrapper">
             <h1 className="headerText">Thank you for taking part</h1>
-            <div>Competition will resume at: <span>7am </span>tomorrow</div>
+            <div>Competition will resume at <span className="largeText">7am </span>tomorrow</div>
           </div>
         }
       </div>
