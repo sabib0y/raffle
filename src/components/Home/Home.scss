@@ -109,12 +109,5 @@
   }
 }
 
-@include breakpoint(phablet) {
- .main_form {
-  padding: 7rem 6rem 5.6rem;
-  .form-group label{
-   font-size: 1.8rem;
-  }
- }
-}
+
 

@@ -48,6 +48,14 @@ export class InterimPage extends Component {
   }
 
   componentDidMount(){
+
+    let nowTime = new Date();
+    const { formStartTime, resultsEndTime } = this.props;
+    let new_date = moment(formStartTime).subtract(7, 'hours').format();
+    new_date = new Date(new_date);
+
+    this.isPostComp(nowTime, resultsEndTime);
+
     fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
       let receivedDataTime = snapshot.val();
 
@@ -146,6 +154,17 @@ export class InterimPage extends Component {
     });
   };
 
+  componentWillMount() {
+
+    // let nowTime = new Date();
+    // const { formStartTime, resultsEndTime } = this.props;
+    // let new_date = moment(formStartTime).subtract(7, 'hours').format();
+    // new_date = new Date(new_date);
+    //
+    // this.isPostComp(nowTime, resultsEndTime);
+
+  }
+
   componentWillUnmount() {
     clearInterval(this.timerHandle);
     this.timerHandle = 0;
@@ -159,7 +178,28 @@ export class InterimPage extends Component {
     return false;
   };
 
+  isPreFormCountDown(nowTime, new_date, formStartTime, resultsEndTime) {
+    debugger;
+    if(nowTime > new_date && nowTime < formStartTime && formStartTime !== null) {
+      this.props.history.push('/');
+    }
+
+    if(nowTime < formStartTime && nowTime < new_date) {
+      this.setState({
+        thankYouMessage: true
+      })
+    }
+  }
+
+  isPostComp(nowTime, resultsEndTime){
+    // if(nowTime > resultsEndTime && resultsEndTime !== null) {
+    //   this.props.history.push('/')
+    // }
+    // return false;
+  }
+
   render () {
+    // console.log('proooops', this.props)
     let schedule, message;
     let nowTime = new Date();
     const { siteLaunch } = this.props;
@@ -189,6 +229,15 @@ export class InterimPage extends Component {
       schedule = 'form';
       message = 'Form will be displayed in:'
     }
+
+    const { formStartTime, resultsEndTime } = this.props;
+    let new_date = moment(formStartTime).subtract(7, 'hours').format();
+    new_date = new Date(new_date);
+
+    this.isPreFormCountDown(nowTime, new_date, formStartTime, resultsEndTime);
+    this.isPostComp(nowTime, resultsEndTime);
+
+    console.log('props', this.props)
 
     return (
       <div className="containerWrapper">
@@ -252,8 +301,8 @@ const mapStateToProps = (state) => {
     uniqueId: state.get('reducer').uniqueId,
     formStartTime: state.get('reducer').formStartTime,
     siteLaunch: state.get('reducer').siteLaunch,
-    resultStartTime: state.get('reducer').resultStartTime,
-    resultEndTime: state.get('reducer').resultEndTime,
+    resultsStartTime: state.get('reducer').resultsStartTime,
+    resultsEndTime: state.get('reducer').resultsEndTime,
   };
 };
 

@@ -181,7 +181,7 @@ export class WinningId extends React.PureComponent {
     //   uniqueCodeSplit = uniqueId.replace(/(\w{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');
     // }
 
-    this.isWinningId(siteLaunch, nowTime);
+    // this.isWinningId(siteLaunch, nowTime);
 
     return (
       <div className="winning_validation draw_content_container">

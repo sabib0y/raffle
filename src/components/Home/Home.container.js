@@ -338,7 +338,7 @@ export class Home extends React.Component {
       <div>
         <p className="popUpHeaderText">Competition Entered!</p>
         <p className="uniqueCodePopUp">Your unique code is <span className="codeTransform">{this.state.uniqueId}</span></p>
-        <div className="uniqueCodePopUpText">We'll be in touch if you're our lucky winner!!!
+        <div className="uniqueCodePopUpText">Check back at 8pm to see if you won!!!
         {/*<p className="uniqueCodePopUpDisclaimer"><i>By closing, you confirm that you have copied your unique code and saved it.</i></p>*/}
         </div>
       </div>
@@ -346,6 +346,8 @@ export class Home extends React.Component {
 
     return (
       <div>
+        <h2 id="teaser_text"><span className="teaser_text_time">For the first 7 days</span>we will be giving away five <span className="fiveh">₦500</span> airtime vouchers<br/>every day! <span className="large_text">Don’t miss out!!</span></h2>
+
         <div>
         </div>
       <div className="formWrapper">

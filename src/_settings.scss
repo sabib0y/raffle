@@ -126,3 +126,9 @@ $height: 5rem;
     }
   }
 }
+
+@include breakpoint(phablet) {
+ .validate_form {
+  padding: 15px 25px 25px 25px;
+ }
+}
