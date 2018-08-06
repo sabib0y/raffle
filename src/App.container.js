@@ -20,7 +20,8 @@ export class App extends Component {
       time: 10,
       timeNow: new Date(),
       testData: '',
-      testTime: ''
+      testTime: '',
+      thankYouMessage: false
     }
   }
 
@@ -55,6 +56,13 @@ export class App extends Component {
     return false;
   }
 
+  isPostComp(nowTime, resultsEndTime){
+    if(nowTime > resultsEndTime && resultsEndTime !== null) {
+      return true;
+    }
+    return false;
+  }
+
   isErrorLaunch(formStartTime, siteLaunch, nowTime) {
     if(nowTime < siteLaunch) {
       // this.props.history.push('/error');
@@ -63,12 +71,25 @@ export class App extends Component {
     return false
   }
 
+  newIntervalPreForm(nowTime, formStartTime, new_date, siteLaunch) {
+    if (nowTime > new_date && nowTime < formStartTime && formStartTime !== null) {
+      return true;
+    }
+    return false
+  }
+
   /*
   * @TODO fix isPreFormCountDown
   * */
-  isPreFormCountDown(nowTime, new_date, formStartTime) {
+  isPreFormCountDown(nowTime, new_date, formStartTime, resultsEndTime) {
     if(nowTime > new_date && nowTime < formStartTime && formStartTime !== null) {
       this.props.history.push('/awaiting-page');
+    }
+
+    if(nowTime < formStartTime && nowTime < new_date) {
+      this.setState({
+        thankYouMessage: true
+      })
     }
   }
 
@@ -105,12 +126,21 @@ export class App extends Component {
   }
 
   render() {
-    let nowTime = moment();
+    let nowTime = moment().tz("Africa/Lagos").format();
+    nowTime = new Date(nowTime);
 
     const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch } = this.props;
+    // let formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch ;
+    //
+    // formStartTime = new Date("2018-08-06T07:50:31+01:00");
+    // resultsEndTime = new Date("2018-08-06T20:00:31+01:00");
+    // formEndTime = new Date("2018-08-06T10:00:31+01:00");
+    // resultsStartTime = new Date("2018-08-06T11:00:31+01:00");
+    // siteLaunch = new Date("2018-08-05T20:00:31+01:00");
 
-    console.log('before', formStartTime)
+    // console.log('before', formStartTime)
     let new_date = moment(formStartTime).subtract(7, 'hours').format();
+    new_date = new Date(new_date);
 
     // console.log('after', new_date, 'ghdgdgdgdgd', moment().tz("Africa/Lagos").format());
 
@@ -120,44 +150,47 @@ export class App extends Component {
     this.isErrorLaunch(formStartTime, siteLaunch, nowTime);
     this.isTimeResults(resultsStartTime, resultsEndTime, nowTime);
     // this.isWinningId(siteLaunch, nowTime);
-    this.isPreFormCountDown(nowTime, new_date, formStartTime);
+    // this.isPreFormCountDown(nowTime, new_date, formStartTime, resultsEndTime);
 
       return (
       <div className="container-fluid appWrapper">
-        {nowTime < resultsEndTime &&
-          <div>
-            {this.isTimeForm(formStartTime, formEndTime, siteLaunch, nowTime) &&
-            <Home/>
-            }
-            {this.isTimeResults(resultsStartTime, resultsEndTime, nowTime, siteLaunch) &&
-            <div className="winning_validation draw_content_container">
-              <WinningID
-                id={this.props.id}
-                passedProps={this.props}
-              />
-            </div>
-            }
-            {this.isIntervalPreForm(formStartTime, resultsEndTime, nowTime, siteLaunch) &&
-            <InterimPage
-              textInterim='New competition entry will be available in:'
-              schedule="form"
-              siteLaunch={siteLaunch}
-            />
-            }
-            {this.isIntervalPreResults(formEndTime, resultsStartTime, nowTime, siteLaunch) &&
-            <InterimPage
-              textInterim='Results will be published in:'
-              schedule="results"
-              siteLaunch={siteLaunch}
-            />
-            }
-          </div>
+        {this.isTimeForm(formStartTime, formEndTime, siteLaunch, nowTime) &&
+        <Home/>
         }
-        {nowTime > resultsEndTime &&
-          <div className="thank_you_wrapper">
-            <h1 className="headerText">Thank you for taking part</h1>
-            <div>Competition will resume at <span className="largeText">7am </span>tomorrow</div>
-          </div>
+        {this.isTimeResults(resultsStartTime, resultsEndTime, nowTime, siteLaunch) &&
+        <div className="winning_validation draw_content_container">
+          <WinningID
+            id={this.props.id}
+            passedProps={this.props}
+          />
+        </div>
+        }
+        {this.isIntervalPreForm(formStartTime, resultsEndTime, nowTime, siteLaunch) &&
+        <InterimPage
+          textInterim='New competition entry will be available in:'
+          schedule="form"
+          siteLaunch={siteLaunch}
+        />
+        }
+        {this.isIntervalPreResults(formEndTime, resultsStartTime, nowTime, siteLaunch) &&
+        <InterimPage
+          textInterim='Results will be published in:'
+          schedule="results"
+          siteLaunch={siteLaunch}
+        />
+        }
+        {this.isPostComp(nowTime, resultsEndTime) &&
+        <div className="thank_you_wrapper">
+          <h1 className="headerText">Thank you for taking part</h1>
+          <div>Competition will resume at <span className="largeText">7am </span>tomorrow</div>
+        </div>
+        }
+        {this.newIntervalPreForm(nowTime, formStartTime, new_date, siteLaunch) &&
+        <InterimPage
+          textInterim='New competition entry will be available in:'
+          schedule="form"
+          siteLaunch={siteLaunch}
+        />
         }
       </div>
     );

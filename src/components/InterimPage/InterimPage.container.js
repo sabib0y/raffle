@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './InterimPage.scss';
+import '../ComingSoon/ComingSoon.scss';
 import fire from '../../fire';
 import moment from 'moment-timezone';
 import {connect} from "react-redux";
@@ -56,7 +57,21 @@ export class InterimPage extends Component {
         resultsStartTime: new Date(receivedDataTime.postData.resultStart),
         resultsEndTime: new Date(receivedDataTime.postData.resultEnd),
       });
+
+      /* @TODO time?
+      * */
+      // this.setState({
+      //   formStartTime: new Date("2018-08-06T23:50:31+01:00"),
+      //   resultsEndTime: new Date("2018-08-07T20:00:31+01:00"),
+      //   formEndTime: new Date("2018-08-07T02:00:31+01:00"),
+      //   resultsStartTime: new Date("2018-08-07T10:00:31+01:00"),
+      // });
+
       const { formStartTime, resultsEndTime, formEndTime, resultsStartTime } = this.state;
+      // let formStartTime, resultsEndTime, formEndTime, resultsStartTime;
+
+
+
       let nowTime = new Date();
 
       if(nowTime >= formStartTime && nowTime <= formEndTime) {
@@ -137,13 +152,13 @@ export class InterimPage extends Component {
     this.timerHandle = 0;
   }
 
-  // checkPageLocation(siteLaunch, nowTime) {
-  //   if(nowTime < siteLaunch){
-  //     this.props.history.push('/coming-soon');
-  //     return true;
-  //   }
-  //   return false;
-  // };
+  checkPageLocation(siteLaunch, nowTime) {
+    if(nowTime > siteLaunch){
+      this.props.history.push('/coming-soon');
+      return true;
+    }
+    return false;
+  };
 
   render () {
     let schedule, message;
@@ -181,10 +196,10 @@ export class InterimPage extends Component {
         <p>{this.props.textInterim}</p>
         {schedule === 'form' &&
           <div>
-            <div>
-              <h1 className="headerText">Welcome to Dailychoppins!</h1>
-            </div>
-            <div>{message}</div>
+            {/*<div>*/}
+              {/*<h1 className="headerText">Welcome to Dailychoppins!</h1>*/}
+            {/*</div>*/}
+            {/*<div>{message}</div>*/}
             {this.state.testData.length > 0 &&
               <div id="timer_wrapper">
                 <span>

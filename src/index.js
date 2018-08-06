@@ -54,11 +54,11 @@ ReactDOM.render(
       </div>
       <div id="overall_wrapper">
         <header>
-          <div id="logo">
+          <Link to='/' id="logo">
             <img
               src={ImageLocal}
               alt="dailychoppins logo"/>
-          </div>
+          </Link>
           {/*<div>*/}
             {/*<h1 className="headerText">Welcome to Dailychoppins!</h1>*/}
           {/*</div>*/}
