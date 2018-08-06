@@ -23,7 +23,7 @@ span {
   span{
     display: block;
     &.large_text{
-      font-size: 4.2rem;
+      font-size: 3.7rem;
       margin-top: 1rem;
     }
   }
@@ -112,16 +112,26 @@ body{
   @media only screen and (max-width: 640px) {
     .appWrapper  {
       padding-top:0;
+			margin-top: 2rem;
     }
 
     #teaser_text{
-      font-size: 1.9rem;
-      line-height: 2.7rem;
+			font-size: 1.7rem;
+			line-height: 2.7rem;
+			font-weight: 400;
 
       .large_text{
-        font-size: 2.9rem;
+        font-size: 1.9rem;
       }
     }
+
+		.draw_content_container{
+			padding-top:0;
+			.main_form{
+				margin-top: 0;
+				padding: 3rem;
+			}
+		}
    }
 
  }

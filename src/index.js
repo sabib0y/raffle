@@ -62,6 +62,8 @@ ReactDOM.render(
           {/*<div>*/}
             {/*<h1 className="headerText">Welcome to Dailychoppins!</h1>*/}
           {/*</div>*/}
+          <h1 className="headerText">Welcome to Dailychoppins!</h1>
+          <h2 id="teaser_text"><span>For the first 7 days</span>we will be giving away five ₦500 airtime vouchers<br/>every day! <span className="large_text">Don’t miss out!!</span></h2>
         </header>
         <Route exact path='/' component={App} />
         <Route path='/awaiting-page' component={InterimPage} />
