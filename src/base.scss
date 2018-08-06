@@ -48,7 +48,7 @@ h1,h2,h3,h4{
   width: 100%;
   max-width: 97.9rem;
   margin: 0 auto;
-  padding: 0 2rem 0;
+  padding: 0;
 }
 
 .teaser_text_time {
@@ -58,6 +58,7 @@ h1,h2,h3,h4{
 #teaser_text {
   font-size: 3rem;
   margin-top: 2rem;
+  font-weight: 400;
 }
 
 .custom-button{
@@ -68,9 +69,43 @@ h1,h2,h3,h4{
   @include btn;
 }
 
+.fiveh,
 span.large_text{
   font-size: 3.5rem;
   font-weight: 700;
   margin: 2rem 0.7rem;
   display: block;
 }
+
+.fiveh{
+  display: inline-block;
+  margin:0;
+  font-size: inherit;
+}
+
+// medium
+@media only screen and (max-width: 640px) {
+  .appWrapper  {
+    padding-top:0;
+    margin-top: 2rem;
+  }
+
+  #teaser_text{
+    font-size: 1.7rem;
+    line-height: 1.9rem;
+    font-weight: 400;
+
+    .large_text{
+      font-size: 1.9rem;
+    }
+  }
+
+  .draw_content_container{
+    padding-top:0;
+    .main_form{
+      margin-top: 0;
+      padding: 3rem;
+    }
+  }
+}
+

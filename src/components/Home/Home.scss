@@ -71,6 +71,7 @@
 
 .main_form{
  @include form_width;
+ margin-top: 0;
  padding: 7rem 2rem 5.6rem;
   .form-group{
     @include quickSand;
