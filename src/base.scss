@@ -51,6 +51,15 @@ h1,h2,h3,h4{
   padding: 0 2rem 0;
 }
 
+.teaser_text_time {
+  display: block;
+}
+
+#teaser_text {
+  font-size: 3rem;
+  margin-top: 2rem;
+}
+
 .custom-button{
   @include btn;
 }
@@ -60,7 +69,8 @@ h1,h2,h3,h4{
 }
 
 span.large_text{
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 700;
-  margin: 0 0.7rem;
+  margin: 2rem 0.7rem;
+  display: block;
 }

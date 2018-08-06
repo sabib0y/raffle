@@ -72,13 +72,13 @@ export class App extends Component {
     }
   }
 
-  isWinningId(siteLaunch, nowTime) {
-    if(nowTime < siteLaunch){
-      this.props.history.push('/coming-soon');
-      return true;
-    }
-    return false;
-  };
+  // isWinningId(siteLaunch, nowTime) {
+  //   if(nowTime < siteLaunch){
+  //     this.props.history.push('/coming-soon');
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
   redeemCode(e) {
     e.preventDefault();
@@ -112,14 +112,14 @@ export class App extends Component {
     console.log('before', formStartTime)
     let new_date = moment(formStartTime).subtract(7, 'hours').format();
 
-    console.log('after', new_date, 'ghdgdgdgdgd', moment().tz("Africa/Lagos").format());
+    // console.log('after', new_date, 'ghdgdgdgdgd', moment().tz("Africa/Lagos").format());
 
 
 
     // this.isTimeForm(formStartTime, formEndTime, nowTime);
     this.isErrorLaunch(formStartTime, siteLaunch, nowTime);
     this.isTimeResults(resultsStartTime, resultsEndTime, nowTime);
-    this.isWinningId(siteLaunch, nowTime);
+    // this.isWinningId(siteLaunch, nowTime);
     this.isPreFormCountDown(nowTime, new_date, formStartTime);
 
       return (

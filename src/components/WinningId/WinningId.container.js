@@ -135,13 +135,13 @@ export class WinningId extends React.PureComponent {
     }
   }
 
-  isWinningId(siteLaunch, nowTime) {
-    if(nowTime < siteLaunch){
-      this.props.history.push('/coming-soon');
-      return true;
-    }
-    return false;
-  };
+  // isWinningId(siteLaunch, nowTime) {
+  //   if(nowTime < siteLaunch){
+  //     this.props.history.push('/coming-soon');
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
   render() {
 
