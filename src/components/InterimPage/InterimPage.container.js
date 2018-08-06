@@ -76,8 +76,7 @@ export class InterimPage extends Component {
         formEndTime,
         resultsStartTime,
         resultsEndTime,
-        // siteLaunch: new Date(siteLaunch.siteLaunch),
-        siteLaunch: new Date("2018-07-06T07:00:34+01:00"),
+        siteLaunch: new Date(siteLaunch.siteLaunch),
       };
 
 

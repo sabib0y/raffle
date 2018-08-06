@@ -52,7 +52,7 @@ export class WinningId extends React.PureComponent {
         let siteLaunchTime = snapshot.val();
 
         this.setState({
-          siteLaunch: new Date("2015-07-06T07:00:34+01:00"),
+          siteLaunch: new Date(siteLaunchTime.siteLaunch),
         })
       }
     });
