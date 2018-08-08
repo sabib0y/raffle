@@ -351,7 +351,7 @@ export class Home extends React.Component {
           we will be giving away five
           <span className="fiveh">₦500</span>
           airtime vouchers every day!
-          <span>Competition ends at 8pm everyday</span>
+          <span>Competition ends at 7pm everyday</span>
           <span className="large_text">Don’t miss out!!</span>
         </h2>
 
