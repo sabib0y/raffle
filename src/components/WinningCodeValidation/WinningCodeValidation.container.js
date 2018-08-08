@@ -170,7 +170,7 @@ export class WinningCodeValidation extends React.Component {
     }
 
     return (
-      <div className="validate_form">
+      <div>
         {this.state.showPopup ?
           <Popup
             info={popUpInfo}
@@ -180,27 +180,35 @@ export class WinningCodeValidation extends React.Component {
           : null
         }
         {this.state.winningCodeConfirmation === false &&
-          <form action="" id="user-form" noValidate="noValidate" onSubmit={e => this.handleSubmitCode(e)}>
-            <fieldset>
-              <div className="form-group">
-                <label>Enter your mobile number here</label>
-                <input
-                  type="text"
-                  className={ this.state.outline ? 'outline' : 'noError' }
-                  placeholder="validate code"
-                  name="code"
-                  onChange={event => this.handleSubmit(event)}
-                />
-                <span className="errorEmail">{this.state.error}</span>
+          <div>
+            <div className="row">
+              <div className="draw_content_container">
+                <div className = "main_form">
+                  <form action="" id="user-form" noValidate="noValidate" onSubmit={e => this.handleSubmitCode(e)}>
+                    <fieldset>
+                      <div className="form-group">
+                        <label>Enter number</label>
+                        <input
+                          type="text"
+                          className={ this.state.outline ? 'outline' : 'noError' }
+                          placeholder="validate code"
+                          name="code"
+                          onChange={event => this.handleSubmit(event)}
+                        />
+                        <span className="errorEmail">{this.state.error}</span>
+                      </div>
+                    </fieldset>
+                    <button
+                      className="btn btn-primary custom-button"
+                      type="submit"
+                    >
+                      redeem code
+                    </button>
+                  </form>
+                </div>
               </div>
-            </fieldset>
-            <button
-              className="btn btn-primary custom-button"
-              type="submit"
-            >
-              redeem code
-            </button>
-          </form>
+            </div>
+          </div>
         }
       </div>
     )

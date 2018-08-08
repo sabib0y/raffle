@@ -346,7 +346,10 @@ export class Home extends React.Component {
 
     return (
       <div>
-        <h2 id="teaser_text"><span className="teaser_text_time">For the first 7 days</span>we will be giving away five <span className="fiveh">₦500</span> airtime vouchers<br/>every day! <span className="large_text">Don’t miss out!!</span></h2>
+        <h2 id="teaser_text"><span className="teaser_text_time">For the first 7 days</span>we will be giving away five <span className="fiveh">₦500</span> airtime vouchers<br/>every day!
+          <span>Competition ends at 8pm everyday</span>
+          <span className="large_text">Don’t miss out!!</span>
+        </h2>
 
         <div>
         </div>

@@ -49,8 +49,7 @@ export class InterimPage extends Component {
 
   componentDidMount(){
 
-    let nowTime = new Date();
-    const { formStartTime, resultsEndTime } = this.props;
+    const { formStartTime } = this.props;
     let new_date = moment(formStartTime).subtract(7, 'hours').format();
     new_date = new Date(new_date);
 
@@ -106,8 +105,6 @@ export class InterimPage extends Component {
         resultsEndTime,
         siteLaunch: new Date(siteLaunch.siteLaunch),
       };
-
-      console.log('moment().tz(\'Africa/Lagos\');', moment().tz('Africa/Lagos')),
 
       this.timerHandle = setInterval(() => {
         const { timeNow, resultsStartTime } = this.state;
@@ -238,10 +235,6 @@ export class InterimPage extends Component {
         <p>{this.props.textInterim ? this.props.textInterim : message }</p>
         {schedule === 'form' &&
           <div>
-            {/*<div>*/}
-              {/*<h1 className="headerText">Welcome to Dailychoppins!</h1>*/}
-            {/*</div>*/}
-            {/*<div>{message}</div>*/}
             {this.state.testData.length > 0 &&
               <div id="timer_wrapper">
                 <span>
@@ -262,10 +255,6 @@ export class InterimPage extends Component {
         }
         {schedule === 'results' &&
           <div>
-            {/*<div>*/}
-              {/*<h1 className="headerText">Welcome to Dailychoppins!</h1>*/}
-            {/*</div>*/}
-            <div>{message}</div>
             {this.state.testData.length > 0 &&
               <div id="timer_wrapper">
                 <span>

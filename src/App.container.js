@@ -110,6 +110,7 @@ export class App extends Component {
   }
 
   componentDidMount() {
+    
     fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
       let receivedDataTime = snapshot.val();
 

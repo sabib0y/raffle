@@ -13,10 +13,11 @@ button {
 }
 
 .validate_form {
-    margin: 20px auto 0;
-    max-width: 62rem;
-    padding: 6.2rem;
-    background: white;
+
+ margin: 20px auto 0;
+ max-width: 62rem;
+ padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+ background: white;
 
     .form-group{
       @include quickSand;
