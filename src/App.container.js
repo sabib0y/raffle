@@ -20,56 +20,89 @@ export class App extends Component {
       time: 10,
       timeNow: new Date(),
       testData: '',
-      testTime: ''
+      testTime: '',
+      thankYouMessage: false
     }
   }
 
-  isTimeForm(formStartTime, formEndTime, siteLaunch, nowTime) {
-    if(nowTime > formStartTime && nowTime < formEndTime && nowTime > siteLaunch && formStartTime !== null) {
+  isTimeForm(formStartTime, formEndTime, nowTime) {
+    if(nowTime > formStartTime && nowTime < formEndTime && formStartTime !== null) {
       return true;
     }
     return false;
   }
 
-  isTimeResults(resultsStartTime, resultsEndTime, nowTime, siteLaunch) {
-    if(nowTime > siteLaunch && nowTime >= resultsStartTime && nowTime <= resultsEndTime && resultsEndTime !== null) {
+  isTimeResults(resultsStartTime, resultsEndTime, nowTime) {
+    if(nowTime >= resultsStartTime && nowTime <= resultsEndTime && resultsEndTime !== null) {
       this.props.history.push('/claim-winnings');
       return true;
     }
     return false;
   }
 
-  isIntervalPreResults(formEndTime, resultsStartTime, nowTime, siteLaunch) {
-    if(nowTime > formEndTime && nowTime < resultsStartTime && formEndTime !== null && nowTime > siteLaunch) {
+  isIntervalPreResults(formEndTime, resultsStartTime, nowTime) {
+    if(nowTime > formEndTime && nowTime < resultsStartTime && formEndTime !== null && nowTime) {
       this.props.history.push('/awaiting-page');
       return true;
     }
     return false;
   }
 
-  isIntervalPreForm(formStartTime, resultsEndTime, nextDayValue, nowTime, siteLaunch) {
-    if(nowTime > resultsEndTime && nowTime < nextDayValue && nowTime > siteLaunch && resultsEndTime !== null) {
-      this.props.history.push('/awaiting-page');
+  // isIntervalPreForm(formStartTime, resultsEndTime, nowTime) {
+  //   if(nowTime > resultsEndTime && resultsEndTime !== null) {
+  //     this.props.history.push('/');
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  isPostComp(nowTime, resultsEndTime){
+    if(nowTime > resultsEndTime && resultsEndTime !== null) {
       return true;
     }
     return false;
   }
 
-  isErrorLaunch(formStartTime, siteLaunch, nowTime) {
-    if(nowTime < siteLaunch) {
-      // this.props.history.push('/error');
+  // isErrorLaunch(formStartTime, nowTime) {
+  //   if(nowTime < siteLaunch) {
+  //     // this.props.history.push('/error');
+  //     return true;
+  //   }
+  //   return false
+  // }
+
+  newIntervalPreForm(nowTime, formStartTime, new_date) {
+    if (nowTime > new_date && nowTime < formStartTime && formStartTime !== null) {
       return true;
     }
     return false
   }
 
-  isWinningId(siteLaunch, nowTime) {
-    if(nowTime < siteLaunch){
-      this.props.history.push('/coming-soon');
-      return true;
+  /*
+  * @TODO fix isPreFormCountDown
+  * */
+
+
+
+  isPreFormCountDown(nowTime, new_date, formStartTime, resultsEndTime) {
+    if(nowTime > new_date && nowTime < formStartTime && formStartTime !== null) {
+      this.props.history.push('/awaiting-page');
     }
-    return false;
-  };
+
+    if(nowTime < formStartTime && nowTime < new_date) {
+      this.setState({
+        thankYouMessage: true
+      })
+    }
+  }
+
+  // isWinningId(siteLaunch, nowTime) {
+  //   if(nowTime < siteLaunch){
+  //     this.props.history.push('/coming-soon');
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
   redeemCode(e) {
     e.preventDefault();
@@ -77,26 +110,19 @@ export class App extends Component {
   }
 
   componentDidMount() {
+    
     fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
       let receivedDataTime = snapshot.val();
 
       fire.database().ref('setSiteLaunch/').once('value').then((snapshot) => {
         let siteLaunchTime = snapshot.val();
 
-        let nextDayValue = moment();
-        nextDayValue = nextDayValue.add(1, 'days').format();
-        nextDayValue = nextDayValue.split('T')[0];
-        nextDayValue = `${nextDayValue}T00:00:01Z`;
-        nextDayValue = moment(nextDayValue).format();
-
         const dataToSend = {
           formStartTime: new Date(receivedDataTime.postData.formStart),
           formEndTime: new Date(receivedDataTime.postData.formEnd),
           resultsStartTime: new Date(receivedDataTime.postData.resultStart),
           resultsEndTime: new Date(receivedDataTime.postData.resultEnd),
-          siteLaunch: new Date("2015-08-06T07:00:34+01:00"),
-          // siteLaunch: new Date(siteLaunchTime.siteLaunch),
-          nextDayValue: new Date(nextDayValue),
+          siteLaunch: new Date(siteLaunchTime.siteLaunch),
         };
         this.props.getTimeForm(dataToSend)
       });
@@ -104,52 +130,65 @@ export class App extends Component {
   }
 
   render() {
-    let nowTime = moment();
+    let nowTime = moment().tz("Africa/Lagos").format();
+    nowTime = new Date(nowTime);
 
-    const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch, nextDayValue } = this.props;
+    const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch } = this.props;
+    // let formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch ;
+    //
+    // formStartTime = new Date("2018-08-06T06:50:31+01:00");
+    // resultsEndTime = new Date("2018-08-06T20:00:31+01:00");
+    // formEndTime = new Date("2018-08-06T13:00:31+01:00");
+    // resultsStartTime = new Date("2018-08-06T19:00:31+01:00");
 
-    console.log('result start..', formStartTime)
-    // this.isTimeForm(formStartTime, formEndTime, nowTime);
-    this.isErrorLaunch(formStartTime, siteLaunch, nowTime);
+    // console.log('before', formStartTime)
+    let new_date = moment(formStartTime).subtract(7, 'hours').format();
+    new_date = new Date(new_date);
+
+    // this.isErrorLaunch(formStartTime, siteLaunch, nowTime);
     this.isTimeResults(resultsStartTime, resultsEndTime, nowTime);
-    this.isWinningId(siteLaunch, nowTime);
+    // this.isWinningId(siteLaunch, nowTime);
+    this.isPreFormCountDown(nowTime, new_date, formStartTime, resultsEndTime);
 
       return (
       <div className="container-fluid appWrapper">
-        {nowTime < resultsEndTime &&
-          <div>
-            {this.isTimeForm(formStartTime, formEndTime, siteLaunch, nowTime) &&
-            <Home/>
-            }
-            {this.isTimeResults(resultsStartTime, resultsEndTime, nowTime, siteLaunch) &&
-            <div className="winning_validation draw_content_container">
-              <WinningID
-                id={this.props.id}
-                passedProps={this.props}
-              />
-            </div>
-            }
-            {this.isIntervalPreForm(formStartTime, resultsEndTime, nextDayValue, nowTime, siteLaunch) &&
-            <InterimPage
-              textInterim='New competition entry will be available in:'
-              schedule="form"
-              siteLaunch={siteLaunch}
-              nextDayValue={nextDayValue}
-            />
-            }
-            {this.isIntervalPreResults(formEndTime, resultsStartTime, nowTime, siteLaunch) &&
-            <InterimPage
-              textInterim='Results will be published in:'
-              schedule="results"
-              siteLaunch={siteLaunch}
-            />
-            }
-          </div>
+        {this.isTimeForm(formStartTime, formEndTime, nowTime) &&
+        <Home/>
         }
-        {nowTime > resultsEndTime &&
-          <div>
-            Thank you for taking part. Competition will resume at ${formStartTime} tomorrow
-          </div>
+        {this.isTimeResults(resultsStartTime, resultsEndTime, nowTime) &&
+        <div className="winning_validation draw_content_container">
+          <WinningID
+            id={this.props.id}
+            passedProps={this.props}
+          />
+        </div>
+        }
+        {/*{this.isIntervalPreForm(formStartTime, resultsEndTime, nowTime) &&*/}
+        {/*<InterimPage*/}
+          {/*textInterim='New competition entry will be available in:'*/}
+          {/*schedule="form"*/}
+          {/*siteLaunch={siteLaunch}*/}
+        {/*/>*/}
+        {/*}*/}
+        {this.isIntervalPreResults(formEndTime, resultsStartTime, nowTime) &&
+        <InterimPage
+          textInterim='Results will be published in:'
+          schedule="results"
+          siteLaunch={siteLaunch}
+        />
+        }
+        {this.isPostComp(nowTime, resultsEndTime) &&
+        <div className="thank_you_wrapper">
+          <h1 className="headerText">Thank you for taking part</h1>
+          <div>Competition will resume at <span className="largeText">7am </span>tomorrow</div>
+        </div>
+        }
+        {this.newIntervalPreForm(nowTime, formStartTime, new_date) &&
+        <InterimPage
+          textInterim='New competition entry will be available in:'
+          schedule="form"
+          siteLaunch={siteLaunch}
+        />
         }
       </div>
     );
@@ -163,7 +202,6 @@ const mapStateToProps = (state) => {
     formEndTime: state.get('reducer').formEndTime,
     resultsStartTime: state.get('reducer').resultsStartTime,
     siteLaunch: state.get('reducer').siteLaunch,
-    nextDayValue: state.get('reducer').nextDayValue,
   };
 };
 

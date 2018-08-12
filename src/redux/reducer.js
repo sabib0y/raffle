@@ -108,20 +108,12 @@ const reducer = (state = initialState, action) => {
        .set('resultsStartTime', action.formTime.resultsStartTime)
        .set('resultsEndTime', action.formTime.resultsEndTime)
        .set('siteLaunch', action.formTime.siteLaunch)
-       .set('nextDayValue', action.formTime.nextDayValue)
        .toJS()
   }
 
 
 
   if (action.type === SET_CODE_CONFIRMATION) {
-    const postData = {
-      mobileNumber: action.winningCodeConfirmation.mobileNumber,
-      selectedNetwork: action.winningCodeConfirmation.selectedNetwork,
-      uniqueId: action.winningCodeConfirmation.uniqueId,
-      winningCodeConfirmation: action.winningCodeConfirmation.winningCodeConfirmation,
-    };
-
     return state
       .set('mobileNumber', action.winningCodeConfirmation.mobileNumber)
       .set('selectedNetwork', action.winningCodeConfirmation.selectedNetwork)

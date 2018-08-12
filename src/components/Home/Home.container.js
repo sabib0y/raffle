@@ -338,16 +338,24 @@ export class Home extends React.Component {
       <div>
         <p className="popUpHeaderText">Competition Entered!</p>
         <p className="uniqueCodePopUp">Your unique code is <span className="codeTransform">{this.state.uniqueId}</span></p>
-        <div className="uniqueCodePopUpText">We'll be in touch if you're our lucky winner!!!
-        <p className="uniqueCodePopUpDisclaimer"><i>By closing, you confirm that you have copied your unique code and saved it.</i></p>
+        <div className="uniqueCodePopUpText">Check back at 8pm to see if you won!!!
+        {/*<p className="uniqueCodePopUpDisclaimer"><i>By closing, you confirm that you have copied your unique code and saved it.</i></p>*/}
         </div>
       </div>
     );
 
     return (
       <div>
+        <h2 id="teaser_text">
+          <span className="teaser_text_time">For the first 7 days</span>
+          we will be giving away five
+          <span className="fiveh">₦500</span>
+          airtime vouchers every day!
+          <span>Competition ends at 7pm everyday</span>
+          <span className="large_text">Don’t miss out!!</span>
+        </h2>
+
         <div>
-        <h1 className="headerText">Welcome to Dailychoppins!</h1>
         </div>
       <div className="formWrapper">
         {this.state.showPopup ?
@@ -360,7 +368,6 @@ export class Home extends React.Component {
         <div>
           <div className="row">
             <div className="draw_content_container">
-              <p id="intro_tease">Enter your details in here daily to stand a chance to win  <span className="large_text">500 naira</span>  top up! Winners will be announced at 7pm Nigerian time.</p>
             <div className = "main_form">
               <form action="" id="user-form" noValidate="novalidate" onSubmit={e => this.handleSubmitForm(e)}>
                 <fieldset>
@@ -437,7 +444,6 @@ export class Home extends React.Component {
           </div>
         </div>
       </div>
-        <p className="disclaimerText">By entering the competition, you consent to your details being used for marketing purposes.</p>
       </div>
     )
   }

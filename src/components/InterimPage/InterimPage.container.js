@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './InterimPage.scss';
+import '../ComingSoon/ComingSoon.scss';
 import fire from '../../fire';
 import moment from 'moment-timezone';
 import {connect} from "react-redux";
@@ -26,7 +27,6 @@ export class InterimPage extends Component {
       timeNow: new Date(),
       testData: '',
       testTime: '',
-      nextDayValue: null
     }
   }
 
@@ -48,24 +48,37 @@ export class InterimPage extends Component {
   }
 
   componentDidMount(){
+
+    const { formStartTime } = this.props;
+    let new_date = moment(formStartTime).subtract(7, 'hours').format();
+    new_date = new Date(new_date);
+
+    // this.isPostComp(nowTime, resultsEndTime);
+
     fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
       let receivedDataTime = snapshot.val();
-
-      let nextDayValue = moment();
-      nextDayValue = nextDayValue.add(1, 'days').format();
-      nextDayValue = nextDayValue.split('T')[0];
-      nextDayValue = `${nextDayValue}T00:00:01Z`;
-      nextDayValue = moment(nextDayValue).format();
-
 
       this.setState({
         formStartTime: new Date(receivedDataTime.postData.formStart),
         formEndTime: new Date(receivedDataTime.postData.formEnd),
         resultsStartTime: new Date(receivedDataTime.postData.resultStart),
         resultsEndTime: new Date(receivedDataTime.postData.resultEnd),
-        nextDayValue: new Date(nextDayValue),
       });
+
+      /* @TODO time?
+      * */
+      // this.setState({
+      //   formStartTime: new Date("2018-08-06T06:50:31+01:00"),
+      //   resultsEndTime: new Date("2018-08-06T20:00:31+01:00"),
+      //   formEndTime: new Date("2018-08-06T13:00:31+01:00"),
+      //   resultsStartTime: new Date("2018-08-06T19:00:31+01:00"),
+      // });
+
       const { formStartTime, resultsEndTime, formEndTime, resultsStartTime } = this.state;
+      // let formStartTime, resultsEndTime, formEndTime, resultsStartTime;
+
+
+
       let nowTime = new Date();
 
       if(nowTime >= formStartTime && nowTime <= formEndTime) {
@@ -74,38 +87,45 @@ export class InterimPage extends Component {
       if(nowTime > resultsStartTime && nowTime < resultsEndTime) {
         this.props.history.push('/');
       }
+
+      if(nowTime > resultsEndTime && resultsEndTime !== null) {
+        this.props.history.push('/')
+      }
+
     });
 
     fire.database().ref('setSiteLaunch/').once('value').then((snapshot) => {
       let siteLaunch = snapshot.val();
-      const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, nextDayValue } = this.state;
+      const { formStartTime, resultsEndTime, formEndTime, resultsStartTime } = this.state;
 
       const dataToPost = {
         formStartTime,
         formEndTime,
         resultsStartTime,
         resultsEndTime,
-        // siteLaunch: new Date(siteLaunch.siteLaunch),
-        siteLaunch: new Date("2018-07-06T07:00:34+01:00"),
-        nextDayValue,
+        siteLaunch: new Date(siteLaunch.siteLaunch),
       };
-
 
       this.timerHandle = setInterval(() => {
         const { timeNow, resultsStartTime } = this.state;
-        let newDateToTest = new Date();
+        let newDateToTest = moment().tz('Africa/Lagos').format();
+        newDateToTest = new Date(newDateToTest);
 
+        let timeToTestInterval;
+
+        if(timeNow < formStartTime) {
+          timeToTestInterval = formStartTime
+        }
+        if(timeNow > formStartTime && timeNow < resultsStartTime){
+          timeToTestInterval = resultsStartTime
+        }
         /*eslint no-mixed-operators:*/
-        if(resultsStartTime > newDateToTest || newDateToTest > resultsStartTime && newDateToTest > formStartTime) {
+
+
           let testTime;
-          if(resultsStartTime > newDateToTest) {
-            testTime = resultsStartTime - newDateToTest;
+          if(timeToTestInterval > newDateToTest) {
+            testTime = timeToTestInterval - newDateToTest;
           }
-
-          if(newDateToTest > resultsStartTime && newDateToTest > formStartTime) {
-            testTime = nextDayValue - newDateToTest;
-          }
-
 
           let duration = moment.duration(testTime, 'milliseconds');
 
@@ -135,17 +155,9 @@ export class InterimPage extends Component {
               dateNow: timeNow,
             });
           }
-
-        }
-        else {
-          clearInterval(this.timerHandle);
-          this.timerHandle = 0;
-          // this.props.history.push('/');
-        }
       }, 1000);
       this.props.getTimeForm(dataToPost)
     });
-
   };
 
   componentWillUnmount() {
@@ -154,21 +166,36 @@ export class InterimPage extends Component {
   }
 
   checkPageLocation(siteLaunch, nowTime) {
-    if(nowTime < siteLaunch){
-      this.props.history.push('/coming-soon');
+    if(nowTime > siteLaunch){
+      // this.props.history.push('/coming-soon');
       return true;
     }
     return false;
   };
+
+  isPreFormCountDown(nowTime, new_date, formStartTime, resultsEndTime) {
+    if(nowTime < formStartTime && nowTime < new_date) {
+      this.setState({
+        thankYouMessage: true
+      })
+    }
+  }
+
+  // isPostComp(nowTime, resultsEndTime){
+  //   if(nowTime > resultsEndTime && resultsEndTime !== null) {
+  //     this.props.history.push('/')
+  //   }
+  //   return false;
+  // }
 
   render () {
     let schedule, message;
     let nowTime = new Date();
     const { siteLaunch } = this.props;
 
-    if(siteLaunch !== undefined) {
-      console.log(siteLaunch, 'moment', siteLaunch.setDate(siteLaunch.getDate()+1));
-    }
+    // if(siteLaunch !== undefined) {
+    //   console.log(siteLaunch, 'moment', siteLaunch.setDate(siteLaunch.getDate()+1));
+    // }
 
     this.checkPageLocation(siteLaunch, nowTime);
 
@@ -182,25 +209,32 @@ export class InterimPage extends Component {
       message = 'Form will be displayed in:'
     }
 
-    if(nowTime > this.state.formStartTime && nowTime > this.state.resultsEndTime && this.state.nextDayValue > this.state.formStartTime) {
+    if(nowTime > this.state.formStartTime && nowTime > this.state.resultsEndTime ) {
       schedule = 'form';
       message = 'Form will be displayed in:'
     }
 
-    if(nowTime > this.props.resultEndTime && nowTime < this.props.nextDayValue) {
+    if(nowTime > this.props.resultEndTime) {
+      schedule = 'form';
+      message = 'Form will be displayed in:'
+    }
+
+    const { formStartTime, resultsEndTime } = this.props;
+    let new_date = moment(formStartTime).subtract(7, 'hours').format();
+    new_date = new Date(new_date);
+
+    this.isPreFormCountDown(nowTime, new_date, formStartTime, resultsEndTime);
+    // this.isPostComp(nowTime, resultsEndTime);
+    if(nowTime > new_date && nowTime < formStartTime && formStartTime !== null) {
       schedule = 'form';
       message = 'Form will be displayed in:'
     }
 
     return (
       <div className="containerWrapper">
-        <p>{this.props.textInterim}</p>
+        <p>{this.props.textInterim ? this.props.textInterim : message }</p>
         {schedule === 'form' &&
           <div>
-            <div>
-              <h1 className="headerText">Welcome to Dailychoppins!</h1>
-            </div>
-            <div>{message}</div>
             {this.state.testData.length > 0 &&
               <div id="timer_wrapper">
                 <span>
@@ -221,10 +255,6 @@ export class InterimPage extends Component {
         }
         {schedule === 'results' &&
           <div>
-            <div>
-              <h1 className="headerText">Welcome to Dailychoppins!</h1>
-            </div>
-            <div>{message}</div>
             {this.state.testData.length > 0 &&
               <div id="timer_wrapper">
                 <span>
@@ -254,9 +284,8 @@ const mapStateToProps = (state) => {
     uniqueId: state.get('reducer').uniqueId,
     formStartTime: state.get('reducer').formStartTime,
     siteLaunch: state.get('reducer').siteLaunch,
-    resultStartTime: state.get('reducer').resultStartTime,
-    resultEndTime: state.get('reducer').resultEndTime,
-    nextDayValue: state.get('reducer').nextDayValue,
+    resultsStartTime: state.get('reducer').resultsStartTime,
+    resultsEndTime: state.get('reducer').resultsEndTime,
   };
 };
 

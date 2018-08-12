@@ -6,7 +6,7 @@ import { Route, HashRouter, Link } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
 import App from './App.container';
-import ComingSoon from './components/ComingSoon/ComingSoon';
+// import ComingSoon from './components/ComingSoon/ComingSoon';
 import Error from './components/Error/Error.container';
 import reducer from './redux/index';
 // import createLogger from 'redux-logger';
@@ -62,12 +62,15 @@ ReactDOM.render(
           {/*<div>*/}
             {/*<h1 className="headerText">Welcome to Dailychoppins!</h1>*/}
           {/*</div>*/}
+          <h1 className="headerText">Welcome to Dailychoppins!</h1>
         </header>
         <Route exact path='/' component={App} />
         <Route path='/awaiting-page' component={InterimPage} />
         <Route path='/claim-winnings' component={WinningID} />
-        <Route path='/coming-soon' component={ComingSoon} />
-        <Route path='/error' component={Error} />
+        {/*<Route path='/coming-soon' component={ComingSoon} />*/}
+        {/*<Route component={Error} />*/}
+
+
         <Footer />
       </div>
       </div>

@@ -1,11 +1,12 @@
 @import "../../settings";
-@import "../../mixins";
 
 .errorEmail {
- color: red;
+ color: #9c1b1b;
  margin-bottom: 5px;
- font-size: 15px;
- float: right;
+ font-size: 13px;
+ display: block;
+ width: 100%;
+ text-align: left;
 }
 
 .errorOutline {
@@ -70,7 +71,7 @@
 
 .main_form{
  @include form_width;
- padding: 7rem 2rem 5.6rem;
+ margin-top: 0;
   .form-group{
     @include quickSand;
     @include smart_row;
@@ -107,9 +108,5 @@
   }
 }
 
-@include breakpoint(phablet) {
- .main_form {
-  padding: 7rem 6rem 5.6rem;
- }
-}
+
 

@@ -143,8 +143,8 @@ export class WinningCodeValidation extends React.Component {
       popUpInfo = (
         <div>
           <p className="popUpHeaderText">Congrats!</p>
-          <p className="uniqueCodePopUp">Your code has been redeemed!</p>
-          <div className="uniqueCodePopUpText">We'll send you your winnings shortly</div>
+          <p className="uniqueCodePopUp">You have won ₦500 airtime!!</p>
+          <div className="uniqueCodePopUpText">Your phone will be credited shortly.</div>
         </div>
       );
     }
@@ -163,14 +163,14 @@ export class WinningCodeValidation extends React.Component {
       popUpInfo = (
         <div>
           <p className="popUpHeaderText">Unlucky... :(</p>
-          <p className="uniqueCodePopUp">You do not hold a winning number this time</p>
-          <div className="uniqueCodePopUpText">Thank you for participating</div>
+          <p className="uniqueCodePopUp">You do not hold a winning number today.</p>
+          <div className="uniqueCodePopUpText">Please try again tomorrow.</div>
         </div>
       );
     }
 
     return (
-      <div className="validate_form">
+      <div>
         {this.state.showPopup ?
           <Popup
             info={popUpInfo}
@@ -180,27 +180,35 @@ export class WinningCodeValidation extends React.Component {
           : null
         }
         {this.state.winningCodeConfirmation === false &&
-          <form action="" id="user-form" noValidate="noValidate" onSubmit={e => this.handleSubmitCode(e)}>
-            <fieldset>
-              <div className="form-group">
-                <label>Enter your number here</label>
-                <input
-                  type="text"
-                  className={ this.state.outline ? 'outline' : 'noError' }
-                  placeholder="validate code"
-                  name="code"
-                  onChange={event => this.handleSubmit(event)}
-                />
-                <span className="errorEmail">{this.state.error}</span>
+          <div>
+            <div className="row">
+              <div className="draw_content_container">
+                <div className = "main_form">
+                  <form action="" id="user-form" noValidate="noValidate" onSubmit={e => this.handleSubmitCode(e)}>
+                    <fieldset>
+                      <div className="form-group">
+                        <label>Enter number</label>
+                        <input
+                          type="text"
+                          className={ this.state.outline ? 'outline' : 'noError' }
+                          placeholder="validate code"
+                          name="code"
+                          onChange={event => this.handleSubmit(event)}
+                        />
+                        <span className="errorEmail">{this.state.error}</span>
+                      </div>
+                    </fieldset>
+                    <button
+                      className="btn btn-primary custom-button"
+                      type="submit"
+                    >
+                      redeem code
+                    </button>
+                  </form>
+                </div>
               </div>
-            </fieldset>
-            <button
-              className="btn btn-primary custom-button"
-              type="submit"
-            >
-              redeem code
-            </button>
-          </form>
+            </div>
+          </div>
         }
       </div>
     )
