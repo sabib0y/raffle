@@ -47,7 +47,12 @@ export class WinningId extends React.PureComponent {
       this.props.history.push('/');
     }
 
-    if(nowTime < resultStartTime) {
+
+    if(nowTime > formStartTime && nowTime < formEndTime && formStartTime !== undefined) {
+      this.props.history.push('/');
+    }
+
+    if(nowTime < resultStartTime && resultStartTime !== undefined) {
       this.props.history.push('/')
     }
 
@@ -73,10 +78,10 @@ export class WinningId extends React.PureComponent {
             resultStart: new Date(siteForm.postData.resultStart),
             resultEnd: new Date(siteForm.postData.resultEnd),
           };
-
-          if(nowTime > postData.formStart && nowTime < postData.formEnd) {
-            this.props.history.push('/');
-          }
+          //
+          // if(nowTime > postData.formStart && nowTime < postData.formEnd) {
+          //   // this.props.history.push('/');
+          // }
 
           this.setState({
             formStartTime: new Date(postData.formStart),

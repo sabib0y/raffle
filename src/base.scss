@@ -63,6 +63,15 @@ h1,h2,h3,h4{
 
 .custom-button{
   @include btn;
+
+ // medium
+ @media only screen and (max-width: 640px) {
+  padding: 1rem;
+  height: auto;
+  margin-top: 0;
+  font-size: 1.7rem;
+
+ }
 }
 
 .custom-button-redeem{
