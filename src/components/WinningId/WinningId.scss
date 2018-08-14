@@ -30,3 +30,41 @@
 button{
   @include btn;
 }
+
+
+// medium
+@media only screen and (max-width: 1200px) {
+  body {
+    .main_form {
+      padding: 4rem;
+      margin: 2rem auto;
+    }
+  }
+}
+
+// medium
+@media only screen and (max-width: 640px) {
+  body{
+
+  .winning_validation{
+    .winningId{
+      font-size: 1.9rem;
+      .winning_codes div{
+        padding: 0 1rem;
+        font-size: 2.2rem;
+      }
+    }
+  }
+
+  .draw_content_container{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    width: 91%;
+  }
+
+    .main_form{
+      padding: 2rem;
+    }
+}
+
+}

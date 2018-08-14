@@ -2,7 +2,8 @@
 
 #root,
 #root >div{
-  height: 100%;
+  height: auto;
+  overflow: auto;
 }
 
 #overall_wrapper {
@@ -54,6 +55,12 @@ header{
   text-align: center;
 }
 
+.errorMessagePage {
+  font-size: 3rem;
+  margin-bottom: 5rem;
+  text-align: center;
+}
+
 .App-title {
   font-size: 1.5em;
 }
@@ -84,7 +91,7 @@ body{
 */
 
 // medium
-@media only screen and (max-width: 1020px) {
+  @media only screen and (max-width: 1020px) {
   #logo{
     img{
       max-width: 17rem;
@@ -111,5 +118,13 @@ body{
      margin-bottom: 1rem;
      font-size: 2.2rem;
    }
+
+   #particle_wrapper{
+     background-image: url('./images/mobile_bg.jpg');
+     >div{
+       display: none;
+     }
+   }
+
   }
 }

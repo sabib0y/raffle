@@ -30,23 +30,6 @@ export class InterimPage extends Component {
     }
   }
 
-  getData() {
-
-  }
-
-  preForm() {}
-
-  preResults() {
-
-
-  }
-
-  minusOne() {
-    if(this.state.time > 0){
-      this.setState({time: this.state.time -1});
-    }
-  }
-
   componentDidMount(){
 
     const { formStartTime } = this.props;
@@ -201,22 +184,22 @@ export class InterimPage extends Component {
 
     if(nowTime > this.state.formEndTime && nowTime < this.state.resultsStartTime) {
       schedule = 'results';
-      message = 'Results will be displayed in:'
+      message = `Today's results will be displayed in:`
     }
 
     if(nowTime < this.state.formStartTime) {
       schedule = 'form';
-      message = 'Form will be displayed in:'
+      message = `Today's competition will start in:`
     }
 
     if(nowTime > this.state.formStartTime && nowTime > this.state.resultsEndTime ) {
       schedule = 'form';
-      message = 'Form will be displayed in:'
+      message = `Today's competition will start in:`
     }
 
     if(nowTime > this.props.resultEndTime) {
       schedule = 'form';
-      message = 'Form will be displayed in:'
+      message = `Today's competition will start in:`
     }
 
     const { formStartTime, resultsEndTime } = this.props;
@@ -227,14 +210,20 @@ export class InterimPage extends Component {
     // this.isPostComp(nowTime, resultsEndTime);
     if(nowTime > new_date && nowTime < formStartTime && formStartTime !== null) {
       schedule = 'form';
-      message = 'Form will be displayed in:'
+      message = `Today's competition will start in:`
     }
+
 
     return (
       <div className="containerWrapper">
-        <p>{this.props.textInterim ? this.props.textInterim : message }</p>
         {schedule === 'form' &&
           <div>
+            <div>
+              <h2 id="teaser_text">
+                <span className="teaser_text_time">Competition is currently unavailable</span>
+              </h2>
+            </div>
+            <p>{this.props.textInterim ? this.props.textInterim : message }</p>
             {this.state.testData.length > 0 &&
               <div id="timer_wrapper">
                 <span>
@@ -255,6 +244,13 @@ export class InterimPage extends Component {
         }
         {schedule === 'results' &&
           <div>
+            <div>
+              <h2 id="teaser_text">
+                <span className="teaser_text_time">Competition is now closed</span>
+                <span>Thank you for taking</span>
+              </h2>
+            </div>
+            <p>{this.props.textInterim ? this.props.textInterim : message }</p>
             {this.state.testData.length > 0 &&
               <div id="timer_wrapper">
                 <span>

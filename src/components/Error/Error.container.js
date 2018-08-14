@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
+import { NavLink } from 'react-router-dom';
 
 export class Error extends React.PureComponent {
   constructor(props) {
@@ -10,10 +11,12 @@ export class Error extends React.PureComponent {
   render() {
     return (
       <div className='container-fluid appWrapper'>
-        <div>
-          <h3 className="headerText">Oopsy :( We'll be wheels up soon... </h3>
-        </div>
-        <p className="centreText">...meantime... Feel free to chat to us about our products or sponsorship.... </p>
+        <h3 className="errorMessagePage">Oopsy :( Page Not Found </h3>
+        <p className="centreText">
+          <NavLink to='/'>
+            Go home
+          </NavLink>
+        </p>
         <div>
         </div>
       </div>
