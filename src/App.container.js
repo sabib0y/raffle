@@ -133,13 +133,13 @@ export class App extends Component {
     let nowTime = moment().tz("Africa/Lagos").format();
     nowTime = new Date(nowTime);
 
-    // const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch } = this.props;
-    let formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch ;
-
-    formStartTime = new Date("2018-08-14T06:50:31+01:00");
-    resultsEndTime = new Date("2018-08-14T20:00:31+01:00");
-    formEndTime = new Date("2018-08-14T13:00:31+01:00");
-    resultsStartTime = new Date("2018-08-14T19:00:31+01:00");
+    const { formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch } = this.props;
+    // let formStartTime, resultsEndTime, formEndTime, resultsStartTime, siteLaunch ;
+    //
+    // formStartTime = new Date("2018-08-06T06:50:31+01:00");
+    // resultsEndTime = new Date("2018-08-06T20:00:31+01:00");
+    // formEndTime = new Date("2018-08-06T13:00:31+01:00");
+    // resultsStartTime = new Date("2018-08-06T19:00:31+01:00");
 
     // console.log('before', formStartTime)
     let new_date = moment(formStartTime).subtract(7, 'hours').format();

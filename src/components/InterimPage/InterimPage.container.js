@@ -41,21 +41,21 @@ export class InterimPage extends Component {
     fire.database().ref('setTimeForm/').once('value').then((snapshot) => {
       let receivedDataTime = snapshot.val();
 
-      // this.setState({
-      //   formStartTime: new Date(receivedDataTime.postData.formStart),
-      //   formEndTime: new Date(receivedDataTime.postData.formEnd),
-      //   resultsStartTime: new Date(receivedDataTime.postData.resultStart),
-      //   resultsEndTime: new Date(receivedDataTime.postData.resultEnd),
-      // });
+      this.setState({
+        formStartTime: new Date(receivedDataTime.postData.formStart),
+        formEndTime: new Date(receivedDataTime.postData.formEnd),
+        resultsStartTime: new Date(receivedDataTime.postData.resultStart),
+        resultsEndTime: new Date(receivedDataTime.postData.resultEnd),
+      });
 
       /* @TODO time?
       * */
-      this.setState({
-        formStartTime: new Date("2018-08-14T06:50:31+01:00"),
-        resultsEndTime: new Date("2018-08-14T20:00:31+01:00"),
-        formEndTime: new Date("2018-08-14T13:00:31+01:00"),
-        resultsStartTime: new Date("2018-08-14T19:00:31+01:00"),
-      });
+      // this.setState({
+      //   formStartTime: new Date("2018-08-06T06:50:31+01:00"),
+      //   resultsEndTime: new Date("2018-08-06T20:00:31+01:00"),
+      //   formEndTime: new Date("2018-08-06T13:00:31+01:00"),
+      //   resultsStartTime: new Date("2018-08-06T19:00:31+01:00"),
+      // });
 
       const { formStartTime, resultsEndTime, formEndTime, resultsStartTime } = this.state;
       // let formStartTime, resultsEndTime, formEndTime, resultsStartTime;
