@@ -39,6 +39,8 @@ exports.dataBaseCleanUp = functions.https.onRequest((request, response) => {
       admin.database().ref(`allUsersNoDuplicate`).remove();
       admin.database().ref(`confirmedWinnerList`).remove();
       admin.database().ref(`dailyWinningNumbers`).remove();
+      admin.database().ref(`usersBackUp`).remove();
+      admin.database().ref(`usersDailyBackupCount`).remove();
       return admin.database().ref(`users`).remove();
 
     } else {
