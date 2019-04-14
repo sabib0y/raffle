@@ -1,15 +1,18 @@
-
 @import "./mixins";
 
 //vars
-$dark_text : #5a5656;
+$dark_text: #5a5656;
 $label_colour: #9f9f9f;
 $height: 5rem;
 
 //mixins
 //fonts
-@mixin quickSand{font-family: 'Quicksand', sans-serif;}
-@mixin poppins{font-family: 'Poppins', sans-serif;}
+@mixin quickSand {
+  font-family: "Quicksand", sans-serif;
+}
+@mixin poppins {
+  font-family: "Poppins", sans-serif;
+}
 
 //placeholder styling mixing
 @mixin optional-at-root($sel) {
@@ -19,30 +22,30 @@ $height: 5rem;
 }
 
 @mixin placeholder {
-  @include optional-at-root('::-webkit-input-placeholder') {
+  @include optional-at-root("::-webkit-input-placeholder") {
     @content;
   }
 
-  @include optional-at-root(':-moz-placeholder') {
+  @include optional-at-root(":-moz-placeholder") {
     @content;
   }
 
-  @include optional-at-root('::-moz-placeholder') {
+  @include optional-at-root("::-moz-placeholder") {
     @content;
   }
 
-  @include optional-at-root(':-ms-input-placeholder') {
+  @include optional-at-root(":-ms-input-placeholder") {
     @content;
   }
 }
 
 // buttons
-@mixin btn{
+@mixin btn {
   font-size: 2.5rem;
   text-transform: uppercase;
-  -webkit-box-shadow: 0px 0px 10px 3px rgba(125,129,255,1);
-  -moz-box-shadow: 0px 0px 10px 3px rgba(125,129,255,1);
-  box-shadow: 0px 0px 10px 3px rgba(125,129,255,1);
+  -webkit-box-shadow: 0px 0px 10px 3px rgba(125, 129, 255, 1);
+  -moz-box-shadow: 0px 0px 10px 3px rgba(125, 129, 255, 1);
+  box-shadow: 0px 0px 10px 3px rgba(125, 129, 255, 1);
   background: #2e3192;
   @include quickSand;
   font-weight: 700;
@@ -50,7 +53,7 @@ $height: 5rem;
   height: 7.7rem;
   margin-top: 2rem;
 
-  &:disabled{
+  &:disabled {
     background: #2e3192;
     opacity: 1;
     box-shadow: none;
@@ -58,36 +61,36 @@ $height: 5rem;
 }
 
 //animations
-@mixin transition{
+@mixin transition {
   -webkit-transition: all 0.4s ease-in-out;
   -moz-transition: all 0.4s ease-in-out;
   transition: all 0.4s ease-in-out;
 }
 
 //Forms
-@mixin form_width{
+@mixin form_width {
   background: white;
   max-width: 63rem;
   color: $dark_text;
-  margin: 3.4rem auto 0;
-  padding:4rem 3rem 3.6rem;
+  margin: 6rem auto 0;
+  padding: 4rem 3rem 3.6rem;
 }
 
-@mixin input_field{
-    height: $height;
-    border: 2px solid black;
-    font-size: 2.1rem;
-    text-align: left;
-    padding: 0.5rem 1rem;
+@mixin input_field {
+  height: $height;
+  border: 2px solid black;
+  font-size: 2.1rem;
+  text-align: left;
+  padding: 0.5rem 1rem;
 }
 
-@mixin smart_row{
+@mixin smart_row {
   position: relative;
   min-height: 5rem;
   margin-bottom: 2rem;
   text-align: left;
 
-  label{
+  label {
     position: absolute;
     top: 0;
     left: 0;
@@ -100,35 +103,34 @@ $height: 5rem;
     @include transition;
   }
 
-  input{
+  input {
     @include input_field;
     @include transition;
     @include placeholder {
-        color: transparent;
-      }
+      color: transparent;
+    }
   }
 
-  &.active{
-    label{
+  &.active {
+    label {
       font-size: 1.3rem;
       height: auto;
       padding-top: 0.3rem;
     }
 
-    input{
+    input {
       padding-top: 1.7rem;
     }
   }
 
   @include breakpoint(phablet) {
-    label{
-
+    label {
     }
   }
 }
 
 @include breakpoint(phablet) {
- .validate_form {
-  padding: 15px 25px 25px 25px;
- }
+  .validate_form {
+    padding: 15px 25px 25px 25px;
+  }
 }
