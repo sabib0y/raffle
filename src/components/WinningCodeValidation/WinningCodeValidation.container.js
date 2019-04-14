@@ -1,16 +1,19 @@
-import React from 'react';
-import './WinningCodeValidation.scss';
-import {getWinningCode, getWinningCodeConfirmation} from "../../redux/actions";
-import {connect} from "react-redux";
-import fire from '../../fire';
-import Popup from '../PopUp/PopUp.component';
+import React from "react";
+import "./WinningCodeValidation.scss";
+import {
+  getWinningCode,
+  getWinningCodeConfirmation
+} from "../../redux/actions";
+import { connect } from "react-redux";
+import fire from "../../fire";
+import Popup from "../PopUp/PopUp.component";
 
 export class WinningCodeValidation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       code: null,
-      matchMessage: 'Congratulations!',
+      matchMessage: "Congratulations!",
       showPopup: false,
       message: null,
       error: null,
@@ -20,7 +23,7 @@ export class WinningCodeValidation extends React.Component {
       winningCodeConfirmation: false,
       exists: false,
       winner: false
-    }
+    };
   }
 
   handleSubmit(event) {
@@ -28,12 +31,12 @@ export class WinningCodeValidation extends React.Component {
       code: event.target.value
     });
 
-    let formGroupClass = document.getElementsByClassName('form-group');
+    let formGroupClass = document.getElementsByClassName("form-group");
 
-    if(event.target.value.length > 0) {
-      event.target.parentNode.classList.add('active');
+    if (event.target.value.length > 0) {
+      event.target.parentNode.classList.add("active");
     } else {
-      event.target.parentNode.classList.remove('active');
+      event.target.parentNode.classList.remove("active");
     }
   }
 
@@ -45,7 +48,7 @@ export class WinningCodeValidation extends React.Component {
     let winner = {};
 
     receivedData.map(item => {
-      if(code === item.user.mobileNumber) {
+      if (code === item.user.mobileNumber) {
         winner = {
           mobileNumber: item.user.mobileNumber,
           selectedNetwork: item.user.selectedNetwork,
@@ -55,70 +58,82 @@ export class WinningCodeValidation extends React.Component {
       }
     });
 
-    if(code === winner.mobileNumber) {
-      let newPostKey = fire.database().ref().child('confirmedWinnerList').push().key;
+    if (code === winner.mobileNumber) {
+      let newPostKey = fire
+        .database()
+        .ref()
+        .child("confirmedWinnerList")
+        .push().key;
 
       let updates = {};
       updates[`/confirmedWinnerList/${newPostKey}/confirmedWinner/`] = winner;
 
-      fire.database().ref('confirmedWinnerList/').once('value').then((snapshot) => {
-        let receivedDataTime = snapshot.val();
+      fire
+        .database()
+        .ref("confirmedWinnerList/")
+        .once("value")
+        .then(snapshot => {
+          let receivedDataTime = snapshot.val();
 
-        if (receivedDataTime !== null) {
-          let vals = Object.keys(receivedDataTime).map(key => {
-            return receivedDataTime[key];
-          });
+          if (receivedDataTime !== null) {
+            let vals = Object.keys(receivedDataTime).map(key => {
+              return receivedDataTime[key];
+            });
 
-          for (let value of vals) {
-            collectedNumbersArray.push(value.confirmedWinner.mobileNumber);
-          }
+            for (let value of vals) {
+              collectedNumbersArray.push(value.confirmedWinner.mobileNumber);
+            }
 
-          let exists = collectedNumbersArray.some(item => item === code);
+            let exists = collectedNumbersArray.some(item => item === code);
 
-          if (!exists) {
+            if (!exists) {
+              this.setState({
+                winningCodeConfirmation: false,
+                exists: false,
+                winner: true
+              });
+              this.togglePopup();
+              this.props.handleSubmission({
+                winningCodeConfirmation: true,
+                winner: true,
+                exists: false,
+                won: true
+              });
+              fire
+                .database()
+                .ref()
+                .update(updates);
+              this.props.getWinningCodeConfirmation(winner);
+            }
+            if (exists) {
+              this.setState({
+                winningCodeConfirmation: false,
+                exists: true,
+                winner: false
+              });
+              this.togglePopup();
+            }
+          } else {
             this.setState({
               winningCodeConfirmation: false,
               exists: false,
-              winner: true
+              winner: true,
+              won: true
             });
             this.togglePopup();
             this.props.handleSubmission({
               winningCodeConfirmation: true,
               winner: true,
-              exists: false,
               won: true
             });
-            fire.database().ref().update(updates);
+            fire
+              .database()
+              .ref()
+              .update(updates);
             this.props.getWinningCodeConfirmation(winner);
           }
-          if (exists) {
-            this.setState({
-              winningCodeConfirmation: false,
-              exists: true,
-              winner: false
-            });
-            this.togglePopup();
-          }
-        }
-        else {
-          this.setState({
-            winningCodeConfirmation: false,
-            exists: false,
-            winner: true,
-            won: true
-          });
-          this.togglePopup();
-          this.props.handleSubmission({
-            winningCodeConfirmation: true,
-            winner: true,
-            won: true
-          });
-          fire.database().ref().update(updates);
-          this.props.getWinningCodeConfirmation(winner);
-        }
-      });
-    }
-    else {
+        });
+    } else {
       this.setState({
         winningCodeConfirmation: false,
         exists: false,
@@ -139,31 +154,37 @@ export class WinningCodeValidation extends React.Component {
 
     const { winningCodeEntered, exists, winner } = this.state;
 
-    if(exists === false && winningCodeEntered === false && winner === true) {
+    if (exists === false && winningCodeEntered === false && winner === true) {
       popUpInfo = (
         <div>
           <p className="popUpHeaderText">Congrats!</p>
           <p className="uniqueCodePopUp">You have won ₦500 airtime!!</p>
-          <div className="uniqueCodePopUpText">Your phone will be credited shortly.</div>
+          <div className="uniqueCodePopUpText">
+            Your phone will be credited shortly.
+          </div>
         </div>
       );
     }
 
-    if(exists === true && winningCodeEntered === false && winner === false) {
+    if (exists === true && winningCodeEntered === false && winner === false) {
       popUpInfo = (
         <div>
           <p className="popUpHeaderText">Sorry!</p>
-          <p className="uniqueCodePopUp">Your code has been already been redeemed.</p>
+          <p className="uniqueCodePopUp">
+            Your code has been already been redeemed.
+          </p>
           <div className="uniqueCodePopUpText">Double check your code.</div>
         </div>
       );
     }
 
-    if(exists === false && winningCodeEntered === false && winner === false){
+    if (exists === false && winningCodeEntered === false && winner === false) {
       popUpInfo = (
         <div>
           <p className="popUpHeaderText">Unlucky... :(</p>
-          <p className="uniqueCodePopUp">You do not hold a winning number today.</p>
+          <p className="uniqueCodePopUp">
+            You do not hold a winning number today.
+          </p>
           <div className="uniqueCodePopUpText">Please try again tomorrow.</div>
         </div>
       );
@@ -171,26 +192,30 @@ export class WinningCodeValidation extends React.Component {
 
     return (
       <div>
-        {this.state.showPopup ?
+        {this.state.showPopup ? (
           <Popup
             info={popUpInfo}
             handleSubmission={this.props.handleSubmission}
             closePopup={() => this.togglePopup()}
           />
-          : null
-        }
-        {this.state.winningCodeConfirmation === false &&
+        ) : null}
+        {this.state.winningCodeConfirmation === false && (
           <div>
             <div className="row">
               <div className="draw_content_container">
-                <div className = "main_form">
-                  <form action="" id="user-form" noValidate="noValidate" onSubmit={e => this.handleSubmitCode(e)}>
+                <div className="main_form">
+                  <form
+                    action=""
+                    id="user-form"
+                    noValidate="noValidate"
+                    onSubmit={e => this.handleSubmitCode(e)}
+                  >
                     <fieldset>
                       <div className="form-group">
-                        <label>Enter number</label>
+                        <label>Enter mobile number</label>
                         <input
                           type="text"
-                          className={ this.state.outline ? 'outline' : 'noError' }
+                          className={this.state.outline ? "outline" : "noError"}
                           placeholder="validate code"
                           name="code"
                           onChange={event => this.handleSubmit(event)}
@@ -209,18 +234,18 @@ export class WinningCodeValidation extends React.Component {
               </div>
             </div>
           </div>
-        }
+        )}
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    mobileNumber: state.get('reducer').mobileNumber,
-    selectedNetwork: state.get('reducer').selectedNetwork,
-    uniqueId: state.get('reducer').uniqueId,
-    winningCodeConfirmation: state.get('reducer').winningCodeConfirmation,
+    mobileNumber: state.get("reducer").mobileNumber,
+    selectedNetwork: state.get("reducer").selectedNetwork,
+    uniqueId: state.get("reducer").uniqueId,
+    winningCodeConfirmation: state.get("reducer").winningCodeConfirmation
   };
 };
 
@@ -229,4 +254,7 @@ const mapDispatchToProps = {
   getWinningCodeConfirmation
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(WinningCodeValidation);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(WinningCodeValidation);
